@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Más Tech · Inventario · Catálogos</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="assets/mastech-webmastech.css">
+</head>
+<body data-module="catalogos" data-title="Catálogos" data-breadcrumb="Catálogo de materiales">
+<div id="mt-page">
+
+  <div class="mt-card">
+    <!-- Header -->
+    <div class="mt-page-header">
+      <div class="mt-header-icon"><span class="material-icons">category</span></div>
+      <div class="mt-header-text">
+        <div class="mt-header-title">Catálogo de materiales y mapeos</div>
+        <div class="mt-header-sub">Entidad Material (LLD §2.1) · descripción corporativa/operativa, UOM, serialización, medios y referencias · HU-INV-15 · spec §11.2 · CU-INV-12 · EP-INV-09</div>
+      </div>
+      <div class="mt-header-badge">142 materiales</div>
+      <span class="mt-header-spacer"></span>
+      <button class="mt-btn mt-btn-primary" data-open-modal="m-material"><span class="material-icons">add</span> Nuevo material</button>
+    </div>
+  </div>
+
+  <!-- ================= Pestañas ================= -->
+  <div class="mt-card" data-tabs>
+    <div class="mt-tabs">
+      <div class="mt-tab active" data-tab="mat">Materiales</div>
+      <div class="mt-tab" data-tab="map">Mapping tables</div>
+    </div>
+
+    <!-- ============ Tab: Materiales ============ -->
+    <div data-tabpanel="mat">
+      <div class="mt-alert warn" style="margin-bottom:14px"><span class="material-icons">rule</span> El <i>checking/unchecking</i> de la casilla <b>Serializado</b> habilita o deshabilita la serialización del material (RF 3.1.1). El estado <b>Activo/Inactivo</b> controla su disponibilidad de uso en el resto del sistema.</div>
+
+      <!-- Filtros -->
+      <div class="mt-filter-bar">
+        <div class="mt-field grow"><span class="material-icons">search</span><input type="text" placeholder="Buscar por Material ID / descripción corporativa"></div>
+        <div class="mt-field"><span class="material-icons">router</span>
+          <select><option>Tipo: todos</option><option>HFC CPE</option><option>FTTH ONT</option><option>FTTH Gateway</option><option>Extender</option><option>ATA</option><option>No serializado (materiales)</option></select></div>
+        <div class="mt-field"><span class="material-icons">tag</span>
+          <select><option>Serializado: todos</option><option>Sí</option><option>No</option></select></div>
+        <div class="mt-field"><span class="material-icons">flag</span>
+          <select><option>Estado: todos</option><option>Activo</option><option>Inactivo</option></select></div>
+        <button class="mt-icon-btn primary" title="Buscar"><span class="material-icons">search</span></button>
+        <button class="mt-icon-btn" title="Limpiar"><span class="material-icons">clear</span></button>
+        <button class="mt-icon-btn" title="Exportar"><span class="material-icons">download</span></button>
+      </div>
+
+      <!-- Tabla de materiales -->
+      <div class="mt-table-wrap">
+        <table class="mt-table">
+          <thead>
+            <tr>
+              <th class="left">Material ID</th>
+              <th class="left">Descripción corporativa</th>
+              <th>UOM · factor</th>
+              <th>Serializado</th>
+              <th>Identificador</th>
+              <th>Refurbished</th>
+              <th>Project / WBS</th>
+              <th>Ref. Liberate</th>
+              <th>Medios</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- HFC CPE — MAC -->
+            <tr>
+              <td class="left cell-mono">HFC-CM8200</td>
+              <td class="left">Cable módem HFC DOCSIS 3.1<br><span class="small muted">HFC CPE</span></td>
+              <td>EA<br><span class="small muted">factor 1</span></td>
+              <td><span class="material-icons" title="Serializado" style="color:var(--primary)">check_box</span></td>
+              <td>MAC</td>
+              <td><span class="mt-tag r">-R</span></td>
+              <td class="cell-mono">—</td>
+              <td class="cell-mono">LIB-HFC-CM8200</td>
+              <td><span style="display:inline-flex;gap:6px;align-items:center;color:var(--primary)"><span class="material-icons" title="Imagen de referencia" style="font-size:18px">image</span><span class="material-icons" title="Video de uso" style="font-size:18px">videocam</span><span class="material-icons" title="Política / instructivo" style="font-size:18px">description</span></span></td>
+              <td><span class="mt-chip chip-green">Activo</span></td>
+              <td class="row-actions"><button class="mt-icon-btn primary" title="Editar" data-open-modal="m-material"><span class="material-icons">edit</span></button></td>
+            </tr>
+            <!-- FTTH ONT — Serial -->
+            <tr>
+              <td class="left cell-mono">ONT-HG8145</td>
+              <td class="left">ONT GPON Huawei HG8145<br><span class="small muted">FTTH ONT</span></td>
+              <td>EA<br><span class="small muted">factor 1</span></td>
+              <td><span class="material-icons" title="Serializado" style="color:var(--primary)">check_box</span></td>
+              <td>Serial</td>
+              <td><span class="mt-tag r">-R</span></td>
+              <td class="cell-mono">PRJ-FTTH-2026<br><span class="small muted">WBS F-4471</span></td>
+              <td class="cell-mono">LIB-ONT-HG8145</td>
+              <td><span style="display:inline-flex;gap:6px;align-items:center;color:var(--primary)"><span class="material-icons" title="Imagen de referencia" style="font-size:18px">image</span><span class="material-icons" title="Video de uso" style="font-size:18px">videocam</span><span class="material-icons" title="Política / instructivo" style="font-size:18px">description</span></span></td>
+              <td><span class="mt-chip chip-green">Activo</span></td>
+              <td class="row-actions"><button class="mt-icon-btn primary" title="Editar" data-open-modal="m-material"><span class="material-icons">edit</span></button></td>
+            </tr>
+            <!-- FTTH Gateway — MAC -->
+            <tr>
+              <td class="left cell-mono">GW-F670</td>
+              <td class="left">Gateway GPON ZTE F670L<br><span class="small muted">FTTH Gateway</span></td>
+              <td>EA<br><span class="small muted">factor 1</span></td>
+              <td><span class="material-icons" title="Serializado" style="color:var(--primary)">check_box</span></td>
+              <td>MAC</td>
+              <td><span class="mt-tag r">-R</span></td>
+              <td class="cell-mono">PRJ-FTTH-2026<br><span class="small muted">WBS F-4472</span></td>
+              <td class="cell-mono">LIB-GW-F670</td>
+              <td><span style="display:inline-flex;gap:6px;align-items:center;color:var(--primary)"><span class="material-icons" title="Imagen de referencia" style="font-size:18px">image</span><span class="material-icons" title="Video de uso" style="font-size:18px">videocam</span></span></td>
+              <td><span class="mt-chip chip-green">Activo</span></td>
+              <td class="row-actions"><button class="mt-icon-btn primary" title="Editar" data-open-modal="m-material"><span class="material-icons">edit</span></button></td>
+            </tr>
+            <!-- Extender — Serial -->
+            <tr>
+              <td class="left cell-mono">EXT-WIFI6-E5</td>
+              <td class="left">Extensor Wi-Fi 6 mesh<br><span class="small muted">Extender</span></td>
+              <td>EA<br><span class="small muted">factor 1</span></td>
+              <td><span class="material-icons" title="Serializado" style="color:var(--primary)">check_box</span></td>
+              <td>Serial</td>
+              <td><span class="mt-tag r">-R</span></td>
+              <td class="cell-mono">—</td>
+              <td class="cell-mono">LIB-EXT-E5</td>
+              <td><span style="display:inline-flex;gap:6px;align-items:center;color:var(--primary)"><span class="material-icons" title="Imagen de referencia" style="font-size:18px">image</span><span class="material-icons" title="Política / instructivo" style="font-size:18px">description</span></span></td>
+              <td><span class="mt-chip chip-green">Activo</span></td>
+              <td class="row-actions"><button class="mt-icon-btn primary" title="Editar" data-open-modal="m-material"><span class="material-icons">edit</span></button></td>
+            </tr>
+            <!-- ATA — Serial -->
+            <tr>
+              <td class="left cell-mono">ATA-VOIP-2P</td>
+              <td class="left">Adaptador ATA VoIP 2 puertos<br><span class="small muted">ATA</span></td>
+              <td>EA<br><span class="small muted">factor 1</span></td>
+              <td><span class="material-icons" title="Serializado" style="color:var(--primary)">check_box</span></td>
+              <td>Serial</td>
+              <td class="cell-mono">—</td>
+              <td class="cell-mono">—</td>
+              <td class="cell-mono">LIB-ATA-2P</td>
+              <td><span style="display:inline-flex;gap:6px;align-items:center;color:var(--primary)"><span class="material-icons" title="Imagen de referencia" style="font-size:18px">image</span></span></td>
+              <td><span class="mt-chip chip-grey">Inactivo</span></td>
+              <td class="row-actions"><button class="mt-icon-btn primary" title="Editar" data-open-modal="m-material"><span class="material-icons">edit</span></button></td>
+            </tr>
+            <!-- No serializado — Drop cable -->
+            <tr>
+              <td class="left cell-mono">DROP-RG6-CA</td>
+              <td class="left">Cable drop coaxial RG6<br><span class="small muted">Material no serializado</span></td>
+              <td>FT<br><span class="small muted">1 ROL → 1000 FT</span></td>
+              <td><span class="material-icons" title="No serializado" style="color:var(--text-hint)">check_box_outline_blank</span></td>
+              <td class="muted">—</td>
+              <td class="cell-mono">—</td>
+              <td class="cell-mono">—</td>
+              <td class="cell-mono">LIB-DROP-RG6</td>
+              <td><span style="display:inline-flex;gap:6px;align-items:center;color:var(--primary)"><span class="material-icons" title="Política / instructivo" style="font-size:18px">description</span></span></td>
+              <td><span class="mt-chip chip-green">Activo</span></td>
+              <td class="row-actions"><button class="mt-icon-btn primary" title="Editar" data-open-modal="m-material"><span class="material-icons">edit</span></button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="mt-paginator">
+        <span>Filas por página: 25</span>
+        <span>1 – 25 de 142</span>
+        <span class="material-icons">first_page</span><span class="material-icons">chevron_left</span>
+        <span class="material-icons">chevron_right</span><span class="material-icons">last_page</span>
+      </div>
+    </div>
+
+    <!-- ============ Tab: Mapping tables ============ -->
+    <div data-tabpanel="map" style="display:none">
+      <div class="mt-alert warn" style="margin-bottom:16px"><span class="material-icons">sync_alt</span> Tablas de mapeo mantenibles que relacionan las entidades de Más Tech con los códigos de <b>SAP</b> y <b>Liberate</b>. Editar aquí evita cambios de código en las integraciones.</div>
+
+      <!-- Mapeo de materiales -->
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+        <div class="mt-section-title" style="margin:0"><span class="material-icons">swap_calls</span> Mapeo de materiales</div>
+        <span style="flex:1"></span>
+        <button class="mt-btn mt-btn-stroked mt-btn-sm"><span class="material-icons">add</span> Agregar ítem</button>
+      </div>
+      <div class="mt-table-wrap">
+        <table class="mt-table">
+          <thead>
+            <tr><th class="left">Material corporativo</th><th class="left">Descripción operativa (contratista)</th><th class="left">Código SAP</th><th class="left">Ref. Liberate</th><th>Acciones</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="left cell-mono">HFC-CM8200</td><td class="left">Módem coaxial</td><td class="left cell-mono">SAP-100234</td><td class="left cell-mono">LIB-HFC-CM8200</td><td class="row-actions"><button class="mt-icon-btn primary" title="Editar"><span class="material-icons">edit</span></button></td></tr>
+            <tr><td class="left cell-mono">ONT-HG8145</td><td class="left">ONT fibra</td><td class="left cell-mono">SAP-100567</td><td class="left cell-mono">LIB-ONT-HG8145</td><td class="row-actions"><button class="mt-icon-btn primary" title="Editar"><span class="material-icons">edit</span></button></td></tr>
+            <tr><td class="left cell-mono">GW-F670</td><td class="left">Router fibra</td><td class="left cell-mono">SAP-100892</td><td class="left cell-mono">LIB-GW-F670</td><td class="row-actions"><button class="mt-icon-btn primary" title="Editar"><span class="material-icons">edit</span></button></td></tr>
+            <tr><td class="left cell-mono">DROP-RG6-CA</td><td class="left">Rollo cable drop</td><td class="left cell-mono">SAP-200145</td><td class="left cell-mono">LIB-DROP-RG6</td><td class="row-actions"><button class="mt-icon-btn primary" title="Editar"><span class="material-icons">edit</span></button></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="mt-divider"></div>
+
+      <!-- Mapeo de ubicaciones -->
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+        <div class="mt-section-title" style="margin:0"><span class="material-icons">alt_route</span> Mapeo de ubicaciones</div>
+        <span style="flex:1"></span>
+        <button class="mt-btn mt-btn-stroked mt-btn-sm"><span class="material-icons">add</span> Agregar columna</button>
+      </div>
+      <div class="mt-table-wrap">
+        <table class="mt-table">
+          <thead>
+            <tr><th class="left">Location ID (Más Tech)</th><th class="left">Planta SAP</th><th class="left">Storage location SAP</th><th class="left">Owner</th><th>Acciones</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="left cell-mono">WH-PAN-01</td><td class="left cell-mono">1000</td><td class="left cell-mono">0001</td><td class="left">Main Warehouse</td><td class="row-actions"><button class="mt-icon-btn primary" title="Editar"><span class="material-icons">edit</span></button></td></tr>
+            <tr><td class="left cell-mono">CON-44-PPAL</td><td class="left cell-mono">1000</td><td class="left cell-mono">C044</td><td class="left">Contrata 44</td><td class="row-actions"><button class="mt-icon-btn primary" title="Editar"><span class="material-icons">edit</span></button></td></tr>
+            <tr><td class="left cell-mono">TEC-T2291</td><td class="left cell-mono">1000</td><td class="left cell-mono">T291</td><td class="left">Técnico T-2291</td><td class="row-actions"><button class="mt-icon-btn primary" title="Editar"><span class="material-icons">edit</span></button></td></tr>
+            <tr><td class="left cell-mono">TIENDA-VE</td><td class="left cell-mono">1000</td><td class="left cell-mono">TVE1</td><td class="left">Retail Vía España</td><td class="row-actions"><button class="mt-icon-btn primary" title="Editar"><span class="material-icons">edit</span></button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-note">
+    <b>Reglas del módulo (HU-INV-15 · spec §11.2):</b>
+    el <i>checking/unchecking</i> del material lo habilita o deshabilita para su uso (RF 3.1.1) ·
+    si un material está marcado como serializado en Más Tech pero <b>no</b> en SAP, la interfaz no debe enviar serial number a SAP (spec §11.2 / RF 3.1.5) ·
+    cada material mantiene descripción corporativa y operativa, UOM con factor de conversión, identificador (Serial/MAC), referencia Liberate y medios (imagen, video, instructivo) · entidad Material (LLD §2.1).
+  </div>
+</div>
+
+<!-- ================= MODAL: Nuevo / editar material ================= -->
+<div class="mt-modal-overlay" id="m-material">
+  <div class="mt-modal lg">
+    <div class="mt-modal-head">
+      <span class="material-icons">category</span><h3>Nuevo / editar material</h3>
+      <button class="mt-icon-btn mt-modal-close" data-close-modal><span class="material-icons">close</span></button>
+    </div>
+    <div class="mt-modal-body">
+      <div class="mt-form-grid">
+        <div class="mt-form-field"><label>Material ID <span class="req">*</span></label><input class="mt-input" placeholder="Ej. ONT-HG8145"></div>
+        <div class="mt-form-field"><label>Referencia Liberate</label><input class="mt-input" placeholder="Ej. LIB-ONT-HG8145"></div>
+        <div class="mt-form-field"><label>Descripción corporativa <span class="req">*</span></label><input class="mt-input" placeholder="Descripción estándar corporativa"></div>
+        <div class="mt-form-field"><label>Descripción operativa (contratista)</label><input class="mt-input" placeholder="Nombre usado por el contratista en campo"></div>
+        <div class="mt-form-field"><label>UOM <span class="req">*</span></label>
+          <select class="mt-select"><option>EA · Each</option><option>FT · Feet</option><option>ROL · Rollo</option><option>M · Metro</option></select></div>
+        <div class="mt-form-field"><label>Factor de conversión</label><input class="mt-input" placeholder="Ej. 1 ROL → 1000 FT"></div>
+        <div class="mt-form-field"><label>Identificador</label>
+          <select class="mt-select"><option>Serial</option><option>MAC</option><option>N/A (no serializado)</option></select></div>
+        <div class="mt-form-field"><label>Project / WBS</label><input class="mt-input" placeholder="Ej. PRJ-FTTH-2026 · WBS F-4471"></div>
+        <div class="mt-form-field"><label>Serializado</label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--text)"><input type="checkbox" checked> Material serializado (RF 3.1.1)</label></div>
+        <div class="mt-form-field"><label>Refurbished</label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--text)"><input type="checkbox"> Aplica sufijo <b>-R</b> (refurbished)</label></div>
+      </div>
+
+      <div class="mt-divider"></div>
+
+      <div class="mt-section-title"><span class="material-icons">perm_media</span> Medios del material</div>
+      <div class="mt-row">
+        <button class="mt-btn mt-btn-stroked"><span class="material-icons">image</span> Imagen de referencia</button>
+        <button class="mt-btn mt-btn-stroked"><span class="material-icons">videocam</span> Video de uso correcto</button>
+        <button class="mt-btn mt-btn-stroked"><span class="material-icons">school</span> Video de entrenamiento</button>
+        <button class="mt-btn mt-btn-stroked"><span class="material-icons">description</span> Política / instructivo</button>
+      </div>
+      <p class="mt-hint" style="margin-top:6px">Los medios adjuntos se muestran al técnico en campo para instalación y uso correcto del equipo.</p>
+
+      <div class="mt-divider"></div>
+
+      <div class="mt-form-field" style="max-width:320px">
+        <label>Estado del material</label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--text)"><input type="checkbox" checked> Material activo (habilitado)</label>
+      </div>
+
+      <div class="mt-alert warn" style="margin-top:14px"><span class="material-icons">info</span> Si el material está marcado como serializado en Más Tech pero <b>no</b> lo está en SAP, la interfaz no debe enviar el <i>serial number</i> hacia SAP (spec §11.2 / RF 3.1.5).</div>
+    </div>
+    <div class="mt-modal-foot">
+      <button class="mt-btn" data-close-modal>Cancelar</button>
+      <button class="mt-btn mt-btn-primary" data-close-modal><span class="material-icons">save</span> Guardar material</button>
+    </div>
+  </div>
+</div>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>

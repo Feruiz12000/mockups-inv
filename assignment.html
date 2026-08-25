@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Más Tech · Inventario · Asignación</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="assets/mastech-webmastech.css">
+</head>
+<body data-module="assignment" data-title="Asignación · Assignment" data-breadcrumb="Asignación a técnicos">
+<div id="mt-page">
+
+  <div class="mt-card" data-select-scope>
+    <!-- Header -->
+    <div class="mt-page-header">
+      <div class="mt-header-icon"><span class="material-icons">assignment_ind</span></div>
+      <div class="mt-header-text">
+        <div class="mt-header-title">Asignación de inventario a técnicos<span class="mt-help" tabindex="0" role="button" aria-label="Ver reglas del módulo">?<span class="mt-help-bubble"><b>Reglas del módulo</b> (HU-INV-03 · spec §11.6): no se puede asignar stock que <b>no esté disponible</b> en la ubicación del contratista (§14.4) · se restringen las transferencias <b>entre contratistas</b> (§14.17) · se restringen las transferencias libres entre sublocaciones bajo <b>rol técnico</b> (§14.18): la reasignación entre sublocaciones queda reservada al rol permitido.<span class="mt-help-sep"></span>Tras la asignación, el técnico debe <a href="confirmacion-tecnico.html">confirmar la recepción</a> (HU-INV-04); hasta entonces el stock sigue a nombre de la ubicación del contratista.</span></span></div>
+        <div class="mt-header-sub">Sublocaciones de técnico · HU-INV-03 · spec §11.6 · CU-INV-03</div>
+      </div>
+      <div class="mt-header-badge">Ubicación: CONT-44 · Contrata 44</div>
+      <span class="mt-header-spacer"></span>
+      <div class="mt-header-actions">
+        <button class="mt-btn mt-btn-stroked" data-open-modal="m-reasignar" title="Solo rol permitido (supervisor)"><span class="material-icons">admin_panel_settings</span> Reasignar entre sublocaciones</button>
+        <button class="mt-btn mt-btn-primary" data-open-modal="m-asignar" title="Abrir el asistente de asignación (escaneo manual)"><span class="material-icons">assignment_ind</span> Asignar a técnico</button>
+      </div>
+    </div>
+
+    <div class="mt-row">
+      <!-- Columna izquierda: técnicos (sublocaciones) -->
+      <div class="mt-col" style="max-width:360px">
+        <div class="mt-section-title"><span class="material-icons">engineering</span> Técnicos (sublocaciones)</div>
+        <div class="mt-filter-bar" style="margin-bottom:12px">
+          <div class="mt-field grow"><span class="material-icons">search</span><input type="text" placeholder="Buscar técnico / sublocación"></div>
+        </div>
+        <ul class="mt-list-plain">
+          <li>
+            <span class="material-icons" style="color:var(--primary)">engineering</span>
+            <div><b>T-2291 · J. Gómez</b><br><span class="small muted">Sublocación SL-44-01</span></div>
+            <span class="mt-tag mt-tag-count" style="margin-left:auto">14 ítems</span>
+            <button class="mt-btn mt-btn-sm mt-btn-primary" data-open-modal="m-asignar"><span class="material-icons">add</span> Asignar</button>
+          </li>
+          <li>
+            <span class="material-icons" style="color:var(--primary)">engineering</span>
+            <div><b>T-2288 · M. Castillo</b><br><span class="small muted">Sublocación SL-44-02</span></div>
+            <span class="mt-tag mt-tag-count" style="margin-left:auto">6 ítems</span>
+            <button class="mt-btn mt-btn-sm mt-btn-primary" data-open-modal="m-asignar"><span class="material-icons">add</span> Asignar</button>
+          </li>
+          <li>
+            <span class="material-icons" style="color:var(--primary)">engineering</span>
+            <div><b>T-2305 · R. Him</b><br><span class="small muted">Sublocación SL-44-03</span></div>
+            <span class="mt-tag mt-tag-count zero" style="margin-left:auto">0 ítems</span>
+            <button class="mt-btn mt-btn-sm mt-btn-primary" data-open-modal="m-asignar"><span class="material-icons">add</span> Asignar</button>
+          </li>
+          <li>
+            <span class="material-icons" style="color:var(--primary)">engineering</span>
+            <div><b>T-2312 · A. Batista</b><br><span class="small muted">Sublocación SL-44-04</span></div>
+            <span class="mt-tag mt-tag-count" style="margin-left:auto">9 ítems</span>
+            <button class="mt-btn mt-btn-sm mt-btn-primary" data-open-modal="m-asignar"><span class="material-icons">add</span> Asignar</button>
+          </li>
+          <li>
+            <span class="material-icons" style="color:var(--primary)">engineering</span>
+            <div><b>T-2330 · L. Quintero</b><br><span class="small muted">Sublocación SL-44-05</span></div>
+            <span class="mt-tag mt-tag-count" style="margin-left:auto">3 ítems</span>
+            <button class="mt-btn mt-btn-sm mt-btn-primary" data-open-modal="m-asignar"><span class="material-icons">add</span> Asignar</button>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Columna derecha: stock disponible en ubicación del contratista -->
+      <div class="mt-col">
+        <div class="mt-section-title" style="align-items:center"><span class="material-icons">inventory_2</span> Stock disponible · CONT-44 · Contrata 44<span class="mt-help" tabindex="0" role="button" aria-label="Cómo asignar">?<span class="mt-help-bubble">Marca los ítems y usa <b>“Asignar seleccionados”</b> para asignarlos en lote, o usa <b>“Asignar a técnico”</b> del encabezado para el asistente manual.<span class="mt-help-sep"></span>Solo puede asignarse el stock <b>disponible</b> en la ubicación del contratista (§14.4): lo que aparece como <span class="mt-chip chip-red">No disponible</span> no se puede marcar.</span></span> <span style="flex:1"></span>
+          <button class="mt-btn mt-btn-primary mt-btn-sm" data-bulk-btn data-bulk-label="Asignar seleccionados" data-open-modal="m-asignar" disabled title="Asignar a un técnico los ítems marcados"><span class="lbl">Asignar seleccionados</span></button>
+        </div>
+        <div class="mt-table-wrap">
+          <table class="mt-table">
+            <thead>
+              <tr><th style="width:34px"><input type="checkbox" class="mt-check chk-all" title="Seleccionar todo"></th><th class="left">Material</th><th class="left">Serial / MAC o Cantidad</th><th>UOM</th><th>Tipo</th><th>Estado</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="checkbox" class="mt-check chk-row"></td>
+                <td class="left">FTTH ONT</td>
+                <td class="left cell-mono">SN-77Q1183</td>
+                <td>UND</td>
+                <td><span class="mt-chip chip-slate">Serializado</span></td>
+                <td><span class="mt-chip chip-green">Disponible</span></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" class="mt-check chk-row"></td>
+                <td class="left">HFC CPE</td>
+                <td class="left cell-mono">A1:B2:C3:D4:E5</td>
+                <td>UND</td>
+                <td><span class="mt-chip chip-slate">Serializado</span></td>
+                <td><span class="mt-chip chip-green">Disponible</span></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" class="mt-check chk-row"></td>
+                <td class="left">FTTH Gateway</td>
+                <td class="left cell-mono">B8:44:12:9A:0C</td>
+                <td>UND</td>
+                <td><span class="mt-chip chip-slate">Serializado</span></td>
+                <td><span class="mt-chip chip-green">Disponible</span></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" class="mt-check chk-row"></td>
+                <td class="left">Extender</td>
+                <td class="left cell-mono">SN-EX-9931</td>
+                <td>UND</td>
+                <td><span class="mt-chip chip-slate">Serializado</span></td>
+                <td><span class="mt-chip chip-green">Disponible</span></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" class="mt-check chk-row"></td>
+                <td class="left">FTTH ONT <span class="mt-tag r">-R</span></td>
+                <td class="left cell-mono">SN-RF-22910</td>
+                <td>UND</td>
+                <td><span class="mt-chip chip-slate">Serializado</span></td>
+                <td><span class="mt-chip chip-green">Disponible</span></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" class="mt-check chk-row"></td>
+                <td class="left">Cable drop coaxial</td>
+                <td class="left cell-mono">800</td>
+                <td>FT</td>
+                <td><span class="mt-chip chip-sky">No serializado</span></td>
+                <td><span class="mt-chip chip-green">Disponible</span></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" class="mt-check chk-row"></td>
+                <td class="left">Conectores</td>
+                <td class="left cell-mono">240</td>
+                <td>UND</td>
+                <td><span class="mt-chip chip-sky">No serializado</span></td>
+                <td><span class="mt-chip chip-green">Disponible</span></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" class="mt-check chk-row" disabled title="No disponible — no asignable (§14.4)"></td>
+                <td class="left">ATA</td>
+                <td class="left cell-mono">SN-AT55210</td>
+                <td>UND</td>
+                <td><span class="mt-chip chip-slate">Serializado</span></td>
+                <td><span class="mt-chip chip-red">No disponible</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ================= MODAL: Asignar a técnico ================= -->
+<div class="mt-modal-overlay" id="m-asignar">
+  <div class="mt-modal lg">
+    <div class="mt-modal-head">
+      <span class="material-icons">assignment_ind</span><h3>Asignar a técnico</h3>
+      <button class="mt-icon-btn mt-modal-close" data-close-modal><span class="material-icons">close</span></button>
+    </div>
+    <div class="mt-modal-body">
+      <div class="mt-form-grid">
+        <div class="mt-form-field"><label>Técnico (sublocación destino) <span class="req">*</span></label>
+          <select class="mt-select">
+            <option>T-2291 · J. Gómez · SL-44-01</option>
+            <option>T-2288 · M. Castillo · SL-44-02</option>
+            <option>T-2305 · R. Him · SL-44-03</option>
+            <option>T-2312 · A. Batista · SL-44-04</option>
+            <option>T-2330 · L. Quintero · SL-44-05</option>
+          </select></div>
+        <div class="mt-form-field"><label>Ubicación origen</label><input class="mt-input readonly" value="CONT-44 · Contrata 44" readonly></div>
+      </div>
+
+      <div class="mt-divider"></div>
+
+      <!-- Serializados -->
+      <div class="mt-section-title"><span class="material-icons">qr_code_scanner</span> Escanear seriales / MAC (serializados)</div>
+      <div class="mt-scan-field" style="margin-bottom:10px"><span class="material-icons">qr_code_scanner</span><input value="SN-77Q1183" placeholder="Escanear serial / MAC del equipo a asignar"></div>
+      <div class="mt-table-wrap" style="margin-bottom:18px">
+        <table class="mt-table">
+          <thead><tr><th class="left">Material</th><th class="left">Serial / MAC</th><th>Tipo</th><th>Acción</th></tr></thead>
+          <tbody>
+            <tr><td class="left">FTTH ONT</td><td class="left cell-mono">SN-77Q1183</td><td><span class="mt-chip chip-slate">Serializado</span></td><td><button class="mt-icon-btn warn"><span class="material-icons">delete</span></button></td></tr>
+            <tr><td class="left">HFC CPE</td><td class="left cell-mono">A1:B2:C3:D4:E5</td><td><span class="mt-chip chip-slate">Serializado</span></td><td><button class="mt-icon-btn warn"><span class="material-icons">delete</span></button></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="mt-divider"></div>
+
+      <!-- No serializados -->
+      <div class="mt-section-title"><span class="material-icons">category</span> Materiales no serializados</div>
+      <div class="mt-filter-bar" style="margin-bottom:6px">
+        <div class="mt-field grow"><span class="material-icons">search</span><select style="width:100%"><option selected>Cable drop coaxial</option><option>Conectores</option><option>Grapas</option></select></div>
+        <div class="mt-field"><span class="material-icons">straighten</span><input type="text" value="FT" style="min-width:64px"></div>
+        <div class="mt-field"><span class="material-icons">tag</span><input type="number" placeholder="Cantidad" data-expected="800" data-uom="FT" data-qty-mode="max" style="min-width:90px"></div>
+        <span class="mt-chip" data-qty-status></span>
+        <button class="mt-btn mt-btn-stroked mt-btn-sm" data-confirm-btn><span class="material-icons">add</span> Agregar</button>
+      </div>
+      <p class="mt-hint" style="margin:0 0 8px"><span class="material-icons" style="font-size:14px;vertical-align:middle;color:var(--primary)">inventory_2</span> Disponible en la ubicación del contratista: <b>800 FT</b>. No se puede asignar más de lo disponible (§14.4); escribe más de 800 y el botón <b>Agregar</b> se bloquea.</p>
+      <div class="mt-table-wrap">
+        <table class="mt-table">
+          <thead><tr><th class="left">Material</th><th>UOM</th><th>Cantidad</th><th>Acción</th></tr></thead>
+          <tbody>
+            <tr><td class="left">Cable drop coaxial</td><td>FT</td><td>200</td><td><button class="mt-icon-btn warn"><span class="material-icons">delete</span></button></td></tr>
+            <tr><td class="left">Conectores</td><td>UND</td><td>8</td><td><button class="mt-icon-btn warn"><span class="material-icons">delete</span></button></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="mt-alert warn" style="margin-top:14px"><span class="material-icons">block</span> Solo puede asignarse stock <b>disponible</b> en la ubicación del contratista (§14.4). No se permiten asignaciones que crucen contratistas (§14.17).</div>
+    </div>
+    <div class="mt-modal-foot">
+      <button class="mt-btn" data-close-modal>Cancelar</button>
+      <button class="mt-btn mt-btn-primary" data-close-modal><span class="material-icons">login</span> Transferir a sublocación</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MODAL: Reasignar entre sublocaciones ================= -->
+<div class="mt-modal-overlay" id="m-reasignar">
+  <div class="mt-modal lg">
+    <div class="mt-modal-head">
+      <span class="material-icons">swap_horiz</span><h3>Reasignar entre sublocaciones</h3>
+      <span class="mt-help" tabindex="0" role="button" aria-label="Ver reglas de la reasignación">?<span class="mt-help-bubble start"><b>Acción restringida.</b> Las transferencias libres entre sublocaciones bajo <b>rol técnico</b> no están permitidas (§14.18); esta pantalla solo está disponible para el rol autorizado.<span class="mt-help-sep"></span>Tampoco se permiten reasignaciones que <b>crucen contratistas</b> (§14.17): origen y destino deben pertenecer a la misma ubicación (CONT-44). Tras la reasignación, el técnico destino debe <b>confirmar la recepción</b> (HU-INV-04).</span></span>
+      <button class="mt-icon-btn mt-modal-close" data-close-modal><span class="material-icons">close</span></button>
+    </div>
+    <div class="mt-modal-body">
+      <div class="mt-picker-selects">
+        <div class="mt-form-field"><label>Sublocación origen <span class="req">*</span></label>
+          <select class="mt-select" data-picker-origin>
+            <option>SL-44-01 · T-2291 · J. Gómez</option>
+            <option>SL-44-02 · T-2288 · M. Castillo</option>
+            <option>SL-44-03 · T-2305 · R. Him</option>
+            <option>SL-44-04 · T-2312 · A. Batista</option>
+            <option>SL-44-05 · T-2330 · L. Quintero</option>
+          </select></div>
+        <button type="button" class="mt-picker-swap" data-picker-swap title="Intercambiar origen y destino"><span class="material-icons">swap_horiz</span></button>
+        <div class="mt-form-field"><label>Sublocación destino <span class="req">*</span></label>
+          <select class="mt-select" data-picker-target>
+            <option>SL-44-01 · T-2291 · J. Gómez</option>
+            <option>SL-44-02 · T-2288 · M. Castillo</option>
+            <option>SL-44-03 · T-2305 · R. Him</option>
+            <option>SL-44-04 · T-2312 · A. Batista</option>
+            <option>SL-44-05 · T-2330 · L. Quintero</option>
+          </select></div>
+      </div>
+
+      <div class="mt-divider"></div>
+
+      <div class="mt-section-title"><span class="material-icons">inventory_2</span> Equipos<span class="mt-help" tabindex="0" role="button" aria-label="Cómo usar la lista">?<span class="mt-help-bubble start">Marca los equipos de la sublocación <b>origen</b> y pásalos a la derecha con las flechas (o haz <b>doble clic</b> sobre uno). Solo se listan los equipos que hoy tiene ese técnico.<span class="mt-help-sep"></span>A la derecha aparecen <b>en gris</b> los equipos que la sublocación destino ya tiene: son contexto y no se pueden seleccionar. Solo lo que muevas desde el origen queda activo y se cuenta para reasignar.</span></span></div>
+
+      <div class="mt-picker" data-picker>
+        <!-- Origen -->
+        <div class="mt-picker-col">
+          <div class="mt-picker-head">En <b data-picker-src-label>SL-44-01</b><span class="mt-picker-count" data-picker-count="src">0</span></div>
+          <div class="mt-picker-searchrow">
+            <div class="mt-field"><span class="material-icons">search</span><input type="text" data-picker-search="src" placeholder="Buscar o escanear serial / MAC"></div>
+            <button type="button" class="mt-picker-scan" data-picker-scan-btn title="Escanear serial / MAC: el equipo pasa directo a la sublocación destino"><span class="material-icons">qr_code_scanner</span></button>
+          </div>
+          <ul class="mt-picker-list" data-picker-list="src">
+            <li data-sl="SL-44-01" data-code="SN-EX-9931" data-name="Extender"><span class="p-code">SN-EX-9931</span><span class="p-name">Extender</span><span class="p-meta">UND</span></li>
+            <li data-sl="SL-44-01" data-code="SN-77Q1044" data-name="FTTH ONT"><span class="p-code">SN-77Q1044</span><span class="p-name">FTTH ONT</span><span class="p-meta">UND</span></li>
+            <li data-sl="SL-44-01" data-code="A1:B2:C3:D4:90" data-name="HFC CPE"><span class="p-code">A1:B2:C3:D4:90</span><span class="p-name">HFC CPE</span><span class="p-meta">UND</span></li>
+            <li data-sl="SL-44-01" data-code="B8:44:12:9A:11" data-name="FTTH Gateway"><span class="p-code">B8:44:12:9A:11</span><span class="p-name">FTTH Gateway</span><span class="p-meta">UND</span></li>
+            <li data-sl="SL-44-01" data-code="SN-RF-22118" data-name="FTTH ONT -R refurbished"><span class="p-code">SN-RF-22118</span><span class="p-name">FTTH ONT <span class="mt-tag r">-R</span></span><span class="p-meta">UND</span></li>
+            <li data-sl="SL-44-01" data-code="SN-AT55118" data-name="ATA"><span class="p-code">SN-AT55118</span><span class="p-name">ATA</span><span class="p-meta">UND</span></li>
+
+            <li data-sl="SL-44-02" data-code="SN-77Q2210" data-name="FTTH ONT"><span class="p-code">SN-77Q2210</span><span class="p-name">FTTH ONT</span><span class="p-meta">UND</span></li>
+            <li data-sl="SL-44-02" data-code="A1:B2:C3:D4:E5" data-name="HFC CPE"><span class="p-code">A1:B2:C3:D4:E5</span><span class="p-name">HFC CPE</span><span class="p-meta">UND</span></li>
+            <li data-sl="SL-44-02" data-code="SN-EX-8820" data-name="Extender"><span class="p-code">SN-EX-8820</span><span class="p-name">Extender</span><span class="p-meta">UND</span></li>
+            <li data-sl="SL-44-02" data-code="SN-AT55210" data-name="ATA"><span class="p-code">SN-AT55210</span><span class="p-name">ATA</span><span class="p-meta">UND</span></li>
+
+            <li data-sl="SL-44-04" data-code="B8:44:12:9A:0C" data-name="FTTH Gateway"><span class="p-code">B8:44:12:9A:0C</span><span class="p-name">FTTH Gateway</span><span class="p-meta">UND</span></li>
+            <li data-sl="SL-44-04" data-code="SN-77Q4471" data-name="FTTH ONT"><span class="p-code">SN-77Q4471</span><span class="p-name">FTTH ONT</span><span class="p-meta">UND</span></li>
+            <li data-sl="SL-44-04" data-code="SN-RF-22910" data-name="FTTH ONT -R refurbished"><span class="p-code">SN-RF-22910</span><span class="p-name">FTTH ONT <span class="mt-tag r">-R</span></span><span class="p-meta">UND</span></li>
+            <li data-sl="SL-44-04" data-code="SN-EX-4402" data-name="Extender"><span class="p-code">SN-EX-4402</span><span class="p-name">Extender</span><span class="p-meta">UND</span></li>
+            <li data-sl="SL-44-04" data-code="A1:B2:C3:D4:44" data-name="HFC CPE"><span class="p-code">A1:B2:C3:D4:44</span><span class="p-name">HFC CPE</span><span class="p-meta">UND</span></li>
+
+            <li data-sl="SL-44-05" data-code="SN-77Q5503" data-name="FTTH ONT"><span class="p-code">SN-77Q5503</span><span class="p-name">FTTH ONT</span><span class="p-meta">UND</span></li>
+            <li data-sl="SL-44-05" data-code="SN-EX-5511" data-name="Extender"><span class="p-code">SN-EX-5511</span><span class="p-name">Extender</span><span class="p-meta">UND</span></li>
+            <li data-sl="SL-44-05" data-code="SN-AT55530" data-name="ATA"><span class="p-code">SN-AT55530</span><span class="p-name">ATA</span><span class="p-meta">UND</span></li>
+            <li class="mt-picker-empty" data-picker-empty hidden></li>
+          </ul>
+        </div>
+
+        <!-- Controles -->
+        <div class="mt-picker-ctrls">
+          <button type="button" data-picker-move="all-right" title="Pasar todos"><span class="material-icons">keyboard_double_arrow_right</span></button>
+          <button type="button" data-picker-move="right" title="Pasar los seleccionados"><span class="material-icons">chevron_right</span></button>
+          <button type="button" data-picker-move="left" title="Devolver los seleccionados"><span class="material-icons">chevron_left</span></button>
+          <button type="button" data-picker-move="all-left" title="Devolver todos"><span class="material-icons">keyboard_double_arrow_left</span></button>
+        </div>
+
+        <!-- Destino -->
+        <div class="mt-picker-col is-target">
+          <div class="mt-picker-head">A reasignar a <b data-picker-dst-label>SL-44-02</b><span class="mt-picker-count" data-picker-count="dst">0</span><span class="mt-picker-owned" data-picker-owned hidden></span></div>
+          <div class="mt-picker-searchrow">
+            <div class="mt-field"><span class="material-icons">search</span><input type="text" data-picker-search="dst" placeholder="Buscar en la sublocación destino"></div>
+          </div>
+          <ul class="mt-picker-list" data-picker-list="dst">
+            <li class="mt-picker-empty" data-picker-empty hidden></li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="mt-hint" style="margin-top:12px">Los equipos en gris ya pertenecen a la sublocación destino: se muestran como contexto y no pueden seleccionarse.</p>
+    </div>
+    <div class="mt-modal-foot">
+      <span class="mt-hint" style="margin-right:auto"><b data-picker-summary>0</b> equipo(s) por reasignar</span>
+      <button class="mt-btn" data-close-modal>Cancelar</button>
+      <button class="mt-btn mt-btn-primary" data-picker-submit data-close-modal><span class="material-icons">swap_horiz</span> Reasignar</button>
+    </div>
+  </div>
+</div>
+
+
+  <script src="assets/app.js"></script>
+</body>
+</html>

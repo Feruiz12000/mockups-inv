@@ -1,0 +1,1263 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Más Tech · Inventario · Recepción</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="assets/mastech-webmastech.css">
+</head>
+<body data-module="warehouse-receipt" data-title="Recepción · Warehouse Receipt" data-breadcrumb="Recepción en tránsito">
+<div id="mt-page">
+
+  <div class="mt-card">
+    <!-- Header -->
+    <div class="mt-page-header">
+      <div class="mt-header-icon"><span class="material-icons">move_to_inbox</span></div>
+      <div class="mt-header-text">
+        <div class="mt-header-title">Recepción de inventario en tránsito (351 → 101)<span class="mt-help" tabindex="0" role="button" aria-label="Ver detalle">?<span class="mt-help-bubble"><b>Reglas del módulo</b> (HU-INV-02 · spec §11.5): no se pueden confirmar ítems no incluidos en el documento origen 351 (§14.1) · los cables transferidos en ROL se muestran en FT/MT según el factor de conversión (RF 1.2.4) · el CPE nuevo se diferencia del refurbished con el sufijo <span class="mt-tag r">-R</span> (RF 1.2.5).<span class="mt-help-sep"></span>El estado del inventario en tránsito se mantiene <b>Por recibir / Parcial</b> hasta la confirmación 101; solo entonces pasa al stock del contratista.</span></span></div>
+        <div class="mt-header-sub">Transferencia desde main warehouse · HU-INV-02 · spec §11.5 · CU-INV-02 · EP-INV-02</div>
+      </div>
+      <div class="mt-header-badge">5 documentos en tránsito</div>
+      <span class="mt-header-spacer"></span>
+      <button class="mt-btn mt-btn-stroked"><span class="material-icons">download</span> Exportar</button>
+    </div>
+
+    <!-- Filtros -->
+    <div class="mt-filter-bar">
+      <div class="mt-field grow"><span class="material-icons">search</span><input type="text" placeholder="Buscar por documento 351 / ubicación destino"></div>
+      <div class="mt-field"><span class="material-icons">flag</span>
+        <select><option>Estado: todos</option><option>Por recibir</option><option>Parcial</option><option>Confirmado</option></select></div>
+      <div class="mt-field"><span class="material-icons">place</span>
+        <select><option>Ubicación destino: todas</option><option>CONT-44 · Contrata 44</option><option>CONT-12 · Contrata 12</option><option>CONT-08 · Tercero CP-08</option></select></div>
+      <div class="mt-field"><span class="material-icons">calendar_today</span><input type="date"></div>
+      <button class="mt-icon-btn primary" title="Buscar"><span class="material-icons">search</span></button>
+      <button class="mt-icon-btn" title="Limpiar"><span class="material-icons">clear</span></button>
+    </div>
+
+    <!-- Pestañas -->
+    <div data-tabs>
+      <div class="mt-tabs">
+        <div class="mt-tab active" data-tab="transito">En tránsito (351)<span class="mt-help" tabindex="0" role="button" aria-label="Ver detalle">?<span class="mt-help-bubble">Cada fila es un <b>documento 351</b>. Usa el ícono <span class="material-icons" style="font-size:15px;vertical-align:middle">move_to_inbox</span> de la fila para abrir el documento que vas a recibir; al abrirlo se muestran <b>solo los materiales de ese documento</b> y el panel de escaneo rápido.</span></span></div>
+        <div class="mt-tab" data-tab="confirmados">Confirmados (101)</div>
+        <div class="mt-tab" data-tab="discrepancias">Discrepancias<span class="mt-help" tabindex="0" role="button" aria-label="Ver detalle">?<span class="mt-help-bubble">Unidades y cantidades cuyo resultado difiere de lo esperado en el documento origen 351 (§14.1). Requieren <b>reconciliación</b> antes de cerrar el 101.</span></span></div>
+      </div>
+
+      <!-- Panel: En tránsito (351) -->
+      <div data-tabpanel="transito">
+        <div class="mt-table-wrap">
+          <table class="mt-table">
+            <thead>
+              <tr>
+                <th>Documento 351</th><th class="left">Ubicación destino (contratista)</th><th>Líneas</th>
+                <th>Ítems serializados</th><th>Ítems no serializados</th><th>Valor</th><th>Fecha envío</th><th>Estado</th><th>Acción</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="cell-mono">351-0044213</td>
+                <td class="left">CONT-44 · Contrata 44</td>
+                <td>6</td>
+                <td><b>98</b> <span class="small muted">(45 confirmados)</span></td>
+                <td>2</td>
+                <td class="cell-mono">$3,931.00</td>
+                <td class="cell-mono">03/08</td>
+                <td><span class="mt-chip chip-amber">Parcial · 45/98</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" title="Abrir y confirmar este documento" data-open-modal="m-receipt"><span class="material-icons">move_to_inbox</span></button></td>
+              </tr>
+              <tr>
+                <td class="cell-mono">351-0044198</td>
+                <td class="left">CONT-44 · Contrata 44</td>
+                <td>3</td>
+                <td>—</td>
+                <td>3</td>
+                <td class="cell-mono">$1,240.00</td>
+                <td class="cell-mono">03/08</td>
+                <td><span class="mt-chip chip-grey">Por recibir</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" title="Abrir y confirmar este documento" data-open-modal="m-receipt"><span class="material-icons">move_to_inbox</span></button></td>
+              </tr>
+              <tr>
+                <td class="cell-mono">351-0044180</td>
+                <td class="left">CONT-12 · Contrata 12</td>
+                <td>2</td>
+                <td><b>12</b> <span class="mt-tag r">-R</span></td>
+                <td>—</td>
+                <td class="cell-mono">$980.00</td>
+                <td class="cell-mono">02/08</td>
+                <td><span class="mt-chip chip-grey">Por recibir</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" title="Abrir y confirmar este documento" data-open-modal="m-receipt"><span class="material-icons">move_to_inbox</span></button></td>
+              </tr>
+              <tr>
+                <td class="cell-mono">351-0044150</td>
+                <td class="left">CONT-44 · Contrata 44</td>
+                <td>4</td>
+                <td><b>24</b></td>
+                <td>1</td>
+                <td class="cell-mono">$1,860.00</td>
+                <td class="cell-mono">02/08</td>
+                <td><span class="mt-chip chip-grey">Por recibir</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" title="Abrir y confirmar este documento" data-open-modal="m-receipt"><span class="material-icons">move_to_inbox</span></button></td>
+              </tr>
+              <tr>
+                <td class="cell-mono">351-0044131</td>
+                <td class="left">CONT-08 · Tercero CP-08</td>
+                <td>1</td>
+                <td><b>6</b></td>
+                <td>—</td>
+                <td class="cell-mono">$420.00</td>
+                <td class="cell-mono">01/08</td>
+                <td><span class="mt-chip chip-grey">Por recibir</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" title="Abrir y confirmar este documento" data-open-modal="m-receipt"><span class="material-icons">move_to_inbox</span></button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="mt-paginator">
+          <span>Filas por página: 25</span>
+          <span>1 – 5 de 5</span>
+          <span class="material-icons">first_page</span><span class="material-icons">chevron_left</span>
+          <span class="material-icons">chevron_right</span><span class="material-icons">last_page</span>
+        </div>
+      </div>
+
+      <!-- Panel: Confirmados (101) -->
+      <div data-tabpanel="confirmados" style="display:none">
+        <div class="mt-table-wrap">
+          <table class="mt-table">
+            <thead>
+              <tr><th>Documento 101</th><th>Ref. 351</th><th class="left">Ubicación destino</th><th>Ítems confirmados</th><th>Tipo</th><th>Valor</th><th>Confirmado</th><th>Estado</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="cell-mono">101-0098120</td><td class="cell-mono">351-0044120</td><td class="left">CONT-44 · Contrata 44</td><td>36</td><td><span class="mt-chip chip-green">Total</span></td><td class="cell-mono">$2,410.00</td><td class="cell-mono">03/08 15:20</td><td><span class="mt-chip chip-green">Confirmado</span></td></tr>
+              <tr><td class="cell-mono">101-0098118</td><td class="cell-mono">351-0044118</td><td class="left">CONT-44 · Contrata 44</td><td>18</td><td><span class="mt-chip chip-green">Total</span></td><td class="cell-mono">$1,180.00</td><td class="cell-mono">03/08 14:02</td><td><span class="mt-chip chip-green">Confirmado</span></td></tr>
+              <tr><td class="cell-mono">101-0098090</td><td class="cell-mono">351-0044090</td><td class="left">CONT-12 · Contrata 12</td><td>22 <span class="small muted">de 25</span></td><td><span class="mt-chip chip-amber">Parcial</span></td><td class="cell-mono">$1,640.00</td><td class="cell-mono">02/08 11:10</td><td><span class="mt-chip chip-amber">Parcial</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Panel: Discrepancias -->
+      <div data-tabpanel="discrepancias" style="display:none">
+        <div class="mt-table-wrap">
+          <table class="mt-table">
+            <thead>
+              <tr><th>Documento</th><th class="left">Material</th><th class="left">Esperado</th><th class="left">Recibido</th><th class="left">Diferencia</th><th class="left">Motivo</th><th>Estado</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="cell-mono">351-0044213</td><td class="left">Extender · <span class="cell-mono">SN-EXT-4418</span></td><td class="left cell-mono">1 UND</td><td class="left cell-mono">0 UND</td><td class="left cell-mono">−1 UND</td><td class="left">No llegó en la caja</td><td><span class="mt-chip chip-amber">Para reconciliación</span></td></tr>
+              <tr><td class="cell-mono">351-0044213</td><td class="left">Cable drop coaxial</td><td class="left cell-mono">1000 FT</td><td class="left cell-mono">800 FT</td><td class="left cell-mono">−200 FT</td><td class="left">Bobina dañada en transporte</td><td><span class="mt-chip chip-amber">Para reconciliación</span></td></tr>
+              <tr><td class="cell-mono">351-0044090</td><td class="left">HFC CPE · MAC</td><td class="left cell-mono">A1:B2:C3:D4:E5</td><td class="left cell-mono">A1:B2:C3:D4:FF</td><td class="left">Serial / MAC no coincide</td><td class="left">Etiqueta ilegible</td><td><span class="mt-chip chip-amber">Para reconciliación</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ================= MODAL: Confirmar recepción del documento ================= -->
+<div class="mt-modal-overlay" id="m-receipt">
+  <div class="mt-modal lg rcp-modal" data-scan-scope data-scan-mode="inmediato" data-scan-active="pendientes">
+    <div class="mt-modal-head">
+      <span class="material-icons">move_to_inbox</span><h3>Confirmar recepción</h3><span class="mt-help" tabindex="0" role="button" aria-label="Ver detalle">?<span class="mt-help-bubble start">No es posible confirmar ítems <b>no incluidos</b> en el documento origen 351 (§14.1). Al generar el 101 <b>parcial</b>: lo recibido pasa al contratista, lo faltante sigue <b>in transit</b> y las discrepancias van a reconciliación.<span class="mt-help-sep"></span>Un serial <b>fuera del documento</b> se trata como <b>una discrepancia más</b>: aparece en la misma lista, en la vista <b>Con discrepancia</b>, distinguido por su estado. Las observaciones se registran <b>por unidad</b> y quedan visibles para la reconciliación (§11.5.6).<span class="mt-help-sep"></span>Los cables transferidos en <b>ROL</b> se convierten y muestran en <b>FT/MT</b> según el factor de conversión del material (RF 1.2.4).</span></span>
+      <span class="mt-chip chip-indigo" style="margin-left:4px">Documento 351-0044213</span>
+      <button class="mt-icon-btn mt-modal-close" data-close-modal><span class="material-icons">close</span></button>
+    </div>
+    <div class="mt-modal-body">
+
+      <!-- ===== Info del documento: hace scroll junto con el resto ===== -->
+      <div class="rcp-docinfo">
+        <span class="rcp-di"><span class="material-icons">description</span> Doc. 351 <b>351-0044213</b></span>
+        <span class="rcp-di"><span class="material-icons">warehouse</span> Origen <b>Main WH · WH-PAN-01</b></span>
+        <span class="rcp-di"><span class="material-icons">place</span> Destino <b>CONT-44 · Contrata 44</b></span>
+      </div>
+
+      <!-- ===== Sección de escaneo: se queda fija (sticky) al llegar arriba ===== -->
+      <div class="rcp-sticky">
+      <div class="rcp-scanrow">
+        <div class="rcp-scan-col">
+          <div class="mt-scan-big">
+            <button class="rcp-btn-cam" type="button" title="Escanear con cámara"><span class="material-icons">qr_code_scanner</span></button>
+            <input data-scan-input placeholder="Escanea o teclea el serial / MAC y presiona Enter…" autocomplete="off">
+            <span class="mt-chip chip-indigo" title="Confirmados / total del documento"><b data-scan-conf>0</b>&nbsp;/&nbsp;<span data-scan-total>0</span></span>
+          </div>
+
+          <div class="rcp-avance" style="margin-top:12px">
+            <span class="small muted">Avance</span>
+            <div class="mt-progress determinate" style="flex:1"><span data-scan-bar style="position:absolute;left:0;top:0;height:100%;width:0%;background:var(--primary);display:block"></span></div>
+            <span class="small muted"><b data-scan-pct>0%</b></span>
+          </div>
+
+          <div class="mt-counters" style="margin-top:10px">
+            <span class="mt-chip chip-green"><span class="material-icons">check_circle</span> Confirmados: <b data-scan-conf>0</b></span>
+            <span class="mt-chip chip-grey">Pendientes: <b data-scan-pend>0</b></span>
+            <span class="mt-chip chip-amber"><span class="material-icons">error</span> Discrepancia: <b data-scan-disc>0</b></span>
+          </div>
+        </div>
+        <div class="rcp-camara" title="Vista de cámara (demostrativa)">
+          <span class="material-icons">photo_camera</span>
+          <span class="rcp-cam-txt">La cámara<br>aparecerá aquí</span>
+        </div>
+      </div>
+      </div>
+
+      <!-- Filtros de la lista -->
+      <div class="mt-section-title" style="align-items:center"><span class="material-icons">list_alt</span> Unidades serializadas del documento <span style="flex:1"></span>
+        <span class="small muted">Mostrando <b data-scan-shown>0</b> de <b data-scan-shown-total>0</b> <span data-scan-shown-label>unidades</span></span>
+      </div>
+      <div class="mt-filter-bar" style="margin-bottom:10px">
+        <div class="mt-seg">
+          <button type="button" data-scan-filter="pendientes" class="active" title="Unidades del documento que aún NO se han escaneado. Es la vista de trabajo: la lista se va vaciando conforme escaneas.">Pendientes</button>
+          <button type="button" data-scan-filter="confirmados" title="Unidades ya escaneadas cuyo serial/MAC coincide con el documento. Entran al 101 y pasan al stock del contratista.">Confirmados</button>
+          <button type="button" data-scan-filter="discrepancia" title="Unidades faltantes o que no coinciden con lo esperado, MÁS los seriales/MAC escaneados que no pertenecen a este documento 351 (rechazados §14.1). Ninguna se confirma: todas van a reconciliación (§11.5.6).">Con discrepancia</button>
+          <button type="button" data-scan-filter="todos" title="Todo sin filtrar: pendientes, confirmadas, con discrepancia y fuera del documento.">Todos</button>
+        </div>
+        <div class="mt-field grow"><span class="material-icons">search</span><input data-scan-search placeholder="Buscar unidad por serial / MAC o material…" autocomplete="off"></div>
+      </div>
+
+      <!-- Lista de unidades del documento -->
+      <div data-scan-units>
+      <div class="mt-table-wrap" style="max-height:320px; overflow-y:auto">
+        <table class="mt-table">
+          <thead>
+            <tr><th>#</th><th class="left">Material</th><th>Tipo ID</th><th class="left">Serial / MAC</th><th>Valor</th><th>Estado</th><th>Acción</th></tr>
+          </thead>
+          <tbody>
+              <tr data-serial="SN-ONT-9001" data-material="FTTH ONT" data-scan-state="confirmado">
+                <td class="cell-mono">001</td>
+                <td class="left">FTTH ONT <span class="mt-tag">MAT-100231</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-ONT-9001</td>
+                <td class="cell-mono">$48.00</td>
+                <td><span class="mt-chip chip-green" data-scan-chip><span class="material-icons">check_circle</span> Confirmado</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-ONT-9002" data-material="FTTH ONT" data-scan-state="confirmado">
+                <td class="cell-mono">002</td>
+                <td class="left">FTTH ONT <span class="mt-tag">MAT-100231</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-ONT-9002</td>
+                <td class="cell-mono">$48.00</td>
+                <td><span class="mt-chip chip-green" data-scan-chip><span class="material-icons">check_circle</span> Confirmado</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-ONT-9003" data-material="FTTH ONT" data-scan-state="confirmado">
+                <td class="cell-mono">003</td>
+                <td class="left">FTTH ONT <span class="mt-tag">MAT-100231</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-ONT-9003</td>
+                <td class="cell-mono">$48.00</td>
+                <td><span class="mt-chip chip-green" data-scan-chip><span class="material-icons">check_circle</span> Confirmado</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-ONT-9004" data-material="FTTH ONT" data-scan-state="confirmado">
+                <td class="cell-mono">004</td>
+                <td class="left">FTTH ONT <span class="mt-tag">MAT-100231</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-ONT-9004</td>
+                <td class="cell-mono">$48.00</td>
+                <td><span class="mt-chip chip-green" data-scan-chip><span class="material-icons">check_circle</span> Confirmado</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-ONT-9005" data-material="FTTH ONT" data-scan-state="confirmado">
+                <td class="cell-mono">005</td>
+                <td class="left">FTTH ONT <span class="mt-tag">MAT-100231</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-ONT-9005</td>
+                <td class="cell-mono">$48.00</td>
+                <td><span class="mt-chip chip-green" data-scan-chip><span class="material-icons">check_circle</span> Confirmado</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-ONT-9006" data-material="FTTH ONT" data-scan-state="confirmado">
+                <td class="cell-mono">006</td>
+                <td class="left">FTTH ONT <span class="mt-tag">MAT-100231</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-ONT-9006</td>
+                <td class="cell-mono">$48.00</td>
+                <td><span class="mt-chip chip-green" data-scan-chip><span class="material-icons">check_circle</span> Confirmado</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-ONT-9007" data-material="FTTH ONT" data-scan-state="confirmado">
+                <td class="cell-mono">007</td>
+                <td class="left">FTTH ONT <span class="mt-tag">MAT-100231</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-ONT-9007</td>
+                <td class="cell-mono">$48.00</td>
+                <td><span class="mt-chip chip-green" data-scan-chip><span class="material-icons">check_circle</span> Confirmado</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-ONT-9008" data-material="FTTH ONT" data-scan-state="confirmado">
+                <td class="cell-mono">008</td>
+                <td class="left">FTTH ONT <span class="mt-tag">MAT-100231</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-ONT-9008</td>
+                <td class="cell-mono">$48.00</td>
+                <td><span class="mt-chip chip-green" data-scan-chip><span class="material-icons">check_circle</span> Confirmado</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-ONT-9009" data-material="FTTH ONT" data-scan-state="confirmado">
+                <td class="cell-mono">009</td>
+                <td class="left">FTTH ONT <span class="mt-tag">MAT-100231</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-ONT-9009</td>
+                <td class="cell-mono">$48.00</td>
+                <td><span class="mt-chip chip-green" data-scan-chip><span class="material-icons">check_circle</span> Confirmado</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-ONT-9010" data-material="FTTH ONT" data-scan-state="confirmado">
+                <td class="cell-mono">010</td>
+                <td class="left">FTTH ONT <span class="mt-tag">MAT-100231</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-ONT-9010</td>
+                <td class="cell-mono">$48.00</td>
+                <td><span class="mt-chip chip-green" data-scan-chip><span class="material-icons">check_circle</span> Confirmado</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-ONT-9011" data-material="FTTH ONT" data-scan-state="confirmado">
+                <td class="cell-mono">011</td>
+                <td class="left">FTTH ONT <span class="mt-tag">MAT-100231</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-ONT-9011</td>
+                <td class="cell-mono">$48.00</td>
+                <td><span class="mt-chip chip-green" data-scan-chip><span class="material-icons">check_circle</span> Confirmado</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-ONT-9012" data-material="FTTH ONT" data-scan-state="confirmado">
+                <td class="cell-mono">012</td>
+                <td class="left">FTTH ONT <span class="mt-tag">MAT-100231</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-ONT-9012</td>
+                <td class="cell-mono">$48.00</td>
+                <td><span class="mt-chip chip-green" data-scan-chip><span class="material-icons">check_circle</span> Confirmado</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-ONT-9013" data-material="FTTH ONT" data-scan-state="confirmado">
+                <td class="cell-mono">013</td>
+                <td class="left">FTTH ONT <span class="mt-tag">MAT-100231</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-ONT-9013</td>
+                <td class="cell-mono">$48.00</td>
+                <td><span class="mt-chip chip-green" data-scan-chip><span class="material-icons">check_circle</span> Confirmado</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-ONT-9014" data-material="FTTH ONT" data-scan-state="confirmado">
+                <td class="cell-mono">014</td>
+                <td class="left">FTTH ONT <span class="mt-tag">MAT-100231</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-ONT-9014</td>
+                <td class="cell-mono">$48.00</td>
+                <td><span class="mt-chip chip-green" data-scan-chip><span class="material-icons">check_circle</span> Confirmado</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-ONT-9015" data-material="FTTH ONT" data-scan-state="confirmado">
+                <td class="cell-mono">015</td>
+                <td class="left">FTTH ONT <span class="mt-tag">MAT-100231</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-ONT-9015</td>
+                <td class="cell-mono">$48.00</td>
+                <td><span class="mt-chip chip-green" data-scan-chip><span class="material-icons">check_circle</span> Confirmado</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-ONT-9016" data-material="FTTH ONT" data-scan-state="confirmado">
+                <td class="cell-mono">016</td>
+                <td class="left">FTTH ONT <span class="mt-tag">MAT-100231</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-ONT-9016</td>
+                <td class="cell-mono">$48.00</td>
+                <td><span class="mt-chip chip-green" data-scan-chip><span class="material-icons">check_circle</span> Confirmado</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-ONT-9017" data-material="FTTH ONT" data-scan-state="confirmado">
+                <td class="cell-mono">017</td>
+                <td class="left">FTTH ONT <span class="mt-tag">MAT-100231</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-ONT-9017</td>
+                <td class="cell-mono">$48.00</td>
+                <td><span class="mt-chip chip-green" data-scan-chip><span class="material-icons">check_circle</span> Confirmado</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-ONT-9018" data-material="FTTH ONT" data-scan-state="confirmado">
+                <td class="cell-mono">018</td>
+                <td class="left">FTTH ONT <span class="mt-tag">MAT-100231</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-ONT-9018</td>
+                <td class="cell-mono">$48.00</td>
+                <td><span class="mt-chip chip-green" data-scan-chip><span class="material-icons">check_circle</span> Confirmado</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-ONT-9019" data-material="FTTH ONT" data-scan-state="confirmado">
+                <td class="cell-mono">019</td>
+                <td class="left">FTTH ONT <span class="mt-tag">MAT-100231</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-ONT-9019</td>
+                <td class="cell-mono">$48.00</td>
+                <td><span class="mt-chip chip-green" data-scan-chip><span class="material-icons">check_circle</span> Confirmado</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-ONT-9020" data-material="FTTH ONT" data-scan-state="confirmado">
+                <td class="cell-mono">020</td>
+                <td class="left">FTTH ONT <span class="mt-tag">MAT-100231</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-ONT-9020</td>
+                <td class="cell-mono">$48.00</td>
+                <td><span class="mt-chip chip-green" data-scan-chip><span class="material-icons">check_circle</span> Confirmado</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-ONT-9021" data-material="FTTH ONT" data-scan-state="confirmado">
+                <td class="cell-mono">021</td>
+                <td class="left">FTTH ONT <span class="mt-tag">MAT-100231</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-ONT-9021</td>
+                <td class="cell-mono">$48.00</td>
+                <td><span class="mt-chip chip-green" data-scan-chip><span class="material-icons">check_circle</span> Confirmado</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-ONT-9022" data-material="FTTH ONT" data-scan-state="confirmado">
+                <td class="cell-mono">022</td>
+                <td class="left">FTTH ONT <span class="mt-tag">MAT-100231</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-ONT-9022</td>
+                <td class="cell-mono">$48.00</td>
+                <td><span class="mt-chip chip-green" data-scan-chip><span class="material-icons">check_circle</span> Confirmado</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-ONT-9023" data-material="FTTH ONT" data-scan-state="confirmado">
+                <td class="cell-mono">023</td>
+                <td class="left">FTTH ONT <span class="mt-tag">MAT-100231</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-ONT-9023</td>
+                <td class="cell-mono">$48.00</td>
+                <td><span class="mt-chip chip-green" data-scan-chip><span class="material-icons">check_circle</span> Confirmado</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-ONT-9024" data-material="FTTH ONT" data-scan-state="confirmado">
+                <td class="cell-mono">024</td>
+                <td class="left">FTTH ONT <span class="mt-tag">MAT-100231</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-ONT-9024</td>
+                <td class="cell-mono">$48.00</td>
+                <td><span class="mt-chip chip-green" data-scan-chip><span class="material-icons">check_circle</span> Confirmado</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-ONT-9025" data-material="FTTH ONT" data-scan-state="confirmado">
+                <td class="cell-mono">025</td>
+                <td class="left">FTTH ONT <span class="mt-tag">MAT-100231</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-ONT-9025</td>
+                <td class="cell-mono">$48.00</td>
+                <td><span class="mt-chip chip-green" data-scan-chip><span class="material-icons">check_circle</span> Confirmado</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-ONT-9026" data-material="FTTH ONT" data-scan-state="confirmado">
+                <td class="cell-mono">026</td>
+                <td class="left">FTTH ONT <span class="mt-tag">MAT-100231</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-ONT-9026</td>
+                <td class="cell-mono">$48.00</td>
+                <td><span class="mt-chip chip-green" data-scan-chip><span class="material-icons">check_circle</span> Confirmado</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-ONT-9027" data-material="FTTH ONT" data-scan-state="confirmado">
+                <td class="cell-mono">027</td>
+                <td class="left">FTTH ONT <span class="mt-tag">MAT-100231</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-ONT-9027</td>
+                <td class="cell-mono">$48.00</td>
+                <td><span class="mt-chip chip-green" data-scan-chip><span class="material-icons">check_circle</span> Confirmado</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-ONT-9028" data-material="FTTH ONT" data-scan-state="confirmado">
+                <td class="cell-mono">028</td>
+                <td class="left">FTTH ONT <span class="mt-tag">MAT-100231</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-ONT-9028</td>
+                <td class="cell-mono">$48.00</td>
+                <td><span class="mt-chip chip-green" data-scan-chip><span class="material-icons">check_circle</span> Confirmado</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-ONT-9029" data-material="FTTH ONT" data-scan-state="confirmado">
+                <td class="cell-mono">029</td>
+                <td class="left">FTTH ONT <span class="mt-tag">MAT-100231</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-ONT-9029</td>
+                <td class="cell-mono">$48.00</td>
+                <td><span class="mt-chip chip-green" data-scan-chip><span class="material-icons">check_circle</span> Confirmado</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-ONT-9030" data-material="FTTH ONT" data-scan-state="confirmado">
+                <td class="cell-mono">030</td>
+                <td class="left">FTTH ONT <span class="mt-tag">MAT-100231</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-ONT-9030</td>
+                <td class="cell-mono">$48.00</td>
+                <td><span class="mt-chip chip-green" data-scan-chip><span class="material-icons">check_circle</span> Confirmado</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-ONT-9031" data-material="FTTH ONT" data-scan-state="confirmado">
+                <td class="cell-mono">031</td>
+                <td class="left">FTTH ONT <span class="mt-tag">MAT-100231</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-ONT-9031</td>
+                <td class="cell-mono">$48.00</td>
+                <td><span class="mt-chip chip-green" data-scan-chip><span class="material-icons">check_circle</span> Confirmado</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-ONT-9032" data-material="FTTH ONT" data-scan-state="confirmado">
+                <td class="cell-mono">032</td>
+                <td class="left">FTTH ONT <span class="mt-tag">MAT-100231</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-ONT-9032</td>
+                <td class="cell-mono">$48.00</td>
+                <td><span class="mt-chip chip-green" data-scan-chip><span class="material-icons">check_circle</span> Confirmado</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-ONT-9033" data-material="FTTH ONT" data-scan-state="confirmado">
+                <td class="cell-mono">033</td>
+                <td class="left">FTTH ONT <span class="mt-tag">MAT-100231</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-ONT-9033</td>
+                <td class="cell-mono">$48.00</td>
+                <td><span class="mt-chip chip-green" data-scan-chip><span class="material-icons">check_circle</span> Confirmado</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-ONT-9034" data-material="FTTH ONT" data-scan-state="confirmado">
+                <td class="cell-mono">034</td>
+                <td class="left">FTTH ONT <span class="mt-tag">MAT-100231</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-ONT-9034</td>
+                <td class="cell-mono">$48.00</td>
+                <td><span class="mt-chip chip-green" data-scan-chip><span class="material-icons">check_circle</span> Confirmado</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-ONT-9035" data-material="FTTH ONT" data-scan-state="confirmado">
+                <td class="cell-mono">035</td>
+                <td class="left">FTTH ONT <span class="mt-tag">MAT-100231</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-ONT-9035</td>
+                <td class="cell-mono">$48.00</td>
+                <td><span class="mt-chip chip-green" data-scan-chip><span class="material-icons">check_circle</span> Confirmado</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-ONT-9036" data-material="FTTH ONT" data-scan-state="confirmado">
+                <td class="cell-mono">036</td>
+                <td class="left">FTTH ONT <span class="mt-tag">MAT-100231</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-ONT-9036</td>
+                <td class="cell-mono">$48.00</td>
+                <td><span class="mt-chip chip-green" data-scan-chip><span class="material-icons">check_circle</span> Confirmado</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-ONT-9037" data-material="FTTH ONT" data-scan-state="confirmado">
+                <td class="cell-mono">037</td>
+                <td class="left">FTTH ONT <span class="mt-tag">MAT-100231</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-ONT-9037</td>
+                <td class="cell-mono">$48.00</td>
+                <td><span class="mt-chip chip-green" data-scan-chip><span class="material-icons">check_circle</span> Confirmado</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-ONT-9038" data-material="FTTH ONT" data-scan-state="confirmado">
+                <td class="cell-mono">038</td>
+                <td class="left">FTTH ONT <span class="mt-tag">MAT-100231</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-ONT-9038</td>
+                <td class="cell-mono">$48.00</td>
+                <td><span class="mt-chip chip-green" data-scan-chip><span class="material-icons">check_circle</span> Confirmado</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-ONT-9039" data-material="FTTH ONT" data-scan-state="confirmado">
+                <td class="cell-mono">039</td>
+                <td class="left">FTTH ONT <span class="mt-tag">MAT-100231</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-ONT-9039</td>
+                <td class="cell-mono">$48.00</td>
+                <td><span class="mt-chip chip-green" data-scan-chip><span class="material-icons">check_circle</span> Confirmado</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-ONT-9040" data-material="FTTH ONT" data-scan-state="confirmado">
+                <td class="cell-mono">040</td>
+                <td class="left">FTTH ONT <span class="mt-tag">MAT-100231</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-ONT-9040</td>
+                <td class="cell-mono">$48.00</td>
+                <td><span class="mt-chip chip-green" data-scan-chip><span class="material-icons">check_circle</span> Confirmado</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-RF-2201" data-material="FTTH ONT -R" data-scan-state="pendiente">
+                <td class="cell-mono">041</td>
+                <td class="left">FTTH ONT <span class="mt-tag r">-R</span> <span class="mt-tag">MAT-100231-R</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-RF-2201</td>
+                <td class="cell-mono">$22.00</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-RF-2202" data-material="FTTH ONT -R" data-scan-state="pendiente">
+                <td class="cell-mono">042</td>
+                <td class="left">FTTH ONT <span class="mt-tag r">-R</span> <span class="mt-tag">MAT-100231-R</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-RF-2202</td>
+                <td class="cell-mono">$22.00</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-RF-2203" data-material="FTTH ONT -R" data-scan-state="pendiente">
+                <td class="cell-mono">043</td>
+                <td class="left">FTTH ONT <span class="mt-tag r">-R</span> <span class="mt-tag">MAT-100231-R</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-RF-2203</td>
+                <td class="cell-mono">$22.00</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-RF-2204" data-material="FTTH ONT -R" data-scan-state="pendiente">
+                <td class="cell-mono">044</td>
+                <td class="left">FTTH ONT <span class="mt-tag r">-R</span> <span class="mt-tag">MAT-100231-R</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-RF-2204</td>
+                <td class="cell-mono">$22.00</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-RF-2205" data-material="FTTH ONT -R" data-scan-state="pendiente">
+                <td class="cell-mono">045</td>
+                <td class="left">FTTH ONT <span class="mt-tag r">-R</span> <span class="mt-tag">MAT-100231-R</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-RF-2205</td>
+                <td class="cell-mono">$22.00</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-RF-2206" data-material="FTTH ONT -R" data-scan-state="pendiente">
+                <td class="cell-mono">046</td>
+                <td class="left">FTTH ONT <span class="mt-tag r">-R</span> <span class="mt-tag">MAT-100231-R</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-RF-2206</td>
+                <td class="cell-mono">$22.00</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-RF-2207" data-material="FTTH ONT -R" data-scan-state="pendiente">
+                <td class="cell-mono">047</td>
+                <td class="left">FTTH ONT <span class="mt-tag r">-R</span> <span class="mt-tag">MAT-100231-R</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-RF-2207</td>
+                <td class="cell-mono">$22.00</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-RF-2208" data-material="FTTH ONT -R" data-scan-state="pendiente">
+                <td class="cell-mono">048</td>
+                <td class="left">FTTH ONT <span class="mt-tag r">-R</span> <span class="mt-tag">MAT-100231-R</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-RF-2208</td>
+                <td class="cell-mono">$22.00</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-RF-2209" data-material="FTTH ONT -R" data-scan-state="pendiente">
+                <td class="cell-mono">049</td>
+                <td class="left">FTTH ONT <span class="mt-tag r">-R</span> <span class="mt-tag">MAT-100231-R</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-RF-2209</td>
+                <td class="cell-mono">$22.00</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-RF-2210" data-material="FTTH ONT -R" data-scan-state="pendiente">
+                <td class="cell-mono">050</td>
+                <td class="left">FTTH ONT <span class="mt-tag r">-R</span> <span class="mt-tag">MAT-100231-R</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-RF-2210</td>
+                <td class="cell-mono">$22.00</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="A1:B2:C3:D4:01" data-material="HFC CPE" data-scan-state="confirmado">
+                <td class="cell-mono">051</td>
+                <td class="left">HFC CPE <span class="mt-tag">MAT-100232</span></td>
+                <td>MAC</td>
+                <td class="left cell-mono">A1:B2:C3:D4:01</td>
+                <td class="cell-mono">$36.50</td>
+                <td><span class="mt-chip chip-green" data-scan-chip><span class="material-icons">check_circle</span> Confirmado</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="A1:B2:C3:D4:02" data-material="HFC CPE" data-scan-state="confirmado">
+                <td class="cell-mono">052</td>
+                <td class="left">HFC CPE <span class="mt-tag">MAT-100232</span></td>
+                <td>MAC</td>
+                <td class="left cell-mono">A1:B2:C3:D4:02</td>
+                <td class="cell-mono">$36.50</td>
+                <td><span class="mt-chip chip-green" data-scan-chip><span class="material-icons">check_circle</span> Confirmado</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="A1:B2:C3:D4:03" data-material="HFC CPE" data-scan-state="confirmado">
+                <td class="cell-mono">053</td>
+                <td class="left">HFC CPE <span class="mt-tag">MAT-100232</span></td>
+                <td>MAC</td>
+                <td class="left cell-mono">A1:B2:C3:D4:03</td>
+                <td class="cell-mono">$36.50</td>
+                <td><span class="mt-chip chip-green" data-scan-chip><span class="material-icons">check_circle</span> Confirmado</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="A1:B2:C3:D4:04" data-material="HFC CPE" data-scan-state="confirmado">
+                <td class="cell-mono">054</td>
+                <td class="left">HFC CPE <span class="mt-tag">MAT-100232</span></td>
+                <td>MAC</td>
+                <td class="left cell-mono">A1:B2:C3:D4:04</td>
+                <td class="cell-mono">$36.50</td>
+                <td><span class="mt-chip chip-green" data-scan-chip><span class="material-icons">check_circle</span> Confirmado</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="A1:B2:C3:D4:05" data-material="HFC CPE" data-scan-state="confirmado">
+                <td class="cell-mono">055</td>
+                <td class="left">HFC CPE <span class="mt-tag">MAT-100232</span></td>
+                <td>MAC</td>
+                <td class="left cell-mono">A1:B2:C3:D4:05</td>
+                <td class="cell-mono">$36.50</td>
+                <td><span class="mt-chip chip-green" data-scan-chip><span class="material-icons">check_circle</span> Confirmado</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="A1:B2:C3:D4:06" data-material="HFC CPE" data-scan-state="pendiente">
+                <td class="cell-mono">056</td>
+                <td class="left">HFC CPE <span class="mt-tag">MAT-100232</span></td>
+                <td>MAC</td>
+                <td class="left cell-mono">A1:B2:C3:D4:06</td>
+                <td class="cell-mono">$36.50</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="A1:B2:C3:D4:07" data-material="HFC CPE" data-scan-state="pendiente">
+                <td class="cell-mono">057</td>
+                <td class="left">HFC CPE <span class="mt-tag">MAT-100232</span></td>
+                <td>MAC</td>
+                <td class="left cell-mono">A1:B2:C3:D4:07</td>
+                <td class="cell-mono">$36.50</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="A1:B2:C3:D4:08" data-material="HFC CPE" data-scan-state="pendiente">
+                <td class="cell-mono">058</td>
+                <td class="left">HFC CPE <span class="mt-tag">MAT-100232</span></td>
+                <td>MAC</td>
+                <td class="left cell-mono">A1:B2:C3:D4:08</td>
+                <td class="cell-mono">$36.50</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="A1:B2:C3:D4:09" data-material="HFC CPE" data-scan-state="pendiente">
+                <td class="cell-mono">059</td>
+                <td class="left">HFC CPE <span class="mt-tag">MAT-100232</span></td>
+                <td>MAC</td>
+                <td class="left cell-mono">A1:B2:C3:D4:09</td>
+                <td class="cell-mono">$36.50</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="A1:B2:C3:D4:10" data-material="HFC CPE" data-scan-state="pendiente">
+                <td class="cell-mono">060</td>
+                <td class="left">HFC CPE <span class="mt-tag">MAT-100232</span></td>
+                <td>MAC</td>
+                <td class="left cell-mono">A1:B2:C3:D4:10</td>
+                <td class="cell-mono">$36.50</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="A1:B2:C3:D4:11" data-material="HFC CPE" data-scan-state="pendiente">
+                <td class="cell-mono">061</td>
+                <td class="left">HFC CPE <span class="mt-tag">MAT-100232</span></td>
+                <td>MAC</td>
+                <td class="left cell-mono">A1:B2:C3:D4:11</td>
+                <td class="cell-mono">$36.50</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="A1:B2:C3:D4:12" data-material="HFC CPE" data-scan-state="pendiente">
+                <td class="cell-mono">062</td>
+                <td class="left">HFC CPE <span class="mt-tag">MAT-100232</span></td>
+                <td>MAC</td>
+                <td class="left cell-mono">A1:B2:C3:D4:12</td>
+                <td class="cell-mono">$36.50</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="A1:B2:C3:D4:13" data-material="HFC CPE" data-scan-state="pendiente">
+                <td class="cell-mono">063</td>
+                <td class="left">HFC CPE <span class="mt-tag">MAT-100232</span></td>
+                <td>MAC</td>
+                <td class="left cell-mono">A1:B2:C3:D4:13</td>
+                <td class="cell-mono">$36.50</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="A1:B2:C3:D4:14" data-material="HFC CPE" data-scan-state="pendiente">
+                <td class="cell-mono">064</td>
+                <td class="left">HFC CPE <span class="mt-tag">MAT-100232</span></td>
+                <td>MAC</td>
+                <td class="left cell-mono">A1:B2:C3:D4:14</td>
+                <td class="cell-mono">$36.50</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="A1:B2:C3:D4:15" data-material="HFC CPE" data-scan-state="pendiente">
+                <td class="cell-mono">065</td>
+                <td class="left">HFC CPE <span class="mt-tag">MAT-100232</span></td>
+                <td>MAC</td>
+                <td class="left cell-mono">A1:B2:C3:D4:15</td>
+                <td class="cell-mono">$36.50</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="A1:B2:C3:D4:16" data-material="HFC CPE" data-scan-state="pendiente">
+                <td class="cell-mono">066</td>
+                <td class="left">HFC CPE <span class="mt-tag">MAT-100232</span></td>
+                <td>MAC</td>
+                <td class="left cell-mono">A1:B2:C3:D4:16</td>
+                <td class="cell-mono">$36.50</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="A1:B2:C3:D4:17" data-material="HFC CPE" data-scan-state="pendiente">
+                <td class="cell-mono">067</td>
+                <td class="left">HFC CPE <span class="mt-tag">MAT-100232</span></td>
+                <td>MAC</td>
+                <td class="left cell-mono">A1:B2:C3:D4:17</td>
+                <td class="cell-mono">$36.50</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="A1:B2:C3:D4:18" data-material="HFC CPE" data-scan-state="pendiente">
+                <td class="cell-mono">068</td>
+                <td class="left">HFC CPE <span class="mt-tag">MAT-100232</span></td>
+                <td>MAC</td>
+                <td class="left cell-mono">A1:B2:C3:D4:18</td>
+                <td class="cell-mono">$36.50</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="A1:B2:C3:D4:19" data-material="HFC CPE" data-scan-state="pendiente">
+                <td class="cell-mono">069</td>
+                <td class="left">HFC CPE <span class="mt-tag">MAT-100232</span></td>
+                <td>MAC</td>
+                <td class="left cell-mono">A1:B2:C3:D4:19</td>
+                <td class="cell-mono">$36.50</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="A1:B2:C3:D4:20" data-material="HFC CPE" data-scan-state="pendiente">
+                <td class="cell-mono">070</td>
+                <td class="left">HFC CPE <span class="mt-tag">MAT-100232</span></td>
+                <td>MAC</td>
+                <td class="left cell-mono">A1:B2:C3:D4:20</td>
+                <td class="cell-mono">$36.50</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="A1:B2:C3:D4:21" data-material="HFC CPE" data-scan-state="pendiente">
+                <td class="cell-mono">071</td>
+                <td class="left">HFC CPE <span class="mt-tag">MAT-100232</span></td>
+                <td>MAC</td>
+                <td class="left cell-mono">A1:B2:C3:D4:21</td>
+                <td class="cell-mono">$36.50</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="A1:B2:C3:D4:22" data-material="HFC CPE" data-scan-state="pendiente">
+                <td class="cell-mono">072</td>
+                <td class="left">HFC CPE <span class="mt-tag">MAT-100232</span></td>
+                <td>MAC</td>
+                <td class="left cell-mono">A1:B2:C3:D4:22</td>
+                <td class="cell-mono">$36.50</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="A1:B2:C3:D4:23" data-material="HFC CPE" data-scan-state="pendiente">
+                <td class="cell-mono">073</td>
+                <td class="left">HFC CPE <span class="mt-tag">MAT-100232</span></td>
+                <td>MAC</td>
+                <td class="left cell-mono">A1:B2:C3:D4:23</td>
+                <td class="cell-mono">$36.50</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="A1:B2:C3:D4:24" data-material="HFC CPE" data-scan-state="pendiente">
+                <td class="cell-mono">074</td>
+                <td class="left">HFC CPE <span class="mt-tag">MAT-100232</span></td>
+                <td>MAC</td>
+                <td class="left cell-mono">A1:B2:C3:D4:24</td>
+                <td class="cell-mono">$36.50</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="A1:B2:C3:D4:25" data-material="HFC CPE" data-scan-state="pendiente">
+                <td class="cell-mono">075</td>
+                <td class="left">HFC CPE <span class="mt-tag">MAT-100232</span></td>
+                <td>MAC</td>
+                <td class="left cell-mono">A1:B2:C3:D4:25</td>
+                <td class="cell-mono">$36.50</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="A1:B2:C3:D4:26" data-material="HFC CPE" data-scan-state="pendiente">
+                <td class="cell-mono">076</td>
+                <td class="left">HFC CPE <span class="mt-tag">MAT-100232</span></td>
+                <td>MAC</td>
+                <td class="left cell-mono">A1:B2:C3:D4:26</td>
+                <td class="cell-mono">$36.50</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="A1:B2:C3:D4:27" data-material="HFC CPE" data-scan-state="pendiente">
+                <td class="cell-mono">077</td>
+                <td class="left">HFC CPE <span class="mt-tag">MAT-100232</span></td>
+                <td>MAC</td>
+                <td class="left cell-mono">A1:B2:C3:D4:27</td>
+                <td class="cell-mono">$36.50</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="A1:B2:C3:D4:28" data-material="HFC CPE" data-scan-state="pendiente">
+                <td class="cell-mono">078</td>
+                <td class="left">HFC CPE <span class="mt-tag">MAT-100232</span></td>
+                <td>MAC</td>
+                <td class="left cell-mono">A1:B2:C3:D4:28</td>
+                <td class="cell-mono">$36.50</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="A1:B2:C3:D4:29" data-material="HFC CPE" data-scan-state="pendiente">
+                <td class="cell-mono">079</td>
+                <td class="left">HFC CPE <span class="mt-tag">MAT-100232</span></td>
+                <td>MAC</td>
+                <td class="left cell-mono">A1:B2:C3:D4:29</td>
+                <td class="cell-mono">$36.50</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="A1:B2:C3:D4:30" data-material="HFC CPE" data-scan-state="pendiente">
+                <td class="cell-mono">080</td>
+                <td class="left">HFC CPE <span class="mt-tag">MAT-100232</span></td>
+                <td>MAC</td>
+                <td class="left cell-mono">A1:B2:C3:D4:30</td>
+                <td class="cell-mono">$36.50</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-EXT-4401" data-material="Extender" data-scan-state="pendiente">
+                <td class="cell-mono">081</td>
+                <td class="left">Extender <span class="mt-tag">MAT-100238</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-EXT-4401</td>
+                <td class="cell-mono">$30.00</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-EXT-4402" data-material="Extender" data-scan-state="pendiente">
+                <td class="cell-mono">082</td>
+                <td class="left">Extender <span class="mt-tag">MAT-100238</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-EXT-4402</td>
+                <td class="cell-mono">$30.00</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-EXT-4403" data-material="Extender" data-scan-state="pendiente">
+                <td class="cell-mono">083</td>
+                <td class="left">Extender <span class="mt-tag">MAT-100238</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-EXT-4403</td>
+                <td class="cell-mono">$30.00</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-EXT-4404" data-material="Extender" data-scan-state="pendiente">
+                <td class="cell-mono">084</td>
+                <td class="left">Extender <span class="mt-tag">MAT-100238</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-EXT-4404</td>
+                <td class="cell-mono">$30.00</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-EXT-4405" data-material="Extender" data-scan-state="pendiente">
+                <td class="cell-mono">085</td>
+                <td class="left">Extender <span class="mt-tag">MAT-100238</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-EXT-4405</td>
+                <td class="cell-mono">$30.00</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-EXT-4406" data-material="Extender" data-scan-state="pendiente">
+                <td class="cell-mono">086</td>
+                <td class="left">Extender <span class="mt-tag">MAT-100238</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-EXT-4406</td>
+                <td class="cell-mono">$30.00</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-EXT-4407" data-material="Extender" data-scan-state="pendiente">
+                <td class="cell-mono">087</td>
+                <td class="left">Extender <span class="mt-tag">MAT-100238</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-EXT-4407</td>
+                <td class="cell-mono">$30.00</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-EXT-4408" data-material="Extender" data-scan-state="pendiente">
+                <td class="cell-mono">088</td>
+                <td class="left">Extender <span class="mt-tag">MAT-100238</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-EXT-4408</td>
+                <td class="cell-mono">$30.00</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-EXT-4409" data-material="Extender" data-scan-state="pendiente">
+                <td class="cell-mono">089</td>
+                <td class="left">Extender <span class="mt-tag">MAT-100238</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-EXT-4409</td>
+                <td class="cell-mono">$30.00</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-EXT-4410" data-material="Extender" data-scan-state="pendiente">
+                <td class="cell-mono">090</td>
+                <td class="left">Extender <span class="mt-tag">MAT-100238</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-EXT-4410</td>
+                <td class="cell-mono">$30.00</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-EXT-4411" data-material="Extender" data-scan-state="pendiente">
+                <td class="cell-mono">091</td>
+                <td class="left">Extender <span class="mt-tag">MAT-100238</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-EXT-4411</td>
+                <td class="cell-mono">$30.00</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-EXT-4412" data-material="Extender" data-scan-state="pendiente">
+                <td class="cell-mono">092</td>
+                <td class="left">Extender <span class="mt-tag">MAT-100238</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-EXT-4412</td>
+                <td class="cell-mono">$30.00</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-EXT-4413" data-material="Extender" data-scan-state="pendiente">
+                <td class="cell-mono">093</td>
+                <td class="left">Extender <span class="mt-tag">MAT-100238</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-EXT-4413</td>
+                <td class="cell-mono">$30.00</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-EXT-4414" data-material="Extender" data-scan-state="pendiente">
+                <td class="cell-mono">094</td>
+                <td class="left">Extender <span class="mt-tag">MAT-100238</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-EXT-4414</td>
+                <td class="cell-mono">$30.00</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-EXT-4415" data-material="Extender" data-scan-state="pendiente">
+                <td class="cell-mono">095</td>
+                <td class="left">Extender <span class="mt-tag">MAT-100238</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-EXT-4415</td>
+                <td class="cell-mono">$30.00</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-EXT-4416" data-material="Extender" data-scan-state="pendiente">
+                <td class="cell-mono">096</td>
+                <td class="left">Extender <span class="mt-tag">MAT-100238</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-EXT-4416</td>
+                <td class="cell-mono">$30.00</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-EXT-4417" data-material="Extender" data-scan-state="pendiente">
+                <td class="cell-mono">097</td>
+                <td class="left">Extender <span class="mt-tag">MAT-100238</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-EXT-4417</td>
+                <td class="cell-mono">$30.00</td>
+                <td><span class="mt-chip chip-grey" data-scan-chip>Pendiente</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-serial="SN-EXT-4418" data-material="Extender" data-scan-state="discrepancia" data-nota="No llegó en el envío: la caja venía sellada pero incompleta">
+                <td class="cell-mono">098</td>
+                <td class="left">Extender <span class="mt-tag">MAT-100238</span></td>
+                <td>Serial</td>
+                <td class="left cell-mono">SN-EXT-4418</td>
+                <td class="cell-mono">$30.00</td>
+                <td><span class="mt-chip chip-amber" data-scan-chip><span class="material-icons">error</span> Discrepancia</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" data-scan-line="m-line-scan" title="Escanear serial/MAC"><span class="material-icons">qr_code_scanner</span></button><button class="mt-icon-btn" data-scan-mark="discrepancia" title="Marcar / quitar discrepancia"><span class="material-icons">report_problem</span></button></td>
+              </tr>
+              <tr data-out-serial="SN-ONT-7412" data-out-count="1" data-out-hora="09:14" class="u-fuera">
+                <td class="cell-mono">—</td>
+                <td class="left">No pertenece al documento 351<div class="small muted">Serial / MAC no incluido en el documento de origen</div></td>
+                <td>—</td>
+                <td class="left cell-mono">SN-ONT-7412<div class="small muted" data-out-meta>×1 intento · 09:14</div></td>
+                <td class="cell-mono">—</td>
+                <td><span class="mt-chip chip-amber" title="No pertenece a este documento 351: el sistema lo rechaza y no puede confirmarse (§14.1). Queda como evidencia y va a reconciliación."><span class="material-icons">error</span> Discrepancia</span><div class="u-fuera-sub">Fuera del documento</div></td>
+                <td class="row-actions"><button class="mt-icon-btn warn" data-scan-out-remove title="Quitar SN-ONT-7412 de la lista (por ejemplo, si fue un error de lectura del escáner)"><span class="material-icons">delete</span></button></td>
+              </tr>
+          </tbody>
+        </table>
+        <div class="mt-empty" data-scan-empty style="display:none"><span class="material-icons">inbox</span><p>No hay unidades en esta vista.</p></div>
+      </div>
+      </div>
+
+      <!-- No serializados -->
+      <div class="mt-section-title" style="margin-top:18px"><span class="material-icons">category</span> Materiales no serializados del documento</div>
+      <div class="mt-table-wrap rcp-matlist">
+        <table class="mt-table">
+          <thead><tr><th class="left">Material</th><th>Esperado (UOM operativa)</th><th class="left">Cantidad recibida</th><th>Valor</th><th>Estado</th></tr></thead>
+          <tbody data-mat-extra-body>
+            <tr>
+              <td class="left"><div class="rcp-mat-nom">Cable drop coaxial</div><span class="mt-tag">MAT-500012</span></td>
+              <td><b>1 000 FT</b><br><span class="small muted cell-mono">1 ROL ×1 000 FT/ROL</span></td>
+              <td class="left"><span class="mt-field rcp-qty"><input type="number" value="800" data-expected="1000" data-uom="FT"><span class="small muted">FT</span></span></td>
+              <td class="cell-mono">$120.00</td>
+              <td><span class="mt-chip" data-qty-status></span></td>
+            </tr>
+            <tr>
+              <td class="left"><div class="rcp-mat-nom">Conector SC/APC</div><span class="mt-tag">MAT-500044</span></td>
+              <td><b>200 UND</b><br><span class="small muted cell-mono">sin conversión</span></td>
+              <td class="left"><span class="mt-field rcp-qty"><input type="number" value="200" data-expected="200" data-uom="UND"><span class="small muted">UND</span></span></td>
+              <td class="cell-mono">$36.00</td>
+              <td><span class="mt-chip" data-qty-status></span></td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr class="rcp-addmat-row">
+              <td colspan="5"><button type="button" class="rcp-addmat" data-mat-add><span class="material-icons">add</span> Agregar material manualmente (no está en el documento)</button></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+    </div>
+    <!-- chip flotante: resultado del último escaneo -->
+    <span class="rcp-toast mt-chip" data-scan-toast></span>
+
+    <div class="mt-modal-foot">
+      <button class="mt-btn" data-close-modal>Cancelar</button>
+      <button class="mt-btn mt-btn-primary" data-close-modal><span class="material-icons">fact_check</span> Generar confirmación 101</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ MODAL: Escanear en una línea esperada ============ -->
+<div class="mt-modal-overlay" id="m-line-scan">
+  <div class="mt-modal">
+    <div class="mt-modal-head">
+      <span class="material-icons">swap_horiz</span><h3>Escanear en esta línea</h3><span class="mt-help" tabindex="0" role="button" aria-label="Ver detalle">?<span class="mt-help-bubble start">Usa esta opción cuando <b>llegó una unidad distinta</b> a la esperada. Escanea lo que realmente vino en la caja: si no coincide, se registra la discrepancia <b>vinculando ambos seriales</b>.<span class="mt-help-sep"></span><b>Qué puede pasar:</b><br>✅ <b>Coincide con lo esperado</b> → la unidad queda <b>confirmada</b>.<br>ℹ️ <b>Pertenece a otra línea</b> del mismo documento → se avisa; confírmala desde el escaneo general.<br>⚠️ <b>No pertenece al documento</b> → se registra <b>«no coincide»</b>: la esperada queda faltante y la recibida se rechaza. <b>Ninguna de las dos se recibe</b> ni entra al 101 (§14.1); ambas van a reconciliación (§11.5.6).</span></span>
+      <button class="mt-icon-btn mt-modal-close" data-close-modal><span class="material-icons">close</span></button>
+    </div>
+    <div class="mt-modal-body">
+      <ul class="mt-list-plain small" style="margin-bottom:14px">
+        <li><span class="muted">Material</span><b style="margin-left:auto" data-line-material>—</b></li>
+        <li><span class="muted">Serial / MAC esperado</span><b style="margin-left:auto" class="cell-mono" data-line-serial>—</b></li>
+      </ul>
+
+      <div class="mt-scan-big">
+        <span class="material-icons">qr_code_scanner</span>
+        <input data-line-input placeholder="Escanea la unidad que llegó realmente y presiona Enter…" autocomplete="off">
+      </div>
+
+      <div class="mt-alert ok" data-line-feedback style="margin-top:12px;display:none"></div>
+
+    </div>
+    <div class="mt-modal-foot">
+      <button class="mt-btn" data-close-modal>Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ MODAL: Motivo de la discrepancia ============ -->
+<div class="mt-modal-overlay" id="m-discrepancia">
+  <div class="mt-modal">
+    <div class="mt-modal-head">
+      <span class="material-icons">report_problem</span><h3 data-disc-title>Registrar discrepancia</h3><span class="mt-help" tabindex="0" role="button" aria-label="Ver detalle">?<span class="mt-help-bubble start"><span data-disc-hint>Indica <b>por qué</b> esta unidad no se puede recibir. El motivo queda visible en la lista y viaja a <b>reconciliación</b> (§11.5.6).</span><span class="mt-help-sep"></span><span data-disc-note><b>Al confirmar:</b> la unidad pasa a <b>Con discrepancia</b>, <b>no entra al 101</b> y el motivo queda registrado junto a ella. Puedes revertirla después desde el mismo botón de su fila.</span></span></span>
+      <button class="mt-icon-btn mt-modal-close" data-close-modal><span class="material-icons">close</span></button>
+    </div>
+    <div class="mt-modal-body">
+      <ul class="mt-list-plain small" style="margin-bottom:14px">
+        <li><span class="muted">Material</span><b style="margin-left:auto" data-disc-material>—</b></li>
+        <li><span class="muted">Serial / MAC</span><b style="margin-left:auto" class="cell-mono" data-disc-serial>—</b></li>
+      </ul>
+
+      <div class="mt-section-title" style="margin-bottom:8px"><span class="material-icons">edit_note</span> <span data-disc-label>Motivo de la discrepancia</span></div>
+      <div class="rcp-motivos" data-disc-presets></div>
+      <textarea class="mt-textarea" data-disc-input rows="3" placeholder="Escribe el motivo o elige uno de los anteriores…"></textarea>
+
+    </div>
+    <div class="mt-modal-foot">
+      <button class="mt-btn" data-close-modal>Cancelar</button>
+      <button class="mt-btn mt-btn-primary" data-disc-save disabled><span class="material-icons">check_circle</span> <span data-disc-savetxt>Confirmar discrepancia</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ MODAL: Material recibido no incluido en el documento ============ -->
+<div class="mt-modal-overlay" id="m-mat-extra">
+  <div class="mt-modal md">
+    <div class="mt-modal-head">
+      <span class="material-icons">add_box</span><h3 data-mat-title>Material no incluido en el documento</h3><span class="mt-help" tabindex="0" role="button" aria-label="Ver detalle">?<span class="mt-help-bubble start">Registra un material <b>no serializado</b> que <b>llegó físicamente</b> pero <b>no aparece</b> en el documento 351. Queda como evidencia para reclamar al warehouse; <b>no se confirma ni entra al 101</b> (§14.1).<span class="mt-help-sep"></span><b>Al registrar:</b> el material aparece en la lista con estado <b>Discrepancia · Fuera del documento</b>, sin valor y sin cantidad esperada. Podrás editarlo o quitarlo desde su fila.</span></span>
+      <button class="mt-icon-btn mt-modal-close" data-close-modal><span class="material-icons">close</span></button>
+    </div>
+    <div class="mt-modal-body">
+      <div class="mt-form-grid" style="margin-bottom:16px">
+        <div class="mt-form-field">
+          <label>Material <span class="req">*</span></label>
+          <input type="text" class="mt-input" data-mat-nombre placeholder="Ej.: Cable drop coaxial">
+        </div>
+        <div class="mt-form-field">
+          <label>Cantidad recibida <span class="req">*</span></label>
+          <input type="number" class="mt-input" data-mat-cant min="0" step="any" placeholder="0">
+        </div>
+        <div class="mt-form-field">
+          <label>UOM operativa</label>
+          <select class="mt-select" data-mat-uom>
+            <option>UND</option><option>FT</option><option>MT</option><option>ROL</option><option>KG</option><option>CAJA</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="mt-section-title" style="margin:16px 0 8px"><span class="material-icons">edit_note</span> Comentario</div>
+      <div class="rcp-motivos" data-mat-presets>
+        <button type="button" class="mt-chip chip-grey" data-mat-preset>Llegó de más en el envío</button>
+        <button type="button" class="mt-chip chip-grey" data-mat-preset>No corresponde a este documento</button>
+        <button type="button" class="mt-chip chip-grey" data-mat-preset>Sobrante del envío anterior</button>
+        <button type="button" class="mt-chip chip-grey" data-mat-preset>Enviado por error desde el warehouse</button>
+      </div>
+      <textarea class="mt-textarea" data-mat-nota rows="3" placeholder="Escribe el comentario o elige uno de los anteriores…"></textarea>
+
+    </div>
+    <div class="mt-modal-foot">
+      <button class="mt-btn" data-close-modal>Cancelar</button>
+      <button class="mt-btn mt-btn-primary" data-mat-save disabled><span class="material-icons">check_circle</span> <span data-mat-savetxt>Registrar material</span></button>
+    </div>
+  </div>
+</div>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>

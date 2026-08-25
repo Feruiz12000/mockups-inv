@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Más Tech · Inventario · Testing</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="assets/mastech-webmastech.css">
+</head>
+<body data-module="testing" data-title="Testing" data-breadcrumb="Testing & lifecycle">
+<div id="mt-page">
+
+  <div class="mt-card">
+    <!-- Header -->
+    <div class="mt-page-header">
+      <div class="mt-header-icon"><span class="material-icons">science</span></div>
+      <div class="mt-header-text">
+        <div class="mt-header-title">Testing y refurbishment — lifecycle del equipo</div>
+        <div class="mt-header-sub">Pruebas, reacondicionamiento y trazabilidad del ciclo de vida del CPE recuperado · HU-INV-12 · §11.13 · CU-INV-09</div>
+      </div>
+      <div class="mt-header-badge">318 en lifecycle</div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="mt-filter-bar">
+      <div class="mt-field grow"><span class="material-icons">search</span><input type="text" placeholder="Buscar por serial / MAC"></div>
+      <div class="mt-field"><span class="material-icons">router</span>
+        <select><option>Tipo CPE: todos</option><option>FTTH ONT</option><option>FTTH Gateway</option><option>HFC CPE</option><option>Extender</option><option>ATA</option></select></div>
+      <div class="mt-field"><span class="material-icons">timeline</span>
+        <select><option>Estado lifecycle: todos</option><option>Recibido en warehouse</option><option>Pendiente de prueba</option><option>En prueba</option><option>Reacondicionado</option><option>Aprobado para reinyección</option><option>Descartado</option></select></div>
+      <div class="mt-field"><span class="material-icons">calendar_today</span><input type="date"></div>
+      <button class="mt-icon-btn primary" title="Buscar"><span class="material-icons">search</span></button>
+      <button class="mt-icon-btn" title="Limpiar"><span class="material-icons">clear</span></button>
+      <button class="mt-icon-btn" title="Exportar"><span class="material-icons">download</span></button>
+    </div>
+  </div>
+
+  <div class="mt-row">
+    <!-- Columna izquierda: equipos recuperados -->
+    <div class="mt-col">
+      <div class="mt-card tight">
+        <div style="padding:14px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)">
+          <span class="material-icons" style="color:var(--primary)">inventory_2</span><b>Equipos recuperados (-R)</b>
+          <span class="mt-header-badge" style="margin-left:auto">318</span>
+        </div>
+        <div class="mt-table-wrap" style="border:0">
+          <table class="mt-table">
+            <thead>
+              <tr><th class="left">Serial / MAC</th><th class="left">Tipo CPE</th><th>Estado actual</th><th>Fecha collection</th><th>Reason</th></tr>
+            </thead>
+            <tbody>
+              <tr style="background:var(--primary-tint);cursor:pointer">
+                <td class="left cell-mono">SN-77Q1183</td>
+                <td class="left">FTTH ONT</td>
+                <td><span class="mt-chip chip-amber">En prueba</span></td>
+                <td class="cell-mono">28/07</td>
+                <td><span class="mt-tag">ID</span></td>
+              </tr>
+              <tr style="cursor:pointer">
+                <td class="left cell-mono">B8:44:12:9A:0C</td>
+                <td class="left">FTTH Gateway</td>
+                <td><span class="mt-chip chip-blue">Pendiente de prueba</span></td>
+                <td class="cell-mono">30/07</td>
+                <td><span class="mt-tag">C</span></td>
+              </tr>
+              <tr style="cursor:pointer">
+                <td class="left cell-mono">A1:B2:C3:D4:E5</td>
+                <td class="left">HFC CPE</td>
+                <td><span class="mt-chip chip-purple">Reacondicionado</span></td>
+                <td class="cell-mono">25/07</td>
+                <td><span class="mt-tag">TR</span></td>
+              </tr>
+              <tr style="cursor:pointer">
+                <td class="left cell-mono">SN-AT55210</td>
+                <td class="left">ATA</td>
+                <td><span class="mt-chip chip-red">Descartado</span></td>
+                <td class="cell-mono">22/07</td>
+                <td><span class="mt-tag">D</span></td>
+              </tr>
+              <tr style="cursor:pointer">
+                <td class="left cell-mono">SN-EX99120</td>
+                <td class="left">Extender</td>
+                <td><span class="mt-chip chip-green">Aprobado para reinyección</span></td>
+                <td class="cell-mono">20/07</td>
+                <td><span class="mt-tag">M</span></td>
+              </tr>
+              <tr style="cursor:pointer">
+                <td class="left cell-mono">SN-77Q2044</td>
+                <td class="left">FTTH ONT</td>
+                <td><span class="mt-chip chip-grey">Recibido en warehouse</span></td>
+                <td class="cell-mono">31/07</td>
+                <td><span class="mt-tag">ID</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="mt-paginator">
+          <span>Filas por página: 25</span>
+          <span>1 – 25 de 318</span>
+          <span class="material-icons">first_page</span><span class="material-icons">chevron_left</span>
+          <span class="material-icons">chevron_right</span><span class="material-icons">last_page</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Columna derecha: detalle + lifecycle -->
+    <div class="mt-col">
+      <div class="mt-card tight">
+        <div style="padding:14px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)">
+          <span class="material-icons" style="color:var(--primary)">fact_check</span><b>Detalle del equipo · lifecycle</b>
+          <button class="mt-btn mt-btn-primary mt-btn-sm" style="margin-left:auto" data-open-modal="m-transicion"><span class="material-icons">sync_alt</span> Registrar transición de estado</button>
+        </div>
+        <div style="padding:16px 18px">
+          <!-- Ficha del equipo seleccionado -->
+          <div class="mt-form-grid" style="margin-bottom:16px">
+            <div class="mt-form-field"><label>Serial / MAC</label><input class="mt-input readonly" value="SN-77Q1183" readonly></div>
+            <div class="mt-form-field"><label>Tipo CPE</label><input class="mt-input readonly" value="FTTH ONT · ONT-HG8145 -R" readonly></div>
+            <div class="mt-form-field"><label>Reason de retorno</label><input class="mt-input readonly" value="ID · Involuntary Disconnect" readonly></div>
+            <div class="mt-form-field"><label>Estado actual</label><input class="mt-input readonly" value="En prueba" readonly></div>
+          </div>
+
+          <div class="mt-section-title"><span class="material-icons">timeline</span> Ciclo de vida del equipo (10 estados)</div>
+          <ul class="mt-timeline">
+            <li class="done">
+              <div class="t-title">Recolectado</div>
+              <div class="t-meta">28/07 09:12 · Técnico T-2291 · reason ID</div>
+            </li>
+            <li class="done">
+              <div class="t-title">En tránsito</div>
+              <div class="t-meta">28/07 15:40 · Retorno 351 #351-0081</div>
+            </li>
+            <li class="done">
+              <div class="t-title">Recibido en warehouse</div>
+              <div class="t-meta">29/07 08:05 · Goods Receipt SAP · Main WH Panamá</div>
+            </li>
+            <li class="done">
+              <div class="t-title">Pendiente de prueba</div>
+              <div class="t-meta">29/07 08:20 · Cola de testing · Warehouse</div>
+            </li>
+            <li class="current">
+              <div class="t-title">En prueba</div>
+              <div class="t-meta">02/08 11:30 · Lab. testing · usuario jrivas</div>
+            </li>
+            <li>
+              <div class="t-title">Reacondicionado</div>
+              <div class="t-meta">Pendiente · limpieza + firmware + validación</div>
+            </li>
+            <li>
+              <div class="t-title">Aprobado para reinyección</div>
+              <div class="t-meta">Pendiente · pasa a stock desplegable -R</div>
+            </li>
+            <li>
+              <div class="t-title">Descartado</div>
+              <div class="t-meta">Ruta alternativa · si no pasa la prueba</div>
+            </li>
+            <li>
+              <div class="t-title">Reutilizado</div>
+              <div class="t-meta">Pendiente · reinyectado en nueva instalación</div>
+            </li>
+            <li>
+              <div class="t-title">Vida útil remanente</div>
+              <div class="t-meta">Pendiente · estimación de vida útil restante</div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-note">
+    <b>Reglas del módulo (spec §14):</b> el stock recuperado se mantiene separado y clasificado bajo código refurbished <b>-R</b> (§14.15/§14.16) · cada transición de estado del lifecycle queda auditada (§14.20) · reportería interactiva sobre el estado actual y el histórico del ciclo de vida del equipo.
+  </div>
+</div>
+
+<!-- ================= MODAL: Registrar transición de estado ================= -->
+<div class="mt-modal-overlay" id="m-transicion">
+  <div class="mt-modal">
+    <div class="mt-modal-head">
+      <span class="material-icons">sync_alt</span><h3>Registrar transición de estado</h3>
+      <button class="mt-icon-btn mt-modal-close" data-close-modal><span class="material-icons">close</span></button>
+    </div>
+    <div class="mt-modal-body">
+      <div class="mt-form-grid cols-1">
+        <div class="mt-form-field"><label>Equipo</label><input class="mt-input readonly" value="SN-77Q1183 · FTTH ONT" readonly></div>
+        <div class="mt-form-field"><label>Estado actual</label><input class="mt-input readonly" value="En prueba" readonly></div>
+        <div class="mt-form-field"><label>Nuevo estado <span class="req">*</span></label>
+          <select class="mt-select">
+            <option>Reacondicionado</option>
+            <option>Aprobado para reinyección</option>
+            <option>Descartado</option>
+            <option>Reutilizado</option>
+            <option>Vida útil remanente</option>
+          </select></div>
+        <div class="mt-form-field"><label>Observaciones</label><textarea class="mt-textarea" placeholder="Resultado de la prueba, componentes reemplazados…"></textarea></div>
+        <div class="mt-form-field"><label>Evidencia (foto / reporte)</label>
+          <button class="mt-btn mt-btn-stroked"><span class="material-icons">attach_file</span> Adjuntar evidencia</button></div>
+      </div>
+      <div class="mt-alert warn" style="margin-top:12px"><span class="material-icons">history</span> Cada transición de estado queda registrada en el histórico y auditada (§14.20).</div>
+    </div>
+    <div class="mt-modal-foot">
+      <button class="mt-btn" data-close-modal>Cancelar</button>
+      <button class="mt-btn mt-btn-primary" data-close-modal><span class="material-icons">save</span> Registrar transición</button>
+    </div>
+  </div>
+</div>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>

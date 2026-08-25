@@ -1,0 +1,4 @@
+/* Los estilos del módulo viven en src/styles/_recepcion.scss y son globales,
+   porque las clases mt- y rcp- se comparten entre la página y los diálogos.
+   Este archivo queda para ajustes propios del componente. */
+:host { display: contents; }

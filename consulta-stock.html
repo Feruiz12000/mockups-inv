@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Más Tech · Inventario · Consulta de Stock</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="assets/mastech-webmastech.css">
+</head>
+<body data-module="consulta-stock" data-title="Consulta de Stock" data-breadcrumb="Consulta de inventario">
+<div id="mt-page">
+
+  <div class="mt-card">
+    <!-- Header -->
+    <div class="mt-page-header">
+      <div class="mt-header-icon"><span class="material-icons">inventory_2</span></div>
+      <div class="mt-header-text">
+        <div class="mt-header-title">Consulta de inventario por técnico y ubicación</div>
+        <div class="mt-header-sub">Stock serializado y no serializado por estado · pantallas §19.6 / §19.7 · spec §11.6</div>
+      </div>
+      <div class="mt-header-badge">18,420 ítems</div>
+      <span class="mt-header-spacer"></span>
+      <button class="mt-btn mt-btn-stroked"><span class="material-icons">download</span> Exportar</button>
+    </div>
+
+    <!-- KPIs mini -->
+    <div class="mt-kpi-grid" style="margin-bottom:16px">
+      <div class="mt-kpi"><div class="k-top"><span class="k-label">Total de ítems</span><span class="k-icon" style="background:var(--primary-tint);color:var(--primary)"><span class="material-icons">inventory_2</span></span></div><span class="k-value">18,420</span><span class="k-delta muted">serializado + no serializado</span></div>
+      <div class="mt-kpi"><div class="k-top"><span class="k-label">Deployable</span><span class="k-icon" style="background:var(--primary-tint);color:var(--primary)"><span class="material-icons">check_circle</span></span></div><span class="k-value">10,140</span><span class="k-delta k-up">55% del total</span></div>
+      <div class="mt-kpi"><div class="k-top"><span class="k-label">Recuperado -R</span><span class="k-icon" style="background:var(--magenta-soft);color:var(--purple)"><span class="material-icons">autorenew</span></span></div><span class="k-value">4,230</span><span class="k-delta muted">refurbished / reinyectable</span></div>
+      <div class="mt-kpi"><div class="k-top"><span class="k-label">En testing</span><span class="k-icon" style="background:rgba(255,152,0,.12);color:var(--amber)"><span class="material-icons">science</span></span></div><span class="k-value">2,560</span><span class="k-delta muted">en laboratorio</span></div>
+    </div>
+
+    <!-- Pestañas: por técnico / por ubicación -->
+    <div data-tabs>
+      <div class="mt-tabs">
+        <div class="mt-tab active" data-tab="tecnico">Por técnico</div>
+        <div class="mt-tab" data-tab="ubicacion">Por ubicación</div>
+      </div>
+
+      <!-- ============ Panel: Por técnico ============ -->
+      <div data-tabpanel="tecnico">
+        <div class="mt-filter-bar">
+          <div class="mt-field grow"><span class="material-icons">search</span><input type="text" placeholder="Material / serial / MAC"></div>
+          <div class="mt-field"><span class="material-icons">engineering</span>
+            <select><option>Técnico: todos</option><option>T-2291 · Luis Mora</option><option>T-1180 · Carlos Him</option><option>T-3402 · Ana Batista</option></select></div>
+          <div class="mt-field"><span class="material-icons">business</span>
+            <select><option>Contratista: todos</option><option>Contrata 44</option><option>Contrata 41</option><option>Contrata 39</option></select></div>
+          <div class="mt-field"><span class="material-icons">flag</span>
+            <select><option>Estado: todos</option><option>Deployable</option><option>Recuperado -R</option><option>Testing</option><option>Undeployable</option></select></div>
+          <button class="mt-icon-btn primary" title="Buscar"><span class="material-icons">search</span></button>
+          <button class="mt-icon-btn" title="Limpiar"><span class="material-icons">clear</span></button>
+          <button class="mt-icon-btn" title="Exportar"><span class="material-icons">download</span></button>
+        </div>
+
+        <div class="mt-table-wrap">
+          <table class="mt-table">
+            <thead>
+              <tr>
+                <th class="left">Material</th><th class="left">Serial / MAC o Cantidad</th><th>UOM</th>
+                <th>Tipo</th><th>Estado de stock</th><th class="left">Sublocación</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="left">HFC CPE</td>
+                <td class="left"><span class="cell-mono">A1:B2:C3:D4:E5</span></td>
+                <td>EA</td><td><span class="mt-tag">Serializado</span></td>
+                <td><span class="mt-chip chip-green">Deployable</span></td>
+                <td class="left">T-2291 · Luis Mora</td>
+              </tr>
+              <tr>
+                <td class="left">FTTH ONT</td>
+                <td class="left"><span class="cell-mono">SN-77Q1183</span></td>
+                <td>EA</td><td><span class="mt-tag">Serializado</span></td>
+                <td><span class="mt-chip chip-green">Deployable</span></td>
+                <td class="left">T-2291 · Luis Mora</td>
+              </tr>
+              <tr>
+                <td class="left">FTTH Gateway <span class="mt-tag r">-R</span></td>
+                <td class="left"><span class="cell-mono">B8:44:12:9A:0C</span></td>
+                <td>EA</td><td><span class="mt-tag">Serializado</span></td>
+                <td><span class="mt-chip chip-purple">Recuperado -R</span></td>
+                <td class="left">T-1180 · Carlos Him</td>
+              </tr>
+              <tr>
+                <td class="left">Extender</td>
+                <td class="left"><span class="cell-mono">SN-EX99120</span></td>
+                <td>EA</td><td><span class="mt-tag">Serializado</span></td>
+                <td><span class="mt-chip chip-amber">Testing</span></td>
+                <td class="left">Lab · pool T-3402</td>
+              </tr>
+              <tr>
+                <td class="left">ATA</td>
+                <td class="left"><span class="cell-mono">SN-AT55210</span></td>
+                <td>EA</td><td><span class="mt-tag">Serializado</span></td>
+                <td><span class="mt-chip chip-red">Undeployable</span></td>
+                <td class="left">T-1180 · Carlos Him</td>
+              </tr>
+              <tr>
+                <td class="left">Drop cable coaxial</td>
+                <td class="left">200</td>
+                <td>FT</td><td><span class="mt-tag sky">No serializado</span></td>
+                <td><span class="mt-chip chip-green">Deployable</span></td>
+                <td class="left">T-2291 · Luis Mora</td>
+              </tr>
+              <tr>
+                <td class="left">Conector RG-6</td>
+                <td class="left">60</td>
+                <td>EA</td><td><span class="mt-tag sky">No serializado</span></td>
+                <td><span class="mt-chip chip-green">Deployable</span></td>
+                <td class="left">T-1180 · Carlos Him</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ============ Panel: Por ubicación ============ -->
+      <div data-tabpanel="ubicacion" style="display:none">
+        <div class="mt-filter-bar">
+          <div class="mt-field grow"><span class="material-icons">search</span><input type="text" placeholder="Material / serial / MAC"></div>
+          <div class="mt-field"><span class="material-icons">warehouse</span>
+            <select><option>Ubicación: todas</option><option>Main Warehouse</option><option>Contratista</option><option>Tienda</option><option>Tercero / Collection partner</option><option>Proyecto</option></select></div>
+          <div class="mt-field"><span class="material-icons">category</span>
+            <select><option>Tipo: todos</option><option>Serializado</option><option>No serializado</option></select></div>
+          <button class="mt-icon-btn primary" title="Buscar"><span class="material-icons">search</span></button>
+          <button class="mt-icon-btn" title="Limpiar"><span class="material-icons">clear</span></button>
+          <button class="mt-icon-btn" title="Exportar"><span class="material-icons">download</span></button>
+        </div>
+
+        <div class="mt-table-wrap">
+          <table class="mt-table">
+            <thead>
+              <tr>
+                <th class="left">Ubicación</th><th class="left">Material</th><th class="left">Serial / MAC o Cantidad</th>
+                <th>UOM</th><th>Tipo</th><th>Estado</th><th class="left">Sublocación</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="7" class="left" style="background:#F5EFE6;font-weight:600;color:var(--primary)"><span class="material-icons" style="font-size:16px;vertical-align:-3px">warehouse</span> Main Warehouse — Almacén 351</td></tr>
+              <tr>
+                <td class="left">Warehouse 351</td><td class="left">HFC CPE</td><td class="left"><span class="cell-mono">SN-HF41022</span></td>
+                <td>EA</td><td><span class="mt-tag">Serializado</span></td><td><span class="mt-chip chip-green">Deployable</span></td><td class="left">Bin A-12</td>
+              </tr>
+              <tr>
+                <td class="left">Warehouse 351</td><td class="left">Drop cable coaxial</td><td class="left">4,500</td>
+                <td>FT</td><td><span class="mt-tag sky">No serializado</span></td><td><span class="mt-chip chip-green">Deployable</span></td><td class="left">Bin C-03</td>
+              </tr>
+
+              <tr><td colspan="7" class="left" style="background:#F5EFE6;font-weight:600;color:var(--primary)"><span class="material-icons" style="font-size:16px;vertical-align:-3px">business</span> Contratista — Contrata 44 (ubicación principal)</td></tr>
+              <tr>
+                <td class="left">Contrata 44</td><td class="left">FTTH ONT</td><td class="left"><span class="cell-mono">SN-77Q1183</span></td>
+                <td>EA</td><td><span class="mt-tag">Serializado</span></td><td><span class="mt-chip chip-green">Deployable</span></td><td class="left">Ubicación principal</td>
+              </tr>
+              <tr>
+                <td class="left">Contrata 44</td><td class="left">Conector RG-6</td><td class="left">1,200</td>
+                <td>EA</td><td><span class="mt-tag sky">No serializado</span></td><td><span class="mt-chip chip-green">Deployable</span></td><td class="left">Ubicación principal</td>
+              </tr>
+
+              <tr><td colspan="7" class="left" style="background:#F5EFE6;font-weight:600;color:var(--primary)"><span class="material-icons" style="font-size:16px;vertical-align:-3px">storefront</span> Tienda — Tienda Vía España</td></tr>
+              <tr>
+                <td class="left">Tienda Vía España</td><td class="left">FTTH Gateway</td><td class="left"><span class="cell-mono">C4:11:88:2A:0F</span></td>
+                <td>EA</td><td><span class="mt-tag">Serializado</span></td><td><span class="mt-chip chip-green">Deployable</span></td><td class="left">Mostrador retail</td>
+              </tr>
+
+              <tr><td colspan="7" class="left" style="background:#F5EFE6;font-weight:600;color:var(--primary)"><span class="material-icons" style="font-size:16px;vertical-align:-3px">handshake</span> Tercero / Collection partner — CP-08</td></tr>
+              <tr>
+                <td class="left">Tercero CP-08</td><td class="left">HFC CPE <span class="mt-tag r">-R</span></td><td class="left"><span class="cell-mono">A9:0F:23:B1:77</span></td>
+                <td>EA</td><td><span class="mt-tag">Serializado</span></td><td><span class="mt-chip chip-purple">Recuperado -R</span></td><td class="left">Bodega CP-08</td>
+              </tr>
+              <tr>
+                <td class="left">Tercero CP-08</td><td class="left">ATA</td><td class="left"><span class="cell-mono">SN-AT77812</span></td>
+                <td>EA</td><td><span class="mt-tag">Serializado</span></td><td><span class="mt-chip chip-red">Undeployable</span></td><td class="left">Bodega CP-08</td>
+              </tr>
+
+              <tr><td colspan="7" class="left" style="background:#F5EFE6;font-weight:600;color:var(--primary)"><span class="material-icons" style="font-size:16px;vertical-align:-3px">engineering</span> Proyecto — FTTH-Colón (project ID PRJ-FTTH-COL)</td></tr>
+              <tr>
+                <td class="left">Proyecto FTTH-Colón</td><td class="left">FTTH ONT</td><td class="left"><span class="cell-mono">SN-88C4520</span></td>
+                <td>EA</td><td><span class="mt-tag">Serializado</span></td><td><span class="mt-chip chip-green">Deployable</span></td><td class="left">Reserva de proyecto</td>
+              </tr>
+              <tr>
+                <td class="left">Proyecto FTTH-Colón</td><td class="left">Extender</td><td class="left"><span class="cell-mono">SN-EX44190</span></td>
+                <td>EA</td><td><span class="mt-tag">Serializado</span></td><td><span class="mt-chip chip-amber">Testing</span></td><td class="left">Lab de proyecto</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-note">
+    La estructura operativa contempla <b>Main Warehouse</b>, <b>Contratista</b>, <b>ubicación principal del contratista</b>, <b>sublocación de técnico</b>, <b>tienda</b>, <b>tercero / collection partner</b> y <b>ubicación de proyecto</b>; el stock se clasifica por estado <b>deployable / undeployable / recuperado / testing</b> (spec §9). El código <span class="mt-tag r">-R</span> identifica el inventario recuperado / refurbished, contabilizado por separado del deployable.
+  </div>
+</div>
+  <script src="assets/app.js"></script>
+</body>
+</html>

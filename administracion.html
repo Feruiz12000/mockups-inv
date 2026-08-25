@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Más Tech · Inventario · Administración</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="assets/mastech-webmastech.css">
+</head>
+<body data-module="administracion" data-title="Administración" data-breadcrumb="Administración">
+<div id="mt-page">
+
+  <div class="mt-card">
+    <!-- Header -->
+    <div class="mt-page-header">
+      <div class="mt-header-icon"><span class="material-icons">settings</span></div>
+      <div class="mt-header-text">
+        <div class="mt-header-title">Administración — ubicaciones, proyectos, motivos y parámetros</div>
+        <div class="mt-header-sub">Mantenimiento de maestros y parámetros del sistema · HU-INV-16 · spec §11.3 · CU-INV-13 · pantallas §19.18–20</div>
+      </div>
+      <div class="mt-header-badge">Rol: Administrador</div>
+    </div>
+  </div>
+
+  <!-- ================= Pestañas ================= -->
+  <div class="mt-card" data-tabs>
+    <div class="mt-tabs">
+      <div class="mt-tab active" data-tab="ubic">Ubicaciones y sublocaciones</div>
+      <div class="mt-tab" data-tab="proj">Proyectos</div>
+      <div class="mt-tab" data-tab="reason">Motivos de devolución</div>
+      <div class="mt-tab" data-tab="param">Parámetros</div>
+    </div>
+
+    <!-- ============ Tab: Ubicaciones y sublocaciones ============ -->
+    <div data-tabpanel="ubic">
+      <div class="mt-alert warn" style="margin-bottom:14px"><span class="material-icons">account_tree</span> La organización de ubicaciones es consistente con la estructura de <b>plantas</b> y <b>storage locations</b> de SAP, con mayor granularidad operativa (spec §9). Las restricciones de transferencia se definen entre tipos de ubicación (§11.3.6).</div>
+
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+        <div class="mt-section-title" style="margin:0"><span class="material-icons">place</span> Jerarquía de ubicaciones</div>
+        <span style="flex:1"></span>
+        <button class="mt-btn mt-btn-primary mt-btn-sm" data-open-modal="m-ubicacion"><span class="material-icons">add_location</span> Nueva ubicación</button>
+      </div>
+
+      <div class="mt-table-wrap">
+        <table class="mt-table">
+          <thead>
+            <tr>
+              <th class="left">Location ID</th>
+              <th class="left">Tipo</th>
+              <th class="left">Ubicación padre</th>
+              <th class="left">Owner</th>
+              <th>Estado</th>
+              <th>Restricciones de transferencia</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="left cell-mono">WH-PAN-01</td>
+              <td class="left">Main Warehouse</td>
+              <td class="left muted">— (raíz)</td>
+              <td class="left">Más Tech</td>
+              <td><span class="mt-chip chip-green">Activo</span></td>
+              <td><span class="mt-chip chip-green">Sin restricción</span></td>
+              <td class="row-actions"><button class="mt-icon-btn primary" title="Editar" data-open-modal="m-ubicacion"><span class="material-icons">edit</span></button></td>
+            </tr>
+            <tr>
+              <td class="left cell-mono">CON-44</td>
+              <td class="left">Contratista</td>
+              <td class="left cell-mono">WH-PAN-01</td>
+              <td class="left">Contrata 44 (contractor)</td>
+              <td><span class="mt-chip chip-green">Activo</span></td>
+              <td><span class="mt-chip chip-amber">Restringida</span></td>
+              <td class="row-actions"><button class="mt-icon-btn primary" title="Editar" data-open-modal="m-ubicacion"><span class="material-icons">edit</span></button></td>
+            </tr>
+            <tr>
+              <td class="left cell-mono">CON-44-PPAL</td>
+              <td class="left">Ubicación principal contratista</td>
+              <td class="left cell-mono">CON-44</td>
+              <td class="left">Contrata 44 (contractor)</td>
+              <td><span class="mt-chip chip-green">Activo</span></td>
+              <td><span class="mt-chip chip-amber">Restringida</span></td>
+              <td class="row-actions"><button class="mt-icon-btn primary" title="Editar" data-open-modal="m-ubicacion"><span class="material-icons">edit</span></button></td>
+            </tr>
+            <tr>
+              <td class="left cell-mono">TEC-T2291</td>
+              <td class="left">Sublocación técnico</td>
+              <td class="left cell-mono">CON-44-PPAL</td>
+              <td class="left">Técnico T-2291 (contractor)</td>
+              <td><span class="mt-chip chip-green">Activo</span></td>
+              <td><span class="mt-chip chip-red">Solo retorno</span></td>
+              <td class="row-actions"><button class="mt-icon-btn primary" title="Editar" data-open-modal="m-ubicacion"><span class="material-icons">edit</span></button></td>
+            </tr>
+            <tr>
+              <td class="left cell-mono">TIENDA-VE</td>
+              <td class="left">Tienda</td>
+              <td class="left cell-mono">WH-PAN-01</td>
+              <td class="left">Retail Vía España (store)</td>
+              <td><span class="mt-chip chip-green">Activo</span></td>
+              <td><span class="mt-chip chip-green">Sin restricción</span></td>
+              <td class="row-actions"><button class="mt-icon-btn primary" title="Editar" data-open-modal="m-ubicacion"><span class="material-icons">edit</span></button></td>
+            </tr>
+            <tr>
+              <td class="left cell-mono">CP-08</td>
+              <td class="left">Tercero · Collection partner</td>
+              <td class="left cell-mono">WH-PAN-01</td>
+              <td class="left">Partner CP-08 (partner)</td>
+              <td><span class="mt-chip chip-green">Activo</span></td>
+              <td><span class="mt-chip chip-amber">Restringida</span></td>
+              <td class="row-actions"><button class="mt-icon-btn primary" title="Editar" data-open-modal="m-ubicacion"><span class="material-icons">edit</span></button></td>
+            </tr>
+            <tr>
+              <td class="left cell-mono">PRJ-FTTH-2026</td>
+              <td class="left">Ubicación de proyecto</td>
+              <td class="left cell-mono">WH-PAN-01</td>
+              <td class="left">Proyecto FTTH (project)</td>
+              <td><span class="mt-chip chip-green">Activo</span></td>
+              <td><span class="mt-chip chip-amber">Restringida</span></td>
+              <td class="row-actions"><button class="mt-icon-btn primary" title="Editar" data-open-modal="m-ubicacion"><span class="material-icons">edit</span></button></td>
+            </tr>
+            <tr>
+              <td class="left cell-mono">TIENDA-ALB</td>
+              <td class="left">Tienda</td>
+              <td class="left cell-mono">WH-PAN-01</td>
+              <td class="left">Retail Albrook (store)</td>
+              <td><span class="mt-chip chip-grey">Inactivo</span></td>
+              <td><span class="mt-chip chip-green">Sin restricción</span></td>
+              <td class="row-actions"><button class="mt-icon-btn primary" title="Editar" data-open-modal="m-ubicacion"><span class="material-icons">edit</span></button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ============ Tab: Proyectos ============ -->
+    <div data-tabpanel="proj" style="display:none">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+        <div class="mt-section-title" style="margin:0"><span class="material-icons">account_tree</span> Proyectos de expansión</div>
+        <span style="flex:1"></span>
+        <button class="mt-btn mt-btn-primary mt-btn-sm" data-open-modal="m-proyecto"><span class="material-icons">add</span> Nuevo proyecto</button>
+      </div>
+      <div class="mt-table-wrap">
+        <table class="mt-table">
+          <thead>
+            <tr><th class="left">Project ID</th><th class="left">Nombre</th><th class="left">WBS</th><th>Estado</th><th>Acciones</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="left cell-mono">PRJ-FTTH-2026</td><td class="left">Expansión FTTH Panamá Oeste</td><td class="left cell-mono">WBS F-4471</td><td><span class="mt-chip chip-green">Activo</span></td><td class="row-actions"><button class="mt-icon-btn primary" title="Editar" data-open-modal="m-proyecto"><span class="material-icons">edit</span></button></td></tr>
+            <tr><td class="left cell-mono">PRJ-HFC-UPG</td><td class="left">Upgrade HFC DOCSIS 3.1</td><td class="left cell-mono">WBS H-2203</td><td><span class="mt-chip chip-green">Activo</span></td><td class="row-actions"><button class="mt-icon-btn primary" title="Editar" data-open-modal="m-proyecto"><span class="material-icons">edit</span></button></td></tr>
+            <tr><td class="left cell-mono">PRJ-5G-FWA</td><td class="left">FWA 5G — piloto</td><td class="left cell-mono">WBS G-9910</td><td><span class="mt-chip chip-amber">Planificado</span></td><td class="row-actions"><button class="mt-icon-btn primary" title="Editar" data-open-modal="m-proyecto"><span class="material-icons">edit</span></button></td></tr>
+            <tr><td class="left cell-mono">PRJ-COL-2025</td><td class="left">Recuperación CPE 2025</td><td class="left cell-mono">WBS C-1180</td><td><span class="mt-chip chip-grey">Cerrado</span></td><td class="row-actions"><button class="mt-icon-btn primary" title="Editar" data-open-modal="m-proyecto"><span class="material-icons">edit</span></button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ============ Tab: Motivos de devolución ============ -->
+    <div data-tabpanel="reason" style="display:none">
+      <div class="mt-alert warn" style="margin-bottom:14px"><span class="material-icons">fact_check</span> El administrador mantiene el catálogo de motivos de devolución (<i>reason codes</i>) sin necesidad de cambios de código (§11.9).</div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+        <div class="mt-section-title" style="margin:0"><span class="material-icons">label</span> Reason codes mantenibles</div>
+        <span style="flex:1"></span>
+        <button class="mt-btn mt-btn-primary mt-btn-sm" data-open-modal="m-motivo"><span class="material-icons">add</span> Nuevo motivo</button>
+      </div>
+      <div class="mt-table-wrap">
+        <table class="mt-table">
+          <thead>
+            <tr><th>Código</th><th class="left">Descripción</th><th>Estado</th><th>Acciones</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><span class="mt-tag">ID</span></td><td class="left">Involuntary Disconnect</td><td><span class="mt-chip chip-green">Activo</span></td><td class="row-actions"><button class="mt-icon-btn primary" title="Editar" data-open-modal="m-motivo"><span class="material-icons">edit</span></button></td></tr>
+            <tr><td><span class="mt-tag">C</span></td><td class="left">Voluntary Disconnect / Churn</td><td><span class="mt-chip chip-green">Activo</span></td><td class="row-actions"><button class="mt-icon-btn primary" title="Editar" data-open-modal="m-motivo"><span class="material-icons">edit</span></button></td></tr>
+            <tr><td><span class="mt-tag">PC</span></td><td class="left">Collection Plan</td><td><span class="mt-chip chip-green">Activo</span></td><td class="row-actions"><button class="mt-icon-btn primary" title="Editar" data-open-modal="m-motivo"><span class="material-icons">edit</span></button></td></tr>
+            <tr><td><span class="mt-tag">TR</span></td><td class="left">Truck Roll</td><td><span class="mt-chip chip-green">Activo</span></td><td class="row-actions"><button class="mt-icon-btn primary" title="Editar" data-open-modal="m-motivo"><span class="material-icons">edit</span></button></td></tr>
+            <tr><td><span class="mt-tag">D</span></td><td class="left">Dead on Arrival</td><td><span class="mt-chip chip-green">Activo</span></td><td class="row-actions"><button class="mt-icon-btn primary" title="Editar" data-open-modal="m-motivo"><span class="material-icons">edit</span></button></td></tr>
+            <tr><td><span class="mt-tag">M</span></td><td class="left">Migration</td><td><span class="mt-chip chip-green">Activo</span></td><td class="row-actions"><button class="mt-icon-btn primary" title="Editar" data-open-modal="m-motivo"><span class="material-icons">edit</span></button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ============ Tab: Parámetros ============ -->
+    <div data-tabpanel="param" style="display:none">
+      <div class="mt-alert warn" style="margin-bottom:16px"><span class="material-icons">tune</span> Parámetros del sistema mantenibles por el administrador para evitar cambios de código (spec §17).</div>
+      <div class="mt-section-title"><span class="material-icons">tune</span> Parámetros del sistema</div>
+      <div class="mt-form-grid">
+        <div class="mt-form-field"><label>Umbral de quiebre — ubicación (out-of-stock)</label><input class="mt-input" type="number" value="5"></div>
+        <div class="mt-form-field"><label>Umbral de quiebre — técnico</label><input class="mt-input" type="number" value="2"></div>
+        <div class="mt-form-field"><label>Umbral de quiebre — contratista</label><input class="mt-input" type="number" value="10"></div>
+        <div class="mt-form-field"><label>Umbral de exceso (excess stock)</label><input class="mt-input" type="number" value="200"></div>
+        <div class="mt-form-field"><label>Plazo de préstamo antes de alerta (loanPeriodDays)</label><input class="mt-input" type="number" value="30"></div>
+        <div class="mt-form-field"><label>Sufijo refurbished</label><input class="mt-input" value="-R"></div>
+        <div class="mt-form-field" style="grid-column:1/-1">
+          <label>Validación Liberate</label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--text)"><input type="checkbox" checked> Habilitar validación Liberate del CPE instalado</label>
+        </div>
+      </div>
+      <div class="mt-form-actions">
+        <button class="mt-btn mt-btn-primary"><span class="material-icons">save</span> Guardar parámetros</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-note">
+    <b>Reglas del módulo (HU-INV-16 · spec §11.3 · roles §10.7):</b>
+    la organización de ubicaciones es consistente con la estructura de plantas y <i>storage locations</i> de SAP, con mayor granularidad operativa (spec §9) ·
+    se definen restricciones de transferencia entre tipos de ubicación (§11.3.6) ·
+    el administrador mantiene el catálogo de motivos de devolución (§11.9) y los parámetros del sistema para evitar cambios de código (spec §17).
+  </div>
+</div>
+
+<!-- ================= MODAL: Nueva ubicación ================= -->
+<div class="mt-modal-overlay" id="m-ubicacion">
+  <div class="mt-modal lg">
+    <div class="mt-modal-head">
+      <span class="material-icons">add_location</span><h3>Nueva / editar ubicación</h3>
+      <button class="mt-icon-btn mt-modal-close" data-close-modal><span class="material-icons">close</span></button>
+    </div>
+    <div class="mt-modal-body">
+      <div class="mt-form-grid">
+        <div class="mt-form-field"><label>Location ID <span class="req">*</span></label><input class="mt-input" placeholder="Ej. CON-44-PPAL"></div>
+        <div class="mt-form-field"><label>Tipo <span class="req">*</span></label>
+          <select class="mt-select">
+            <option>Main Warehouse</option>
+            <option>Contratista</option>
+            <option>Ubicación principal contratista</option>
+            <option>Sublocación técnico</option>
+            <option>Tienda</option>
+            <option>Tercero · Collection partner</option>
+            <option>Ubicación de proyecto</option>
+          </select></div>
+        <div class="mt-form-field"><label>Ubicación padre (jerarquía)</label>
+          <select class="mt-select"><option>— (raíz)</option><option>WH-PAN-01</option><option>CON-44</option><option>CON-44-PPAL</option></select></div>
+        <div class="mt-form-field"><label>Owner</label>
+          <select class="mt-select"><option>Contractor</option><option>Store</option><option>Partner</option><option>Project</option></select></div>
+      </div>
+
+      <div class="mt-divider"></div>
+
+      <div class="mt-section-title"><span class="material-icons">block</span> Restricciones de transferencia (§11.3.6)</div>
+      <div class="mt-form-grid">
+        <div class="mt-form-field"><label>Nivel de restricción</label>
+          <select class="mt-select"><option>Sin restricción</option><option>Restringida</option><option>Solo retorno</option><option>Bloqueada</option></select></div>
+        <div class="mt-form-field"><label>Estado</label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--text)"><input type="checkbox" checked> Ubicación activa</label></div>
+        <div class="mt-form-field" style="grid-column:1/-1"><label>Transferencias permitidas hacia</label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--text)"><input type="checkbox" checked> Main Warehouse</label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--text)"><input type="checkbox" checked> Otro contratista</label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--text)"><input type="checkbox"> Sublocación técnico</label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--text)"><input type="checkbox"> Tienda / tercero</label>
+        </div>
+      </div>
+    </div>
+    <div class="mt-modal-foot">
+      <button class="mt-btn" data-close-modal>Cancelar</button>
+      <button class="mt-btn mt-btn-primary" data-close-modal><span class="material-icons">save</span> Guardar ubicación</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MODAL: Nuevo proyecto ================= -->
+<div class="mt-modal-overlay" id="m-proyecto">
+  <div class="mt-modal">
+    <div class="mt-modal-head">
+      <span class="material-icons">account_tree</span><h3>Nuevo / editar proyecto</h3>
+      <button class="mt-icon-btn mt-modal-close" data-close-modal><span class="material-icons">close</span></button>
+    </div>
+    <div class="mt-modal-body">
+      <div class="mt-form-grid cols-1">
+        <div class="mt-form-field"><label>Project ID <span class="req">*</span></label><input class="mt-input" placeholder="Ej. PRJ-FTTH-2026"></div>
+        <div class="mt-form-field"><label>Nombre <span class="req">*</span></label><input class="mt-input" placeholder="Nombre del proyecto"></div>
+        <div class="mt-form-field"><label>WBS</label><input class="mt-input" placeholder="Ej. WBS F-4471"></div>
+        <div class="mt-form-field"><label>Estado</label>
+          <select class="mt-select"><option>Activo</option><option>Planificado</option><option>Cerrado</option></select></div>
+      </div>
+    </div>
+    <div class="mt-modal-foot">
+      <button class="mt-btn" data-close-modal>Cancelar</button>
+      <button class="mt-btn mt-btn-primary" data-close-modal><span class="material-icons">save</span> Guardar proyecto</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MODAL: Nuevo motivo ================= -->
+<div class="mt-modal-overlay" id="m-motivo">
+  <div class="mt-modal">
+    <div class="mt-modal-head">
+      <span class="material-icons">label</span><h3>Nuevo / editar motivo de devolución</h3>
+      <button class="mt-icon-btn mt-modal-close" data-close-modal><span class="material-icons">close</span></button>
+    </div>
+    <div class="mt-modal-body">
+      <div class="mt-form-grid cols-1">
+        <div class="mt-form-field"><label>Código <span class="req">*</span></label><input class="mt-input" placeholder="Ej. ID, C, PC, TR, D, M"></div>
+        <div class="mt-form-field"><label>Descripción <span class="req">*</span></label><input class="mt-input" placeholder="Ej. Involuntary Disconnect"></div>
+        <div class="mt-form-field"><label>Estado</label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--text)"><input type="checkbox" checked> Motivo activo</label></div>
+      </div>
+      <div class="mt-alert warn" style="margin-top:12px"><span class="material-icons">info</span> El catálogo de motivos es mantenible por el administrador (§11.9).</div>
+    </div>
+    <div class="mt-modal-foot">
+      <button class="mt-btn" data-close-modal>Cancelar</button>
+      <button class="mt-btn mt-btn-primary" data-close-modal><span class="material-icons">save</span> Guardar motivo</button>
+    </div>
+  </div>
+</div>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>

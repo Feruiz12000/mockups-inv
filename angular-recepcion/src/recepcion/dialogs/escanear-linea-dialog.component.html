@@ -1,0 +1,37 @@
+<mt-modal [open]="!!unidad" (closed)="cerrar.emit()">
+  <ng-container head>
+    <span class="material-icons">swap_horiz</span>
+    <h3>Escanear en esta línea</h3>
+    <mt-help align="start">
+      Usa esta opción cuando <b>llegó una unidad distinta</b> a la esperada. Escanea lo que realmente
+      vino en la caja: si no coincide, se registra la discrepancia <b>vinculando ambos seriales</b>.
+      <span class="mt-help-sep"></span>
+      <b>Qué puede pasar:</b><br>
+      ✅ <b>Coincide con lo esperado</b> → la unidad queda <b>confirmada</b>.<br>
+      ℹ️ <b>Pertenece a otra línea</b> del mismo documento → se avisa; confírmala desde el escaneo general.<br>
+      ⚠️ <b>No pertenece al documento</b> → se registra <b>«no coincide»</b>: la esperada queda faltante y
+      la recibida se rechaza. <b>Ninguna de las dos se recibe</b> ni entra al 101 (§14.1).
+    </mt-help>
+  </ng-container>
+
+  <ng-container body>
+    <ul class="mt-list-plain small" style="margin-bottom:14px">
+      <li><span class="muted">Material</span><b style="margin-left:auto">{{ unidad?.material }}</b></li>
+      <li><span class="muted">Serial / MAC esperado</span>
+        <b style="margin-left:auto" class="cell-mono">{{ unidad?.serial }}</b></li>
+    </ul>
+
+    <div class="mt-scan-big">
+      <span class="material-icons">qr_code_scanner</span>
+      <input [(ngModel)]="codigo" (keydown.enter)="submit()" autocomplete="off"
+             placeholder="Escanea la unidad que llegó realmente y presiona Enter…">
+    </div>
+
+    <div class="mt-alert" *ngIf="feedback" [ngClass]="feedback.clase"
+         style="margin-top:12px" [innerHTML]="feedback.html"></div>
+  </ng-container>
+
+  <ng-container foot>
+    <button type="button" class="mt-btn" (click)="cerrar.emit()">Cerrar</button>
+  </ng-container>
+</mt-modal>

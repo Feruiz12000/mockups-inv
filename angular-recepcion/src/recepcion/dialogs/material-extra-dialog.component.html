@@ -1,0 +1,52 @@
+<mt-modal [open]="!!data" size="md" (closed)="cancelar.emit()">
+  <ng-container head>
+    <span class="material-icons">add_box</span>
+    <h3>{{ edita ? 'Editar material no incluido' : 'Material no incluido en el documento' }}</h3>
+    <mt-help align="start">
+      Registra un material <b>no serializado</b> que <b>llegó físicamente</b> pero <b>no aparece</b>
+      en el documento 351. Queda como evidencia para reclamar al warehouse;
+      <b>no se confirma ni entra al 101</b> (§14.1).
+      <span class="mt-help-sep"></span>
+      <b>Al registrar:</b> el material aparece en la lista con estado
+      <b>Discrepancia · Fuera del documento</b>, sin valor y sin cantidad esperada.
+      Podrás editarlo o quitarlo desde su fila.
+    </mt-help>
+  </ng-container>
+
+  <ng-container body>
+    <div class="mt-form-grid" style="margin-bottom:16px">
+      <div class="mt-form-field">
+        <label>Material <span class="req">*</span></label>
+        <input type="text" class="mt-input" [(ngModel)]="material" placeholder="Ej.: Cable drop coaxial">
+      </div>
+      <div class="mt-form-field">
+        <label>Cantidad recibida <span class="req">*</span></label>
+        <input type="number" class="mt-input" [(ngModel)]="cantidad" min="0" step="any" placeholder="0">
+      </div>
+      <div class="mt-form-field">
+        <label>UOM operativa</label>
+        <select class="mt-select" [(ngModel)]="uom">
+          <option *ngFor="let u of uoms" [value]="u">{{ u }}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="mt-section-title" style="margin:16px 0 8px">
+      <span class="material-icons">edit_note</span> Comentario
+    </div>
+    <div class="rcp-motivos">
+      <button *ngFor="let p of presets" type="button" class="mt-chip chip-grey"
+              (click)="comentario = p">{{ p }}</button>
+    </div>
+    <textarea class="mt-textarea" rows="3" [(ngModel)]="comentario"
+              placeholder="Escribe el comentario o elige uno de los anteriores…"></textarea>
+  </ng-container>
+
+  <ng-container foot>
+    <button type="button" class="mt-btn" (click)="cancelar.emit()">Cancelar</button>
+    <button type="button" class="mt-btn mt-btn-primary" [disabled]="!valido" (click)="onGuardar()">
+      <span class="material-icons">check_circle</span>
+      {{ edita ? 'Guardar cambios' : 'Registrar material' }}
+    </button>
+  </ng-container>
+</mt-modal>

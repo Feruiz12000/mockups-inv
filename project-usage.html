@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Más Tech · Inventario · Proyectos de expansión</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="assets/mastech-webmastech.css">
+</head>
+<body data-module="project-usage" data-title="Proyectos de expansión" data-breadcrumb="Inventario de proyectos">
+<div id="mt-page">
+
+  <div class="mt-card">
+    <!-- Header -->
+    <div class="mt-page-header">
+      <div class="mt-header-icon"><span class="material-icons">account_tree</span></div>
+      <div class="mt-header-text">
+        <div class="mt-header-title">Inventario para proyectos de expansión de red</div>
+        <div class="mt-header-sub">Recepción 351 → 101 · Consumo por proyecto · Booking 221 a CAPEX · HU-INV-14 · §11.15 · CU-INV-11</div>
+      </div>
+      <div class="mt-header-badge">EP-INV-08</div>
+    </div>
+
+    <!-- Selector de proyecto -->
+    <div class="mt-section-title" style="margin-bottom:8px"><span class="material-icons">account_tree</span> Proyecto en contexto</div>
+    <div class="mt-filter-bar" style="margin-bottom:8px">
+      <div class="mt-field grow"><span class="material-icons">account_tree</span>
+        <select><option>PRJ-2025-FTTH-CHQ · Expansión FTTH David — Chiriquí</option><option>PRJ-2025-HFC-COL · Densificación HFC Colón</option><option>PRJ-2025-FTTH-PTY · Nodo FTTH Costa del Este</option></select></div>
+      <div class="mt-field"><span class="material-icons">account_balance_wallet</span><input value="WBS-CAPEX-PA-4471" readonly style="min-width:150px"></div>
+      <div class="mt-field"><span class="material-icons">place</span><input value="David, Chiriquí" readonly style="min-width:130px"></div>
+      <div class="mt-field"><span class="material-icons">engineering</span><input value="Contratista: Contrata 44" readonly style="min-width:150px"></div>
+      <span class="mt-chip chip-amber">En ejecución</span>
+    </div>
+    <p class="mt-hint" style="margin:0 0 16px"><span class="material-icons" style="font-size:15px;vertical-align:middle;color:var(--primary)">info</span> El alcance es <b>por proyecto</b>: la <b>Recepción 351</b>, el <b>Consumo</b> y el <b>Booking 221</b> de abajo corresponden <b>únicamente</b> al proyecto seleccionado (project location + Project ID obligatorio · §14.19). Para gestionar otro proyecto, cámbialo en este selector.</p>
+
+    <!-- Pestañas -->
+    <div data-tabs>
+      <div class="mt-tabs">
+        <div class="mt-tab active" data-tab="r351">Recepción 351</div>
+        <div class="mt-tab" data-tab="consumo">Consumo por proyecto</div>
+        <div class="mt-tab" data-tab="b221">Booking 221</div>
+      </div>
+
+      <!-- ============ TAB: Recepción 351 ============ -->
+      <div data-tabpanel="r351">
+        <!-- Direcciones de integración -->
+        <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px">
+          <span class="mt-chip chip-blue"><span class="material-icons">south</span> Entrada: SAP → Más Tech · 351 (stock in transit)</span>
+          <span class="mt-chip chip-green"><span class="material-icons">north</span> Salida: Más Tech → SAP · 101 (Goods Receipt) al confirmar</span>
+        </div>
+
+        <div class="mt-section-title" style="align-items:center"><span class="material-icons">local_shipping</span> Confirmación física por material (documento 351) <span style="flex:1"></span>
+          <span class="mt-chip chip-green"><span class="material-icons">check_circle</span> 2 confirmados</span>
+          <span class="mt-chip chip-amber"><span class="material-icons">error</span> 2 con discrepancia</span>
+        </div>
+        <p class="mt-hint" style="margin-bottom:12px">Confirma <b>por cada material</b> lo que llegó físicamente a la <i>project location</i>: escanea seriales (serializados) o confirma la cantidad recibida (no serializados). La UOM operativa se calcula por factor del catálogo (ROL → FT/MT · RF 5.1.4). La confirmación es una acción en Más Tech; al finalizar se genera el <b>101</b> hacia SAP.</p>
+
+        <div class="mt-form-grid cols-1" style="margin-bottom:12px; max-width:340px">
+          <div class="mt-form-field"><label>Tipo de recepción <span class="req">*</span></label>
+            <select class="mt-select"><option>Parcial</option><option>Total</option></select>
+            <span class="mt-hint"><span class="material-icons" style="font-size:14px;vertical-align:middle;color:var(--primary)">auto_awesome</span> Sugerido automáticamente: hay discrepancias/faltantes → <b>Parcial</b>.</span></div>
+        </div>
+
+        <div class="mt-table-wrap">
+          <table class="mt-table">
+            <thead>
+              <tr><th class="left">Material</th><th>Esperado (UOM operativa)</th><th class="left">Serial / MAC</th><th class="left">Confirmación · ¿llegó físicamente?</th><th>Estado</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="left">Cable feeder ADSS 48F <span class="mt-tag sky">no serializado</span></td>
+                <td><b>9 840 FT</b><br><span class="small muted cell-mono">3 ROL ×3 280 FT/ROL</span></td>
+                <td class="left cell-mono">—</td>
+                <td class="left"><span class="mt-field" style="height:34px"><span class="material-icons">tag</span><input type="number" value="9840" data-expected="9840" data-uom="FT" style="min-width:90px"><span class="small muted">FT</span></span></td>
+                <td><span class="mt-chip" data-qty-status></span></td>
+              </tr>
+              <tr>
+                <td class="left">Drop cable FTTH <span class="mt-tag sky">no serializado</span></td>
+                <td><b>3 000 MT</b><br><span class="small muted cell-mono">10 ROL ×300 MT/ROL</span></td>
+                <td class="left cell-mono">—</td>
+                <td class="left"><span class="mt-field" style="height:34px"><span class="material-icons">tag</span><input type="number" value="2800" data-expected="3000" data-uom="MT" style="min-width:90px"><span class="small muted">MT</span></span></td>
+                <td><span class="mt-chip" data-qty-status></span></td>
+              </tr>
+              <tr>
+                <td class="left">ONT FTTH Gateway <span class="mt-tag">serializado</span></td>
+                <td><b>50 UND</b><br><span class="small muted cell-mono">SN-ONT-9001 … 9050</span></td>
+                <td class="left cell-mono">SN-ONT-9001 … 9050</td>
+                <td class="left"><span class="mt-scan-field" style="padding:5px 10px"><span class="material-icons">qr_code_scanner</span><input placeholder="Escanear serial…" style="font-size:13px"><span class="small muted">48 / 50</span></span></td>
+                <td><span class="mt-chip chip-amber"><span class="material-icons">error</span> Discrepancia · faltan 2</span></td>
+              </tr>
+              <tr>
+                <td class="left">Conector SC/APC <span class="mt-tag sky">no serializado</span></td>
+                <td><b>200 UND</b><br><span class="small muted cell-mono">sin conversión</span></td>
+                <td class="left cell-mono">—</td>
+                <td class="left"><span class="mt-field" style="height:34px"><span class="material-icons">tag</span><input type="number" value="200" data-expected="200" data-uom="UND" style="min-width:80px"><span class="small muted">UND</span></span></td>
+                <td><span class="mt-chip" data-qty-status></span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="mt-form-grid cols-1" style="margin-top:12px">
+          <div class="mt-form-field"><label>Motivo / observación de discrepancia</label><textarea class="mt-textarea" placeholder="Ej.: llegaron 2 800 MT de drop de 3 000 (faltan 200); faltan 2 ONT del lote…"></textarea></div>
+        </div>
+
+        <div class="mt-alert ok" style="margin-top:12px"><span class="material-icons">info</span> Al confirmar la recepción en la ubicación del proyecto, Más Tech genera el <b>Goods Receipt (101)</b> hacia SAP (§12.1.2) y el stock recibido queda disponible para consumo del proyecto.</div>
+        <div class="mt-form-actions">
+          <button class="mt-btn mt-btn-primary"><span class="material-icons">move_to_inbox</span> Confirmar receipt (parcial) → generar 101</button>
+        </div>
+      </div>
+
+      <!-- ============ TAB: Consumo por proyecto ============ -->
+      <div data-tabpanel="consumo" style="display:none">
+        <div class="mt-alert err" style="margin-bottom:14px"><span class="material-icons">block</span> El <b>Project ID es obligatorio</b>: se bloquea el cierre del consumo si el material no está asociado a un project ID válido (§14.19 / RF 5.2.2).</div>
+
+        <div class="mt-section-title"><span class="material-icons">playlist_add</span> Registrar material consumido</div>
+        <div class="mt-form-grid cols-3" style="margin-bottom:10px">
+          <div class="mt-form-field"><label>Material <span class="req">*</span></label>
+            <select class="mt-select"><option>Seleccionar del catálogo…</option><option>Cable feeder ADSS 48F</option><option>Drop cable FTTH</option><option>ONT FTTH Gateway</option><option>Conector SC/APC</option></select></div>
+          <div class="mt-form-field"><label>Cantidad <span class="req">*</span></label><input class="mt-input" type="number" placeholder="0"></div>
+          <div class="mt-form-field"><label>UOM operativa</label><input class="mt-input readonly" value="FT" readonly></div>
+          <div class="mt-form-field"><label>Project ID <span class="req">*</span></label><input class="mt-input readonly" value="PRJ-2025-FTTH-CHQ" readonly></div>
+          <div class="mt-form-field"><label>WBS</label><input class="mt-input readonly" value="WBS-CAPEX-PA-4471" readonly></div>
+          <div class="mt-form-field"><label>Fecha de uso</label><input class="mt-input" type="date"></div>
+        </div>
+        <div class="mt-scan-field" style="margin-bottom:8px"><span class="material-icons">qr_code_scanner</span><input value="SN-ONT-9001" placeholder="Escanear serial / MAC del material serializado"></div>
+        <p class="mt-hint" style="margin-bottom:10px">Registrar escaneo y evidencia (foto / video) cuando aplique — §11.15.10.</p>
+        <div class="mt-form-actions" style="margin-top:0">
+          <button class="mt-btn mt-btn-stroked"><span class="material-icons">add_a_photo</span> Adjuntar evidencia</button>
+          <button class="mt-btn mt-btn-primary"><span class="material-icons">add</span> Agregar consumo</button>
+        </div>
+
+        <div class="mt-divider"></div>
+
+        <div class="mt-section-title"><span class="material-icons">receipt_long</span> Consumos registrados del proyecto</div>
+        <div class="mt-table-wrap">
+          <table class="mt-table">
+            <thead>
+              <tr><th class="left">Material</th><th>Cantidad</th><th>UOM</th><th class="left">Serial / MAC</th><th>Project ID</th><th>Fecha de uso</th><th>Acción</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="left">Cable feeder ADSS 48F</td><td>1 200</td><td>FT</td><td class="left cell-mono">N/A</td><td class="cell-mono">PRJ-2025-FTTH-CHQ</td><td class="cell-mono">04/08</td><td><button class="mt-icon-btn warn"><span class="material-icons">delete</span></button></td></tr>
+              <tr><td class="left">ONT FTTH Gateway</td><td>8</td><td>UND</td><td class="left cell-mono">SN-ONT-9001…9008</td><td class="cell-mono">PRJ-2025-FTTH-CHQ</td><td class="cell-mono">04/08</td><td><button class="mt-icon-btn warn"><span class="material-icons">delete</span></button></td></tr>
+              <tr><td class="left">Conector SC/APC</td><td>32</td><td>UND</td><td class="left cell-mono">—</td><td class="cell-mono">PRJ-2025-FTTH-CHQ</td><td class="cell-mono">04/08</td><td><button class="mt-icon-btn warn"><span class="material-icons">delete</span></button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ============ TAB: Booking 221 ============ -->
+      <div data-tabpanel="b221" style="display:none">
+        <div class="mt-section-title"><span class="material-icons">request_quote</span> Consumo consolidado diario por proyecto</div>
+        <p class="mt-hint" style="margin-bottom:12px">La salida 221 debita el inventario del proyecto y capitaliza el consumo contra el WBS / CAPEX del proyecto.</p>
+        <div class="mt-table-wrap">
+          <table class="mt-table">
+            <thead>
+              <tr><th class="left">Material</th><th>Cantidad</th><th>UOM</th><th>Valor</th><th>Project ID / WBS</th><th>Fecha de uso</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="left">Cable feeder ADSS 48F</td><td>1 200</td><td>FT</td><td class="cell-mono">$ 1 080.00</td><td class="cell-mono">PRJ-2025-FTTH-CHQ · WBS-CAPEX-PA-4471</td><td class="cell-mono">04/08</td></tr>
+              <tr><td class="left">ONT FTTH Gateway</td><td>8</td><td>UND</td><td class="cell-mono">$ 2 560.00</td><td class="cell-mono">PRJ-2025-FTTH-CHQ · WBS-CAPEX-PA-4471</td><td class="cell-mono">04/08</td></tr>
+              <tr><td class="left">Conector SC/APC</td><td>32</td><td>UND</td><td class="cell-mono">$ 96.00</td><td class="cell-mono">PRJ-2025-FTTH-CHQ · WBS-CAPEX-PA-4471</td><td class="cell-mono">04/08</td></tr>
+              <tr><td class="left"><b>Total capitalizable del día</b></td><td>—</td><td>—</td><td class="cell-mono"><b>$ 3 736.00</b></td><td class="cell-mono">PRJ-2025-FTTH-CHQ</td><td class="cell-mono">04/08</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="mt-form-actions">
+          <button class="mt-btn mt-btn-accent"><span class="material-icons">receipt</span> Generar salida 221 (booking a CAPEX por proyecto)</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="mt-note">
+    <b>Reglas del módulo (HU-INV-14 · §11.15):</b> el <b>Project ID es obligatorio</b> y se bloquea el cierre si el material no está asociado a un project ID válido (§14.19 / RF 5.2.2) · se aplica conversión de unidades según el catálogo, ej. ROL → FT / MT (RF 5.1.4) · se registra escaneo y evidencia (foto / video) cuando aplique (§11.15.10) · la recepción 351 se confirma en la project location generando 101, y el consumo se capitaliza al WBS mediante salida 221.
+  </div>
+</div>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>

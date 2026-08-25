@@ -1,0 +1,343 @@
+<mt-modal [open]="!!detalle" size="lg" extraClass="rcp-modal" (closed)="cerrar.emit()">
+
+  <ng-container head>
+    <span class="material-icons">move_to_inbox</span>
+    <h3>Confirmar recepción</h3>
+    <mt-help align="start">
+      No es posible confirmar ítems <b>no incluidos</b> en el documento origen 351 (§14.1).
+      Al generar el 101 <b>parcial</b>: lo recibido pasa al contratista, lo faltante sigue
+      <b>in transit</b> y las discrepancias van a reconciliación.
+      <span class="mt-help-sep"></span>
+      Un serial <b>fuera del documento</b> se trata como <b>una discrepancia más</b>: aparece en la
+      misma lista, en la vista <b>Con discrepancia</b>, distinguido por su estado. Las observaciones
+      se registran <b>por unidad</b> y quedan visibles para la reconciliación (§11.5.6).
+      <span class="mt-help-sep"></span>
+      Los cables transferidos en <b>ROL</b> se convierten y muestran en <b>FT/MT</b> según el factor
+      de conversión del material (RF 1.2.4).
+    </mt-help>
+    <span class="mt-chip chip-indigo" style="margin-left:4px">
+      Documento {{ detalle?.documento?.id }}
+    </span>
+  </ng-container>
+
+  <ng-container body>
+
+    <!-- Info del documento: hace scroll junto con el resto -->
+    <div class="rcp-docinfo">
+      <span class="rcp-di"><span class="material-icons">description</span>
+        Doc. 351 <b>{{ detalle?.documento?.id }}</b></span>
+      <span class="rcp-di"><span class="material-icons">warehouse</span>
+        Origen <b>{{ detalle?.documento?.origen }}</b></span>
+      <span class="rcp-di"><span class="material-icons">place</span>
+        Destino <b>{{ detalle?.documento?.destino }}</b></span>
+    </div>
+
+    <!-- Sección de escaneo: se queda fija (sticky) al llegar arriba -->
+    <div class="rcp-sticky">
+      <div class="rcp-scanrow">
+        <div class="rcp-scan-col">
+          <div class="mt-scan-big">
+            <button type="button" class="rcp-btn-cam" title="Escanear con cámara">
+              <span class="material-icons">qr_code_scanner</span>
+            </button>
+            <input #escaner [(ngModel)]="codigo" (keydown.enter)="escanear()" autocomplete="off"
+                   placeholder="Escanea o teclea el serial / MAC y presiona Enter…">
+            <span class="mt-chip chip-indigo" title="Confirmados / total del documento">
+              <b>{{ confirmados }}</b>&nbsp;/&nbsp;{{ total }}
+            </span>
+          </div>
+
+          <div class="rcp-avance" style="margin-top:12px">
+            <span class="small muted">Avance</span>
+            <div class="mt-progress determinate" style="flex:1">
+              <span [style.width.%]="porcentaje"
+                    style="position:absolute;left:0;top:0;height:100%;background:var(--primary);display:block"></span>
+            </div>
+            <span class="small muted"><b>{{ porcentaje }}%</b></span>
+          </div>
+
+          <div class="mt-counters" style="margin-top:10px">
+            <span class="mt-chip chip-green"><span class="material-icons">check_circle</span>
+              Confirmados: <b>{{ confirmados }}</b></span>
+            <span class="mt-chip chip-grey">Pendientes: <b>{{ pendientes }}</b></span>
+            <span class="mt-chip chip-amber"><span class="material-icons">error</span>
+              Discrepancia: <b>{{ discrepancias }}</b></span>
+          </div>
+        </div>
+
+        <div class="rcp-camara" title="Vista de cámara">
+          <span class="material-icons">photo_camera</span>
+          <span class="rcp-cam-txt">La cámara<br>aparecerá aquí</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Unidades serializadas -->
+    <div class="mt-section-title" style="align-items:center">
+      <span class="material-icons">list_alt</span> Unidades serializadas del documento
+      <span style="flex:1"></span>
+      <span class="small muted">Mostrando <b>{{ filas.length }}</b> de <b>{{ totalFilas }}</b> unidades</span>
+    </div>
+
+    <div class="mt-filter-bar" style="margin-bottom:10px">
+      <div class="mt-seg">
+        <button type="button" [class.active]="filtro === 'pendientes'" (click)="setFiltro('pendientes')"
+                title="Unidades del documento que aún NO se han escaneado.">Pendientes</button>
+        <button type="button" [class.active]="filtro === 'confirmados'" (click)="setFiltro('confirmados')"
+                title="Unidades escaneadas cuyo serial/MAC coincide con el documento.">Confirmados</button>
+        <button type="button" [class.active]="filtro === 'discrepancia'" (click)="setFiltro('discrepancia')"
+                title="Unidades faltantes o que no coinciden, MÁS los seriales que no pertenecen al documento (§14.1).">Con discrepancia</button>
+        <button type="button" [class.active]="filtro === 'todos'" (click)="setFiltro('todos')"
+                title="Todo sin filtrar.">Todos</button>
+      </div>
+      <div class="mt-field grow">
+        <span class="material-icons">search</span>
+        <input [(ngModel)]="busqueda" (ngModelChange)="refrescar()" autocomplete="off"
+               placeholder="Buscar unidad por serial / MAC o material…">
+      </div>
+    </div>
+
+    <div class="mt-table-wrap" style="max-height:320px; overflow-y:auto">
+      <table class="mt-table">
+        <thead>
+          <tr><th>#</th><th class="left">Material</th><th>Tipo ID</th><th class="left">Serial / MAC</th>
+            <th>Valor</th><th>Estado</th><th>Acción</th></tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let f of filas; trackBy: trackFila">
+
+            <!-- Unidad del documento -->
+            <ng-container *ngIf="f.unidad as u">
+              <tr [class.u-confirmado]="u.estado === 'confirmado'"
+                  [class.u-discrepancia]="u.estado === 'discrepancia'">
+                <td class="cell-mono">{{ u.numero }}</td>
+                <td class="left">{{ u.material }} <span class="mt-tag">{{ u.materialCodigo }}</span></td>
+                <td>{{ u.tipoId }}</td>
+                <td class="left cell-mono">
+                  {{ u.serial }}
+                  <div class="small" style="color:var(--warn);margin-top:2px" *ngIf="u.recibido">
+                    → llegó <b>{{ u.recibido }}</b>
+                  </div>
+                </td>
+                <td class="cell-mono">{{ u.valor | currency:'USD' }}</td>
+                <td>
+                  <span class="mt-chip" [ngClass]="chipUnidad(u).clase" [title]="chipUnidad(u).title">
+                    <span class="material-icons" *ngIf="chipUnidad(u).icono">{{ chipUnidad(u).icono }}</span>
+                    {{ chipUnidad(u).texto }}
+                  </span>
+                </td>
+                <td class="row-actions">
+                  <button class="mt-icon-btn primary" *ngIf="u.estado === 'pendiente'"
+                          (click)="abrirLinea(u)" title="Escanear serial/MAC">
+                    <span class="material-icons">qr_code_scanner</span>
+                  </button>
+                  <button class="mt-icon-btn" [class.warn]="u.estado !== 'discrepancia'"
+                          [class.primary]="u.estado === 'discrepancia'"
+                          (click)="marcar(u)" [title]="tooltipMarcar(u)">
+                    <span class="material-icons">
+                      {{ u.estado === 'discrepancia' ? 'undo' : 'report_problem' }}
+                    </span>
+                  </button>
+                </td>
+              </tr>
+
+              <!-- Motivo de la discrepancia -->
+              <tr class="rcp-motivo-row" *ngIf="u.estado === 'discrepancia'">
+                <td colspan="7">
+                  <div class="rcp-motivo" *ngIf="u.motivo; else sinMotivo">
+                    <span class="material-icons">edit_note</span>
+                    <span><b>Motivo:</b> {{ u.motivo }}</span>
+                    <button type="button" class="rcp-motivo-edit" (click)="abrirMotivoUnidad(u)"
+                            title="Editar el motivo de la discrepancia">
+                      <span class="material-icons">edit</span>
+                    </button>
+                  </div>
+                  <ng-template #sinMotivo>
+                    <button type="button" class="rcp-motivo-add" (click)="abrirMotivoUnidad(u)">
+                      <span class="material-icons">add_comment</span> Agregar motivo
+                    </button>
+                  </ng-template>
+                </td>
+              </tr>
+            </ng-container>
+
+            <!-- Serial rechazado (§14.1): una discrepancia más -->
+            <ng-container *ngIf="f.rechazado as r">
+              <tr class="u-fuera">
+                <td class="cell-mono">—</td>
+                <td class="left">No pertenece al documento 351
+                  <div class="small muted">{{ r.razon }}</div></td>
+                <td>—</td>
+                <td class="left cell-mono">{{ r.serial }}
+                  <div class="small muted">
+                    ×{{ r.intentos }} {{ r.intentos === 1 ? 'intento' : 'intentos' }} · {{ r.hora }}
+                  </div></td>
+                <td class="cell-mono">—</td>
+                <td>
+                  <span class="mt-chip chip-amber"
+                        title="No pertenece a este documento 351: el sistema lo rechaza y no puede confirmarse (§14.1).">
+                    <span class="material-icons">error</span> Discrepancia
+                  </span>
+                  <div class="u-fuera-sub">Fuera del documento</div>
+                </td>
+                <td class="row-actions">
+                  <button class="mt-icon-btn warn" (click)="quitarRechazado(r)"
+                          [title]="'Quitar ' + r.serial + ' de la lista'">
+                    <span class="material-icons">delete</span>
+                  </button>
+                </td>
+              </tr>
+
+              <tr class="rcp-motivo-row">
+                <td colspan="7">
+                  <div class="rcp-motivo" *ngIf="r.comentario; else sinComentario">
+                    <span class="material-icons">edit_note</span>
+                    <span><b>Comentario:</b> {{ r.comentario }}</span>
+                    <button type="button" class="rcp-motivo-edit" (click)="abrirComentarioRechazado(r)"
+                            title="Editar el comentario">
+                      <span class="material-icons">edit</span>
+                    </button>
+                  </div>
+                  <ng-template #sinComentario>
+                    <button type="button" class="rcp-motivo-add" (click)="abrirComentarioRechazado(r)">
+                      <span class="material-icons">add_comment</span> Agregar comentario
+                    </button>
+                  </ng-template>
+                </td>
+              </tr>
+            </ng-container>
+
+          </ng-container>
+        </tbody>
+      </table>
+
+      <div class="mt-empty" *ngIf="!filas.length">
+        <span class="material-icons">inbox</span><p>No hay unidades en esta vista.</p>
+      </div>
+    </div>
+
+    <!-- Materiales no serializados -->
+    <div class="mt-section-title" style="margin-top:18px">
+      <span class="material-icons">category</span> Materiales no serializados del documento
+    </div>
+
+    <div class="mt-table-wrap rcp-matlist">
+      <table class="mt-table">
+        <thead>
+          <tr><th class="left">Material</th><th>Esperado (UOM operativa)</th>
+            <th class="left">Cantidad recibida</th><th>Valor</th><th>Estado</th></tr>
+        </thead>
+        <tbody>
+          <!-- Del documento -->
+          <tr *ngFor="let m of noSerializados">
+            <td class="left">
+              <div class="rcp-mat-nom">{{ m.material }}</div>
+              <span class="mt-tag">{{ m.codigo }}</span>
+            </td>
+            <td><b>{{ m.esperado }} {{ m.uom }}</b><br>
+              <span class="small muted cell-mono">{{ m.conversion }}</span></td>
+            <td class="left">
+              <span class="mt-field rcp-qty">
+                <input type="number" [(ngModel)]="m.recibido" min="0" step="any">
+                <span class="small muted">{{ m.uom }}</span>
+              </span>
+            </td>
+            <td class="cell-mono">{{ m.valor | currency:'USD' }}</td>
+            <td>
+              <span class="mt-chip" [ngClass]="estadoCantidad(m).clase">
+                <span class="material-icons" *ngIf="estadoCantidad(m).icono">{{ estadoCantidad(m).icono }}</span>
+                {{ estadoCantidad(m).texto }}
+              </span>
+            </td>
+          </tr>
+
+          <!-- Agregados manualmente: no están en el documento -->
+          <ng-container *ngFor="let e of extras">
+            <tr class="u-fuera">
+              <td class="left">
+                <div class="rcp-mat-nom">{{ e.material }}</div>
+                <span class="small muted">No aparece en el documento 351</span>
+              </td>
+              <td><b>—</b><br><span class="small muted">sin cantidad esperada</span></td>
+              <td class="left"><b class="cell-mono">{{ e.cantidad }} {{ e.uom }}</b>
+                <div class="small muted">recibido físicamente</div></td>
+              <td class="cell-mono">—</td>
+              <td>
+                <div class="rcp-estado-acc">
+                  <div>
+                    <span class="mt-chip chip-amber"
+                          title="Llegó pero no pertenece al documento 351: no se puede confirmar (§14.1).">
+                      <span class="material-icons">error</span> Discrepancia
+                    </span>
+                    <div class="u-fuera-sub">Fuera del documento</div>
+                  </div>
+                  <span class="row-actions">
+                    <button class="mt-icon-btn primary" (click)="abrirMaterialExtra(e)"
+                            title="Editar este material"><span class="material-icons">edit</span></button>
+                    <button class="mt-icon-btn warn" (click)="quitarMaterialExtra(e)"
+                            title="Quitar este material de la lista"><span class="material-icons">delete</span></button>
+                  </span>
+                </div>
+              </td>
+            </tr>
+            <tr class="rcp-matnota-row">
+              <td colspan="5">
+                <div class="rcp-motivo" *ngIf="e.comentario; else sinComentarioMat">
+                  <span class="material-icons">edit_note</span>
+                  <span><b>Comentario:</b> {{ e.comentario }}</span>
+                  <button type="button" class="rcp-motivo-edit" (click)="abrirMaterialExtra(e)"
+                          title="Editar el comentario"><span class="material-icons">edit</span></button>
+                </div>
+                <ng-template #sinComentarioMat>
+                  <button type="button" class="rcp-motivo-add" (click)="abrirMaterialExtra(e)">
+                    <span class="material-icons">add_comment</span> Agregar comentario
+                  </button>
+                </ng-template>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+
+        <tfoot>
+          <tr class="rcp-addmat-row">
+            <td colspan="5">
+              <button type="button" class="rcp-addmat" (click)="abrirMaterialExtra()">
+                <span class="material-icons">add</span>
+                Agregar material manualmente (no está en el documento)
+              </button>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </ng-container>
+
+  <!-- Chip flotante: resultado del último escaneo -->
+  <ng-container floating>
+    <span class="rcp-toast mt-chip" *ngIf="toast" [ngClass]="[toast.clase, 'show']">
+      <span class="material-icons">{{ toast.icono }}</span>
+      {{ toast.texto }}<ng-container *ngIf="toast.codigo"> · {{ toast.codigo }}</ng-container>
+    </span>
+  </ng-container>
+
+  <ng-container foot>
+    <button type="button" class="mt-btn" (click)="cerrar.emit()">Cancelar</button>
+    <button type="button" class="mt-btn mt-btn-primary" [disabled]="!puedeConfirmar" (click)="generar101()">
+      <span class="material-icons">fact_check</span>
+      Generar confirmación 101 {{ tipoConfirmacion === 'Parcial' ? 'parcial' : '' }}
+    </button>
+  </ng-container>
+</mt-modal>
+
+<!-- Diálogos hijos -->
+<rcp-motivo-dialog [data]="motivoData"
+                   (guardar)="guardarMotivo($event)"
+                   (cancelar)="motivoData = null"></rcp-motivo-dialog>
+
+<rcp-material-extra-dialog [data]="materialData"
+                           (guardar)="guardarMaterialExtra($event)"
+                           (cancelar)="materialData = null"></rcp-material-extra-dialog>
+
+<rcp-escanear-linea-dialog [unidad]="unidadLinea"
+                           [resolver]="resolverLinea"
+                           (cerrar)="unidadLinea = null"></rcp-escanear-linea-dialog>

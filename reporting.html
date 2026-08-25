@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Más Tech · Inventario · Reportes</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="assets/mastech-webmastech.css">
+</head>
+<body data-module="reporting" data-title="Reportes &amp; Dashboards" data-breadcrumb="Reportes y KPIs">
+<div id="mt-page">
+
+  <div class="mt-card">
+    <!-- Header -->
+    <div class="mt-page-header">
+      <div class="mt-header-icon"><span class="material-icons">bar_chart</span></div>
+      <div class="mt-header-text">
+        <div class="mt-header-title">Reportes, dashboards y KPIs</div>
+        <div class="mt-header-sub">Catálogo de 25 reportes operativos mínimos y 9 grupos de KPIs · HU-INV-17 · spec §16</div>
+      </div>
+      <div class="mt-header-badge">25 reportes</div>
+      <span class="mt-header-spacer"></span>
+      <button class="mt-btn mt-btn-stroked"><span class="material-icons">tune</span> Panel de control</button>
+    </div>
+
+    <div class="mt-row">
+      <!-- ============ Columna izquierda: catálogo de reportes ============ -->
+      <div class="mt-col" style="max-width:340px">
+        <div class="mt-field grow" style="margin-bottom:12px"><span class="material-icons">search</span><input type="text" placeholder="Buscar reporte…"></div>
+
+        <div class="mt-nav-group-label">Uso, consumo y lifecycle</div>
+        <ul class="mt-list-plain small">
+          <li><span class="mt-tag">1</span> Lifecycle por serial number (contractor/technician/customer)</li>
+          <li style="background:var(--primary-tint)"><span class="mt-tag">2</span> <b>Usage qty y value por técnico</b><span class="material-icons" style="margin-left:auto;color:var(--primary)">chevron_right</span></li>
+          <li><span class="mt-tag">3</span> Usage qty y value por contractor location</li>
+          <li><span class="mt-tag">4</span> Usage qty y value por contractor</li>
+          <li><span class="mt-tag">5</span> Usage consolidated por período</li>
+          <li><span class="mt-tag">6</span> Usage por material</li>
+          <li><span class="mt-tag">7</span> Usage por service order / truck roll</li>
+          <li><span class="mt-tag">8</span> Histórico por customer de CPE y materiales</li>
+          <li><span class="mt-tag">9</span> Lifecycle analysis CPE serial numbers</li>
+          <li><span class="mt-tag">10</span> Lifecycle analysis CPE refurbished</li>
+        </ul>
+
+        <div class="mt-nav-group-label">Replenishment y salud del inventario</div>
+        <ul class="mt-list-plain small">
+          <li><span class="mt-tag">11</span> Suggested replenishment por technician</li>
+          <li><span class="mt-tag">12</span> Suggested replenishment por contractor</li>
+          <li><span class="mt-tag">13</span> Suggested replenishment por contractor location</li>
+          <li><span class="mt-tag">14</span> Stock turns por material</li>
+          <li><span class="mt-tag">15</span> Aging report por contractor location</li>
+        </ul>
+
+        <div class="mt-nav-group-label">Alarmas de stock</div>
+        <ul class="mt-list-plain small">
+          <li><span class="mt-tag">16</span> Out-of-stock alarm por contractor</li>
+          <li><span class="mt-tag">17</span> Out-of-stock alarm por location</li>
+          <li><span class="mt-tag">18</span> Out-of-stock alarm por technician</li>
+          <li><span class="mt-tag">19</span> Excess stock alarm por contractor</li>
+          <li><span class="mt-tag">20</span> Excess stock alarm por location</li>
+          <li><span class="mt-tag">21</span> Excess stock alarm por technician</li>
+        </ul>
+
+        <div class="mt-nav-group-label">Collection y operación</div>
+        <ul class="mt-list-plain small">
+          <li><span class="mt-tag">22</span> Tickets de collection (contractor/store/partner/city/fechas)</li>
+          <li><span class="mt-tag">23</span> Pending confirmations en warehouse</li>
+          <li><span class="mt-tag">24</span> Préstamos de testing</li>
+          <li><span class="mt-tag">25</span> Uso por project ID</li>
+        </ul>
+      </div>
+
+      <!-- ============ Columna derecha: vista del reporte ============ -->
+      <div class="mt-col">
+        <div class="mt-section-title"><span class="material-icons">bar_chart</span> 2 · Usage por técnico</div>
+
+        <div class="mt-filter-bar">
+          <div class="mt-field"><span class="material-icons">date_range</span>
+            <select><option>Período: este mes</option><option>Hoy</option><option>Semana</option><option>Trimestre</option></select></div>
+          <div class="mt-field"><span class="material-icons">business</span>
+            <select><option>Contratista: todos</option><option>Contrata 44</option><option>Contrata 41</option><option>Contrata 39</option></select></div>
+          <div class="mt-field"><span class="material-icons">engineering</span>
+            <select><option>Técnico: todos</option><option>T-2291 · Luis Mora</option><option>T-1180 · Carlos Him</option><option>T-3402 · Ana Batista</option></select></div>
+          <span class="mt-header-spacer"></span>
+          <button class="mt-btn mt-btn-stroked"><span class="material-icons">download</span> Exportar</button>
+          <button class="mt-btn mt-btn-primary" title="Distribuir por intranet / correo"><span class="material-icons">send</span> Distribuir</button>
+        </div>
+        <p class="mt-hint" style="margin:-6px 0 12px">La distribución publica en intranet o envía por correo según la plantilla acordada (intranet / correo).</p>
+
+        <div class="mt-chart" style="margin-bottom:14px">
+          <div class="c-title"><span class="material-icons" style="color:var(--primary)">bar_chart</span> Cantidad consumida por técnico (este mes)</div>
+          <div class="mt-bars">
+            <div class="bar" style="height:92%"><span>T-2291</span></div>
+            <div class="bar" style="height:78%"><span>T-1180</span></div>
+            <div class="bar" style="height:54%"><span>T-3402</span></div>
+            <div class="bar" style="height:44%"><span>T-2288</span></div>
+            <div class="bar" style="height:30%"><span>T-1902</span></div>
+          </div>
+        </div>
+
+        <div class="mt-table-wrap">
+          <table class="mt-table">
+            <thead><tr><th class="left">Técnico</th><th>Cantidad</th><th>Valor</th><th>Órdenes</th></tr></thead>
+            <tbody>
+              <tr><td class="left">T-2291 · Luis Mora</td><td>342</td><td class="cell-mono">USD 18,420</td><td>210</td></tr>
+              <tr><td class="left">T-1180 · Carlos Him</td><td>298</td><td class="cell-mono">USD 15,900</td><td>188</td></tr>
+              <tr><td class="left">T-3402 · Ana Batista</td><td>187</td><td class="cell-mono">USD 9,640</td><td>132</td></tr>
+              <tr><td class="left">T-2288 · Rita Solís</td><td>154</td><td class="cell-mono">USD 8,120</td><td>98</td></tr>
+              <tr><td class="left">T-1902 · Omar Vega</td><td>96</td><td class="cell-mono">USD 5,010</td><td>61</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ Grupos de KPIs ============ -->
+  <div class="mt-card">
+    <div class="mt-section-title"><span class="material-icons">insights</span> Grupos de KPIs</div>
+    <div data-tabs>
+      <div class="mt-tabs">
+        <div class="mt-tab active" data-tab="recepcion">Recepción</div>
+        <div class="mt-tab" data-tab="asignacion">Asignación a técnicos</div>
+        <div class="mt-tab" data-tab="consumo">Consumo operativo</div>
+        <div class="mt-tab" data-tab="collection">Collection de CPE</div>
+        <div class="mt-tab" data-tab="retorno">Retorno a warehouse</div>
+        <div class="mt-tab" data-tab="stock">Stock y salud</div>
+        <div class="mt-tab" data-tab="recuperado">Recuperado y refurbished</div>
+        <div class="mt-tab" data-tab="adopcion">Adopción del sistema</div>
+        <div class="mt-tab" data-tab="ejecutivos">Ejecutivos</div>
+      </div>
+
+      <div data-tabpanel="recepcion">
+        <div class="mt-kpi-grid">
+          <div class="mt-kpi"><div class="k-top"><span class="k-label">Recepciones del período</span><span class="k-icon" style="background:rgba(152,29,151,.1);color:var(--info)"><span class="material-icons">move_to_inbox</span></span></div><span class="k-value">351</span><span class="k-delta k-up">▲ 4.0%</span></div>
+          <div class="mt-kpi"><div class="k-top"><span class="k-label">Ítems recibidos</span><span class="k-icon" style="background:var(--primary-tint);color:var(--primary)"><span class="material-icons">inventory</span></span></div><span class="k-value">12,940</span><span class="k-delta k-up">▲ 6.2%</span></div>
+          <div class="mt-kpi"><div class="k-top"><span class="k-label">Pending confirmations</span><span class="k-icon" style="background:rgba(255,152,0,.12);color:var(--amber)"><span class="material-icons">pending_actions</span></span></div><span class="k-value">42</span><span class="k-delta k-down">▲ 6 sin confirmar</span></div>
+          <div class="mt-kpi"><div class="k-top"><span class="k-label">Lead time de recepción</span><span class="k-icon" style="background:rgba(0,194,146,.12);color:var(--success-dark)"><span class="material-icons">schedule</span></span></div><span class="k-value">1.8 d</span><span class="k-delta k-up">▼ 0.3 d</span></div>
+        </div>
+      </div>
+
+      <div data-tabpanel="asignacion" style="display:none">
+        <div class="mt-kpi-grid">
+          <div class="mt-kpi"><div class="k-top"><span class="k-label">Asignaciones</span><span class="k-icon" style="background:var(--primary-tint);color:var(--primary)"><span class="material-icons">assignment_ind</span></span></div><span class="k-value">2,210</span><span class="k-delta k-up">▲ 3.1%</span></div>
+          <div class="mt-kpi"><div class="k-top"><span class="k-label">Ítems asignados a técnicos</span><span class="k-icon" style="background:rgba(152,29,151,.1);color:var(--info)"><span class="material-icons">inventory_2</span></span></div><span class="k-value">8,760</span><span class="k-delta k-up">▲ 2.4%</span></div>
+          <div class="mt-kpi"><div class="k-top"><span class="k-label">Técnicos con stock</span><span class="k-icon" style="background:rgba(0,194,146,.12);color:var(--success-dark)"><span class="material-icons">engineering</span></span></div><span class="k-value">128</span><span class="k-delta muted">activos</span></div>
+          <div class="mt-kpi"><div class="k-top"><span class="k-label">Tiempo de asignación</span><span class="k-icon" style="background:rgba(255,152,0,.12);color:var(--amber)"><span class="material-icons">schedule</span></span></div><span class="k-value">0.6 d</span><span class="k-delta k-up">▼ 0.1 d</span></div>
+        </div>
+      </div>
+
+      <div data-tabpanel="consumo" style="display:none">
+        <div class="mt-kpi-grid">
+          <div class="mt-kpi"><div class="k-top"><span class="k-label">Consumo del período</span><span class="k-icon" style="background:rgba(152,29,151,.1);color:var(--info)"><span class="material-icons">build</span></span></div><span class="k-value">2,913</span><span class="k-delta k-up">▲ 5.1%</span></div>
+          <div class="mt-kpi"><div class="k-top"><span class="k-label">CPE instalados</span><span class="k-icon" style="background:rgba(31,179,112,.1);color:var(--success)"><span class="material-icons">router</span></span></div><span class="k-value">1,204</span><span class="k-delta k-up">▲ 2.0%</span></div>
+          <div class="mt-kpi"><div class="k-top"><span class="k-label">Órdenes / truck rolls</span><span class="k-icon" style="background:var(--primary-tint);color:var(--primary)"><span class="material-icons">local_shipping</span></span></div><span class="k-value">1,890</span><span class="k-delta k-up">▲ 3.7%</span></div>
+          <div class="mt-kpi"><div class="k-top"><span class="k-label">Consumo por orden</span><span class="k-icon" style="background:rgba(0,194,146,.12);color:var(--success-dark)"><span class="material-icons">functions</span></span></div><span class="k-value">1.5</span><span class="k-delta muted">ítems / orden</span></div>
+        </div>
+      </div>
+
+      <div data-tabpanel="collection" style="display:none">
+        <div class="mt-kpi-grid">
+          <div class="mt-kpi"><div class="k-top"><span class="k-label">Tickets de collection</span><span class="k-icon" style="background:var(--magenta-soft);color:var(--purple)"><span class="material-icons">assignment_returned</span></span></div><span class="k-value">128</span><span class="k-delta k-up">▲ 8.4%</span></div>
+          <div class="mt-kpi"><div class="k-top"><span class="k-label">CPE recolectados</span><span class="k-icon" style="background:rgba(31,179,112,.1);color:var(--success)"><span class="material-icons">inventory</span></span></div><span class="k-value">687</span><span class="k-delta k-up">▲ 6.9%</span></div>
+          <div class="mt-kpi"><div class="k-top"><span class="k-label">Tasa de recuperación</span><span class="k-icon" style="background:rgba(0,194,146,.12);color:var(--success-dark)"><span class="material-icons">autorenew</span></span></div><span class="k-value">63%</span><span class="k-delta k-up">▲ 2 pts</span></div>
+          <div class="mt-kpi"><div class="k-top"><span class="k-label">Contactos promedio</span><span class="k-icon" style="background:rgba(255,152,0,.12);color:var(--amber)"><span class="material-icons">call</span></span></div><span class="k-value">2.1</span><span class="k-delta muted">por ticket</span></div>
+        </div>
+      </div>
+
+      <div data-tabpanel="retorno" style="display:none">
+        <div class="mt-kpi-grid">
+          <div class="mt-kpi"><div class="k-top"><span class="k-label">Retornos a warehouse</span><span class="k-icon" style="background:var(--primary-tint);color:var(--primary)"><span class="material-icons">local_shipping</span></span></div><span class="k-value">96</span><span class="k-delta k-up">▲ 1.9%</span></div>
+          <div class="mt-kpi"><div class="k-top"><span class="k-label">En tránsito</span><span class="k-icon" style="background:rgba(255,152,0,.12);color:var(--amber)"><span class="material-icons">sync</span></span></div><span class="k-value">14</span><span class="k-delta muted">in transit</span></div>
+          <div class="mt-kpi"><div class="k-top"><span class="k-label">Confirmados</span><span class="k-icon" style="background:rgba(31,179,112,.1);color:var(--success)"><span class="material-icons">verified</span></span></div><span class="k-value">82</span><span class="k-delta k-up">85% del total</span></div>
+          <div class="mt-kpi"><div class="k-top"><span class="k-label">Discrepancias</span><span class="k-icon" style="background:rgba(244,67,54,.1);color:var(--warn)"><span class="material-icons">report_problem</span></span></div><span class="k-value">3</span><span class="k-delta k-down">▲ 1 caso</span></div>
+        </div>
+      </div>
+
+      <div data-tabpanel="stock" style="display:none">
+        <div class="mt-kpi-grid">
+          <div class="mt-kpi"><div class="k-top"><span class="k-label">Inventario operativo</span><span class="k-icon" style="background:var(--primary-tint);color:var(--primary)"><span class="material-icons">inventory</span></span></div><span class="k-value">18,420</span><span class="k-delta k-up">▲ 3.2%</span></div>
+          <div class="mt-kpi"><div class="k-top"><span class="k-label">Stock turns</span><span class="k-icon" style="background:rgba(0,194,146,.12);color:var(--success-dark)"><span class="material-icons">autorenew</span></span></div><span class="k-value">4.2x</span><span class="k-delta k-up">▲ 0.3x</span></div>
+          <div class="mt-kpi"><div class="k-top"><span class="k-label">Quiebres de stock</span><span class="k-icon" style="background:rgba(244,67,54,.1);color:var(--warn)"><span class="material-icons">error_outline</span></span></div><span class="k-value">9</span><span class="k-delta k-down">▲ 2 alertas</span></div>
+          <div class="mt-kpi"><div class="k-top"><span class="k-label">Exceso de stock</span><span class="k-icon" style="background:rgba(255,152,0,.12);color:var(--amber)"><span class="material-icons">move_up</span></span></div><span class="k-value">5</span><span class="k-delta muted">técnicos / ubicaciones</span></div>
+        </div>
+      </div>
+
+      <div data-tabpanel="recuperado" style="display:none">
+        <div class="mt-kpi-grid">
+          <div class="mt-kpi"><div class="k-top"><span class="k-label">Recuperado -R</span><span class="k-icon" style="background:var(--magenta-soft);color:var(--purple)"><span class="material-icons">autorenew</span></span></div><span class="k-value">4,230</span><span class="k-delta k-up">▲ 7.1%</span></div>
+          <div class="mt-kpi"><div class="k-top"><span class="k-label">Refurbished OK</span><span class="k-icon" style="background:rgba(31,179,112,.1);color:var(--success)"><span class="material-icons">build_circle</span></span></div><span class="k-value">2,860</span><span class="k-delta k-up">▲ 5.5%</span></div>
+          <div class="mt-kpi"><div class="k-top"><span class="k-label">Reinyectados</span><span class="k-icon" style="background:var(--primary-tint);color:var(--primary)"><span class="material-icons">recycling</span></span></div><span class="k-value">63%</span><span class="k-delta k-up">▲ 2 pts</span></div>
+          <div class="mt-kpi"><div class="k-top"><span class="k-label">En testing</span><span class="k-icon" style="background:rgba(255,152,0,.12);color:var(--amber)"><span class="material-icons">science</span></span></div><span class="k-value">2,560</span><span class="k-delta muted">en laboratorio</span></div>
+        </div>
+      </div>
+
+      <div data-tabpanel="adopcion" style="display:none">
+        <div class="mt-kpi-grid">
+          <div class="mt-kpi"><div class="k-top"><span class="k-label">Usuarios activos</span><span class="k-icon" style="background:var(--primary-tint);color:var(--primary)"><span class="material-icons">group</span></span></div><span class="k-value">146</span><span class="k-delta k-up">▲ 9 usuarios</span></div>
+          <div class="mt-kpi"><div class="k-top"><span class="k-label">Movimientos vía app</span><span class="k-icon" style="background:rgba(31,179,112,.1);color:var(--success)"><span class="material-icons">smartphone</span></span></div><span class="k-value">94%</span><span class="k-delta k-up">▲ 3 pts</span></div>
+          <div class="mt-kpi"><div class="k-top"><span class="k-label">Escaneos serial / MAC</span><span class="k-icon" style="background:rgba(152,29,151,.1);color:var(--info)"><span class="material-icons">qr_code_scanner</span></span></div><span class="k-value">12,300</span><span class="k-delta k-up">▲ 4.8%</span></div>
+          <div class="mt-kpi"><div class="k-top"><span class="k-label">Errores de captura</span><span class="k-icon" style="background:rgba(244,67,54,.1);color:var(--warn)"><span class="material-icons">error_outline</span></span></div><span class="k-value">1.2%</span><span class="k-delta k-up">▼ 0.4 pts</span></div>
+        </div>
+      </div>
+
+      <div data-tabpanel="ejecutivos" style="display:none">
+        <div class="mt-kpi-grid">
+          <div class="mt-kpi"><div class="k-top"><span class="k-label">Valor de inventario</span><span class="k-icon" style="background:var(--primary-tint);color:var(--primary)"><span class="material-icons">payments</span></span></div><span class="k-value">USD 2.1M</span><span class="k-delta k-up">▲ 1.7%</span></div>
+          <div class="mt-kpi"><div class="k-top"><span class="k-label">Ahorro por reúso</span><span class="k-icon" style="background:rgba(31,179,112,.1);color:var(--success)"><span class="material-icons">savings</span></span></div><span class="k-value">USD 480k</span><span class="k-delta k-up">▲ 8.9%</span></div>
+          <div class="mt-kpi"><div class="k-top"><span class="k-label">Rotación global</span><span class="k-icon" style="background:rgba(0,194,146,.12);color:var(--success-dark)"><span class="material-icons">autorenew</span></span></div><span class="k-value">4.2x</span><span class="k-delta k-up">▲ 0.3x</span></div>
+          <div class="mt-kpi"><div class="k-top"><span class="k-label">Quiebres críticos</span><span class="k-icon" style="background:rgba(244,67,54,.1);color:var(--warn)"><span class="material-icons">priority_high</span></span></div><span class="k-value">9</span><span class="k-delta k-down">▲ 2 alertas</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-note">
+    Los reportes y alarmas se visualizan y filtran mediante <b>dynamic control panels</b> conforme a las plantillas acordadas con el cliente (spec §16.1; pendiente <b>PEND-INV-02</b>). El catálogo cubre los <b>25 reportes operativos mínimos</b> y los <b>9 grupos de KPIs</b>: recepción, asignación a técnicos, consumo operativo, collection de CPE, retorno a warehouse, stock y salud del inventario, inventario recuperado y refurbished, adopción del sistema y ejecutivos.
+  </div>
+</div>
+  <script src="assets/app.js"></script>
+</body>
+</html>

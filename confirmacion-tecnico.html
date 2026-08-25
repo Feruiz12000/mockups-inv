@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Más Tech · Inventario · Confirmación del Técnico</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="assets/mastech-webmastech.css">
+</head>
+<body data-module="confirmacion-tecnico" data-title="Confirmación del Técnico" data-breadcrumb="Confirmación de recepción">
+<div id="mt-page">
+
+  <div class="mt-card">
+    <!-- Header -->
+    <div class="mt-page-header">
+      <div class="mt-header-icon"><span class="material-icons">how_to_reg</span></div>
+      <div class="mt-header-text">
+        <div class="mt-header-title">Confirmación de recepción del técnico</div>
+        <div class="mt-header-sub">HU-INV-04 · spec §11.6 / §10.2.1 · CU-INV-04</div>
+      </div>
+      <span class="mt-mobile-hint"><span class="material-icons">smartphone</span> Pantalla de técnico (app móvil) — representada como panel web</span>
+      <span class="mt-header-spacer"></span>
+      <div class="mt-header-badge">T-2291 · J. Gómez</div>
+      <span class="mt-chip chip-indigo">Sublocación SL-44-01</span>
+    </div>
+
+    <!-- Escaneo principal -->
+    <div class="mt-section-title"><span class="material-icons">qr_code_scanner</span> Escanear para confirmar</div>
+    <div class="mt-scan-field plain" style="margin-bottom:6px">
+      <button type="button" class="mt-icon-btn primary" title="Escanear"><span class="material-icons">qr_code_scanner</span></button>
+      <input placeholder="Escanear serial / MAC del equipo recibido">
+    </div>
+    <p class="mt-hint" style="margin-bottom:18px">Solo puedes confirmar equipos incluidos en tu asignación (§14.5) y contenidos en el documento origen (§8.4.3).</p>
+
+    <!-- Resumen / progreso -->
+    <div class="mt-section-title"><span class="material-icons">inventory_2</span> Material asignado pendiente de confirmar</div>
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:6px; flex-wrap:wrap">
+      <b>3 de 6 confirmados</b>
+      <span class="small muted">Documento origen 351-0044213 → sublocación SL-44-01</span>
+    </div>
+    <div class="mt-progress determinate" style="margin-bottom:16px"><span style="position:absolute;left:0;top:0;height:100%;width:50%;background:var(--primary);display:block"></span></div>
+
+    <div class="mt-table-wrap">
+      <table class="mt-table neutral-hover">
+        <thead>
+          <tr><th class="left">Material</th><th class="left">Serial / MAC o Cantidad esperada</th><th>Tipo</th><th>Confirmación</th><th>Estado</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="left">FTTH ONT</td>
+            <td class="left cell-mono">SN-77Q1183</td>
+            <td><span class="mt-chip chip-slate">Serializado</span></td>
+            <td><span class="cell-mono">SN-77Q1183</span> <span class="material-icons" style="color:var(--success); font-size:16px; vertical-align:middle">check_circle</span></td>
+            <td><span class="mt-chip chip-green">Confirmado</span></td>
+          </tr>
+          <tr>
+            <td class="left">HFC CPE</td>
+            <td class="left cell-mono">A1:B2:C3:D4:E5</td>
+            <td><span class="mt-chip chip-slate">Serializado</span></td>
+            <td><button class="mt-btn mt-btn-sm mt-btn-stroked"><span class="material-icons">qr_code_scanner</span> Escanear</button></td>
+            <td><span class="mt-chip chip-grey">Pendiente</span></td>
+          </tr>
+          <tr>
+            <td class="left">FTTH ONT <span class="mt-tag r">-R</span></td>
+            <td class="left cell-mono">SN-RF-22910</td>
+            <td><span class="mt-chip chip-slate">Serializado</span></td>
+            <td><span class="cell-mono">SN-RF-22910</span> <span class="material-icons" style="color:var(--success); font-size:16px; vertical-align:middle">check_circle</span></td>
+            <td><span class="mt-chip chip-green">Confirmado</span></td>
+          </tr>
+          <tr>
+            <td class="left">Extender</td>
+            <td class="left cell-mono">SN-EX-9931</td>
+            <td><span class="mt-chip chip-slate">Serializado</span></td>
+            <td><button class="mt-btn mt-btn-sm mt-btn-stroked"><span class="material-icons">qr_code_scanner</span> Escanear</button></td>
+            <td><span class="mt-chip chip-grey">Pendiente</span></td>
+          </tr>
+          <tr>
+            <td class="left">Cable drop coaxial</td>
+            <td class="left cell-mono">800 FT</td>
+            <td><span class="mt-chip chip-sky">No serializado</span></td>
+            <td>
+              <span style="display:inline-flex; gap:6px; align-items:center; justify-content:center">
+                <span class="mt-field qty" style="height:32px"><span class="material-icons">tag</span><input type="number" value="800" data-expected="800" data-uom="FT"></span>
+                <button class="mt-btn mt-btn-sm mt-btn-primary" data-confirm-btn><span class="material-icons">check</span> Confirmar</button>
+              </span>
+            </td>
+            <td><span class="mt-chip" data-qty-status></span></td>
+          </tr>
+          <tr>
+            <td class="left">Conectores</td>
+            <td class="left cell-mono">240 UND</td>
+            <td><span class="mt-chip chip-sky">No serializado</span></td>
+            <td>
+              <span style="display:inline-flex; gap:6px; align-items:center; justify-content:center">
+                <span class="mt-field qty" style="height:32px"><span class="material-icons">tag</span><input type="number" value="100" data-expected="240" data-uom="UND"></span>
+                <button class="mt-btn mt-btn-sm mt-btn-primary" data-confirm-btn><span class="material-icons">check</span> Confirmar</button>
+              </span>
+            </td>
+            <td><span class="mt-chip" data-qty-status></span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="display:flex; align-items:center; gap:22px; flex-wrap:wrap; margin-top:14px">
+      <span class="small muted" style="display:inline-flex; align-items:center">
+        Reglas de cantidad no serializada
+        <span class="mt-help" tabindex="0" role="button" aria-label="Ver reglas de cantidad no serializada">?<span class="mt-help-bubble">
+          <b>Cantidad de material no serializado</b> (compara con lo esperado/asignado): &nbsp;<span class="mt-chip chip-green"><span class="material-icons">check_circle</span> Igual</span> recepción completa
+          <span class="mt-help-sep"></span>
+          <span class="mt-chip chip-amber"><span class="material-icons">error</span> Menor</span> se confirma <b>parcial</b>: la diferencia se registra como <b>faltante</b> y se reporta al supervisor para reconciliación (lo confirmado queda disponible para consumo)
+          <span class="mt-help-sep"></span>
+          <span class="mt-chip chip-red"><span class="material-icons">block</span> Mayor</span> <b>no se permite</b>: no puedes confirmar más de lo asignado (§14.5 / §8.4.3); el supervisor debe asignar más primero.
+          <span class="mt-help-sep"></span>
+          Pruébalo: cambia la cantidad de <b>Conectores</b> (esperado 240) — con 100 marca faltante; escribe más de 240 y el botón Confirmar se bloquea.
+        </span></span>
+      </span>
+      <span class="small muted" style="display:inline-flex; align-items:center">
+        Restricción de stock no asignado
+        <span class="mt-help" tabindex="0" role="button" aria-label="Ver restricción de stock no asignado">!<span class="mt-help-bubble">El técnico no puede confirmar recepción de stock <b>no asignado</b> (§14.5); ningún usuario puede confirmar material que no esté contenido en un <b>documento origen</b> (§8.4.3).</span></span>
+      </span>
+      <span class="small muted" style="display:inline-flex; align-items:center">
+        Reglas del módulo
+        <span class="mt-help" tabindex="0" role="button" aria-label="Ver reglas del módulo">?<span class="mt-help-bubble">
+          <b>Reglas del módulo (HU-INV-04 · spec §11.6 / §10.2.1):</b> el técnico no puede confirmar recepción de stock no asignado (§14.5) · ningún usuario confirma material no contenido en un documento origen (§8.4.3) · una vez confirmado, el material queda disponible para <a href="consumption.html">consumo por orden</a> (HU-INV-05/06).
+        </span></span>
+      </span>
+    </div>
+
+    <div class="mt-form-actions">
+      <button class="mt-btn">Guardar avance</button>
+      <button class="mt-btn mt-btn-primary"><span class="material-icons">how_to_reg</span> Confirmar todo lo escaneado</button>
+    </div>
+  </div>
+
+</div>
+  <script src="assets/app.js"></script>
+</body>
+</html>

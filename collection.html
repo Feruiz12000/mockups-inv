@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Más Tech · Inventario · Collection</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="assets/mastech-webmastech.css">
+</head>
+<body data-module="collection" data-title="Collection · Recolección de CPE" data-breadcrumb="Collection">
+<div id="mt-page">
+
+  <div class="mt-card">
+    <!-- Header -->
+    <div class="mt-page-header">
+      <div class="mt-header-icon"><span class="material-icons">assignment_returned</span></div>
+      <div class="mt-header-text">
+        <div class="mt-header-title">Collection — Recolección de CPE</div>
+        <div class="mt-header-sub">Tickets de recuperación · Pending → In progress → Collected · HU-INV-08/09/10</div>
+      </div>
+      <div class="mt-header-badge">128 tickets</div>
+      <span class="mt-header-spacer"></span>
+      <div class="mt-header-actions">
+        <button class="mt-btn mt-btn-stroked" data-open-modal="m-eligibles"><span class="material-icons">person_search</span> Cuentas elegibles</button>
+        <button class="mt-btn mt-btn-primary" data-open-modal="m-nuevo"><span class="material-icons">add</span> Nuevo ticket</button>
+      </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="mt-filter-bar">
+      <div class="mt-field grow"><span class="material-icons">search</span><input type="text" placeholder="Customer account / customer ID / address"></div>
+      <div class="mt-field"><span class="material-icons">flag</span>
+        <select><option>Estado: todos</option><option>Pending</option><option>In progress</option><option>Collected</option></select></div>
+      <div class="mt-field"><span class="material-icons">label</span>
+        <select><option>Reason code: todos</option><option>ID · Involuntary Disconnect</option><option>C · Voluntary / Churn</option><option>PC · Collection Plan</option><option>TR · Truck Roll</option><option>D · Dead on Arrival</option><option>M · Migration</option></select></div>
+      <div class="mt-field"><span class="material-icons">alt_route</span>
+        <select><option>Origen: todos</option><option>Cuenta elegible</option><option>Repair order / truck roll</option><option>New install</option><option>Tienda</option></select></div>
+      <div class="mt-field"><span class="material-icons">location_city</span><input type="text" placeholder="Ciudad" style="min-width:100px"></div>
+      <div class="mt-field"><span class="material-icons">calendar_today</span><input type="date"></div>
+      <button class="mt-icon-btn primary" title="Buscar"><span class="material-icons">search</span></button>
+      <button class="mt-icon-btn" title="Limpiar"><span class="material-icons">clear</span></button>
+      <button class="mt-icon-btn" title="Exportar"><span class="material-icons">download</span></button>
+    </div>
+
+    <div class="mt-progress static" style="margin-bottom:12px"></div>
+
+    <!-- Tabla -->
+    <div class="mt-table-wrap">
+      <table class="mt-table">
+        <thead>
+          <tr>
+            <th>Ticket</th><th class="left">Cuenta / Cliente</th><th>Origen</th><th>Reason</th>
+            <th class="left">CPE · Serial/MAC</th><th>Contactos</th><th>Estado</th><th>Partner / Actor</th><th>Fecha</th><th>Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="cell-mono">#COL-004521</td>
+            <td class="left"><b>8{ }001234567</b><br><span class="small muted">María Pérez · Panamá</span></td>
+            <td><span class="mt-chip chip-blue">Cuenta elegible</span></td>
+            <td><span class="mt-tag">C</span></td>
+            <td class="left">HFC CPE · <span class="cell-mono">A1:B2:C3:D4:E5</span></td>
+            <td>2</td>
+            <td><span class="mt-chip chip-grey">Pending</span></td>
+            <td>—</td>
+            <td class="cell-mono">04/08 09:12</td>
+            <td class="row-actions">
+              <button class="mt-icon-btn" title="Ver"><span class="material-icons">visibility</span></button>
+              <button class="mt-icon-btn primary" title="Iniciar (customer premise)" data-open-modal="m-recolectar"><span class="material-icons">play_arrow</span></button>
+            </td>
+          </tr>
+          <tr>
+            <td class="cell-mono">#COL-004520</td>
+            <td class="left"><b>8{ }009988776</b><br><span class="small muted">Juan Gómez · San Miguelito</span></td>
+            <td><span class="mt-chip chip-purple soft">Repair / TR</span></td>
+            <td><span class="mt-tag">TR</span></td>
+            <td class="left">FTTH ONT · <span class="cell-mono">SN-77Q1183</span></td>
+            <td>1</td>
+            <td><span class="mt-chip chip-amber">In progress</span></td>
+            <td>Técnico · T-2291</td>
+            <td class="cell-mono">04/08 08:40</td>
+            <td class="row-actions">
+              <button class="mt-icon-btn" title="Ver"><span class="material-icons">visibility</span></button>
+              <button class="mt-icon-btn accent" title="Registrar recolección" data-open-modal="m-recolectar"><span class="material-icons">qr_code_scanner</span></button>
+            </td>
+          </tr>
+          <tr>
+            <td class="cell-mono">#COL-004512</td>
+            <td class="left"><b>8{ }004455661</b><br><span class="small muted">Retail · Tienda Vía España</span></td>
+            <td><span class="mt-chip chip-indigo">Tienda</span></td>
+            <td><span class="mt-tag">D</span></td>
+            <td class="left">FTTH Gateway · <span class="cell-mono">B8:44:12:9A:0C</span></td>
+            <td>0</td>
+            <td><span class="mt-chip chip-green">Collected</span></td>
+            <td>Retail Manager</td>
+            <td class="cell-mono">03/08 17:05</td>
+            <td class="row-actions">
+              <button class="mt-icon-btn" title="Ver"><span class="material-icons">visibility</span></button>
+              <button class="mt-icon-btn" title="Trazabilidad"><span class="material-icons">timeline</span></button>
+            </td>
+          </tr>
+          <tr>
+            <td class="cell-mono">#COL-004498</td>
+            <td class="left"><b>8{ }007766554</b><br><span class="small muted">Ana Ruiz · Colón</span></td>
+            <td><span class="mt-chip chip-teal">New install</span></td>
+            <td><span class="mt-tag">D</span></td>
+            <td class="left">ATA · <span class="cell-mono">SN-AT55210</span></td>
+            <td>3</td>
+            <td><span class="mt-chip chip-green">Collected</span></td>
+            <td>Tercero · CP-08</td>
+            <td class="cell-mono">03/08 14:22</td>
+            <td class="row-actions">
+              <button class="mt-icon-btn" title="Ver"><span class="material-icons">visibility</span></button>
+              <button class="mt-icon-btn" title="Trazabilidad"><span class="material-icons">timeline</span></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="mt-paginator">
+      <span>Filas por página: 25</span>
+      <span>1 – 25 de 128</span>
+      <span class="material-icons">first_page</span><span class="material-icons">chevron_left</span>
+      <span class="material-icons">chevron_right</span><span class="material-icons">last_page</span>
+    </div>
+  </div>
+
+  <div style="margin-top:10px">
+    <span class="small muted" style="display:inline-flex; align-items:center">
+      Reglas del módulo
+      <span class="mt-help" tabindex="0" role="button" aria-label="Ver reglas del módulo">?<span class="mt-help-bubble"><b>Reglas del módulo (spec §14):</b> el reason code es obligatorio para cerrar (§14.11) · estados Pending → In progress → Collected (§14.12) · <i>In progress</i> inicia al confirmar customer premise (§14.13) · el serial/MAC se valida contra Liberate cuando exista referencia (§14.14) · el stock recuperado se registra separado del deployable bajo código -R (§14.15/§14.16).</span></span>
+    </span>
+  </div>
+</div>
+
+<!-- ================= MODAL: Nuevo ticket ================= -->
+<div class="mt-modal-overlay" id="m-nuevo">
+  <div class="mt-modal lg">
+    <div class="mt-modal-head">
+      <span class="material-icons">add_task</span><h3>Nuevo ticket de collection</h3>
+      <button class="mt-icon-btn mt-modal-close" data-close-modal><span class="material-icons">close</span></button>
+    </div>
+    <div class="mt-modal-body" data-tabs>
+      <div class="mt-tabs">
+        <div class="mt-tab active" data-tab="cuenta">Base de cuentas elegibles</div>
+        <div class="mt-tab" data-tab="orden">Desde orden</div>
+        <div class="mt-tab" data-tab="tienda">Desde tienda</div>
+      </div>
+
+      <!-- Origen: cuenta elegible -->
+      <div data-tabpanel="cuenta">
+        <div class="mt-field grow" style="margin-bottom:14px"><span class="material-icons">person_search</span><input type="text" placeholder="Buscar cuenta elegible en Liberate (customer account / ID / address)"></div>
+        <div class="mt-form-grid">
+          <div class="mt-form-field"><label>Customer account</label><input class="mt-input readonly" value="8{ }001234567" readonly></div>
+          <div class="mt-form-field"><label>Customer ID</label><input class="mt-input readonly" value="CID-889201" readonly></div>
+          <div class="mt-form-field"><label>Address</label><input class="mt-input readonly" value="Calle 50, Ciudad de Panamá" readonly></div>
+          <div class="mt-form-field"><label>Aging disconnect order</label><input class="mt-input readonly" value="12 días" readonly></div>
+        </div>
+        <p class="mt-hint" style="margin-top:6px">Datos prellenados desde Liberate (RF 2.1.3). Incluye clientes <i>disconnected</i> en status C con disconnect order.</p>
+      </div>
+
+      <!-- Origen: desde orden -->
+      <div data-tabpanel="orden" style="display:none">
+        <div class="mt-form-grid">
+          <div class="mt-form-field"><label>Tipo de orden</label>
+            <select class="mt-select"><option>Repair order / truck roll → reason TR</option><option>New install service order → reason D</option></select></div>
+          <div class="mt-form-field"><label>Order ID</label><input class="mt-input" placeholder="Repair order / service order ID"></div>
+        </div>
+        <div style="margin-top:12px">
+          <span class="small muted" style="display:inline-flex; align-items:center">
+            Cómo se prellena el reason code
+            <span class="mt-help warn" tabindex="0" role="button" aria-label="Ver cómo se prellena el reason code">!<span class="mt-help-bubble">El reason code se prellena según el origen: <b>TR</b> (repair/truck roll) o <b>D</b> (new install) — RF 2.1.10/2.1.11.</span></span>
+          </span>
+        </div>
+      </div>
+
+      <!-- Origen: desde tienda -->
+      <div data-tabpanel="tienda" style="display:none">
+        <div class="mt-form-grid">
+          <div class="mt-form-field"><label>Tienda</label><select class="mt-select"><option>Tienda Vía España</option><option>Tienda Albrook</option></select></div>
+          <div class="mt-form-field"><label>Disconnect order asociado <span class="req">*</span></label><input class="mt-input" placeholder="Disconnect order ID"></div>
+        </div>
+        <div style="margin-top:12px">
+          <span class="small muted" style="display:inline-flex; align-items:center">
+            Requisito de disconnect order
+            <span class="mt-help warn" tabindex="0" role="button" aria-label="Ver requisito de disconnect order">!<span class="mt-help-bubble">Debe existir un <b>disconnect order</b> asociado; reason code <b>D</b> (RF 2.1.12).</span></span>
+          </span>
+        </div>
+      </div>
+
+      <div class="mt-divider"></div>
+
+      <!-- Comunes -->
+      <div class="mt-form-grid">
+        <div class="mt-form-field"><label>CPE / Material <span class="req">*</span></label>
+          <select class="mt-select"><option>Seleccionar desde catálogo…</option><option>HFC CPE</option><option>FTTH ONT</option><option>FTTH Gateway</option><option>Extender</option><option>ATA</option></select></div>
+        <div class="mt-form-field"><label>Reason code <span class="req">*</span></label>
+          <select class="mt-select"><option>ID · Involuntary Disconnect</option><option>C · Voluntary / Churn</option><option>PC · Collection Plan</option><option>TR · Truck Roll</option><option>D · Dead on Arrival</option><option>M · Migration</option></select></div>
+        <div class="mt-form-field"><label>Nº de contactos al cliente</label><input class="mt-input" type="number" value="0"></div>
+        <div class="mt-form-field"><label>Collection partner / actor</label><input class="mt-input" placeholder="Técnico / tienda / tercero"></div>
+        <div class="mt-form-field" style="grid-column:1/-1"><label>Observaciones</label><textarea class="mt-textarea" placeholder="Observaciones del ticket…"></textarea></div>
+      </div>
+    </div>
+    <div class="mt-modal-foot">
+      <button class="mt-btn" data-close-modal>Cancelar</button>
+      <button class="mt-btn mt-btn-primary" data-close-modal><span class="material-icons">save</span> Crear ticket (Pending)</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MODAL: Registrar recolección ================= -->
+<div class="mt-modal-overlay" id="m-recolectar">
+  <div class="mt-modal">
+    <div class="mt-modal-head">
+      <span class="material-icons">qr_code_scanner</span><h3>Registrar recolección</h3>
+      <button class="mt-icon-btn mt-modal-close" data-close-modal><span class="material-icons">close</span></button>
+    </div>
+    <div class="mt-modal-body">
+      <div class="mt-steps">
+        <div class="mt-step done"><span class="n">1</span> En customer premise</div>
+        <span class="mt-step-sep"></span>
+        <div class="mt-step active"><span class="n">2</span> Escaneo + reason</div>
+        <span class="mt-step-sep"></span>
+        <div class="mt-step"><span class="n">3</span> Collected</div>
+      </div>
+      <div class="mt-scan-field plain" style="margin-bottom:8px">
+        <button type="button" class="mt-icon-btn primary" title="Escanear"><span class="material-icons">qr_code_scanner</span></button>
+        <input value="A1:B2:C3:D4:E5" placeholder="Escanear serial / MAC del equipo recolectado">
+      </div>
+      <div style="margin-bottom:14px">
+        <span class="small muted" style="display:inline-flex; align-items:center">
+          Validación Liberate
+          <span class="mt-help ok" tabindex="0" role="button" aria-label="Ver validación Liberate">✓<span class="mt-help-bubble start">Serial/MAC validado contra Liberate (CPE asociado a la cuenta) — §14.14.</span></span>
+        </span>
+      </div>
+      <div class="mt-form-grid cols-1">
+        <div class="mt-form-field"><label>Reason code <span class="req">*</span></label>
+          <select class="mt-select"><option>C · Voluntary / Churn</option><option>ID · Involuntary Disconnect</option><option>PC · Collection Plan</option><option>TR · Truck Roll</option><option>D · Dead on Arrival</option><option>M · Migration</option></select></div>
+        <div class="mt-form-field"><label>Evidencia (foto / video)</label>
+          <button class="mt-btn mt-btn-stroked"><span class="material-icons">photo_camera</span> Adjuntar evidencia</button></div>
+        <div class="mt-form-field"><label>Observaciones</label><textarea class="mt-textarea"></textarea></div>
+      </div>
+      <div style="margin-top:12px">
+        <span class="small muted" style="display:inline-flex; align-items:center">
+          Qué pasa al marcar Collected
+          <span class="mt-help warn" tabindex="0" role="button" aria-label="Ver qué pasa al marcar Collected">!<span class="mt-help-bubble up">No es posible cerrar el ticket sin reason code (§14.11). Al confirmar se envía a Liberate el collection ID, comments y flag de CPE recolectado; se notifica al cliente por correo.</span></span>
+        </span>
+      </div>
+    </div>
+    <div class="mt-modal-foot">
+      <button class="mt-btn" data-close-modal>Cancelar</button>
+      <button class="mt-btn mt-btn-accent" data-close-modal><span class="material-icons">check_circle</span> Marcar Collected</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MODAL: Cuentas elegibles ================= -->
+<div class="mt-modal-overlay" id="m-eligibles">
+  <div class="mt-modal lg" data-select-scope>
+    <div class="mt-modal-head">
+      <span class="material-icons">person_search</span><h3>Base de cuentas elegibles (Liberate)</h3>
+      <button class="mt-icon-btn mt-modal-close" data-close-modal><span class="material-icons">close</span></button>
+    </div>
+    <div class="mt-modal-body">
+      <div class="mt-filter-bar">
+        <div class="mt-field grow"><span class="material-icons">search</span><input type="text" placeholder="Customer account / ID / address"></div>
+        <div class="mt-field"><span class="material-icons">location_city</span><input type="text" placeholder="Ciudad"></div>
+        <div class="mt-field"><span class="material-icons">hourglass_bottom</span><input type="text" placeholder="Aging ≥ (días)" style="min-width:110px"></div>
+      </div>
+      <p class="mt-hint" style="margin:0 0 10px"><span class="material-icons" style="font-size:15px;vertical-align:middle;color:var(--primary)">info</span> Marca varias cuentas y usa <b>“Crear tickets”</b> para generarlos <b>en lote</b>, o <b>“Crear ticket”</b> de una fila para una sola.</p>
+      <div class="mt-table-wrap">
+        <table class="mt-table">
+          <thead><tr><th style="width:34px"><input type="checkbox" class="mt-check chk-all" title="Seleccionar todo"></th><th class="left">Customer account</th><th class="left">Cliente</th><th class="left">Address</th><th>Status</th><th>Aging</th><th>Acción</th></tr></thead>
+          <tbody>
+            <tr><td><input type="checkbox" class="mt-check chk-row"></td><td class="left cell-mono">8{ }001234567</td><td class="left">María Pérez</td><td class="left">Calle 50, Panamá</td><td><span class="mt-chip chip-red">C · Disconnect</span></td><td>12 d</td><td><button class="mt-btn mt-btn-sm mt-btn-primary" data-close-modal data-open-modal="m-nuevo" title="Crear ticket solo para esta cuenta">Crear ticket</button></td></tr>
+            <tr><td><input type="checkbox" class="mt-check chk-row"></td><td class="left cell-mono">8{ }005512340</td><td class="left">Pedro Sánchez</td><td class="left">Vía Brasil, Panamá</td><td><span class="mt-chip chip-red">C · Disconnect</span></td><td>8 d</td><td><button class="mt-btn mt-btn-sm mt-btn-primary" data-close-modal data-open-modal="m-nuevo" title="Crear ticket solo para esta cuenta">Crear ticket</button></td></tr>
+            <tr><td><input type="checkbox" class="mt-check chk-row"></td><td class="left cell-mono">8{ }009087651</td><td class="left">Lucía Díaz</td><td class="left">David, Chiriquí</td><td><span class="mt-chip chip-red">C · Disconnect</span></td><td>21 d</td><td><button class="mt-btn mt-btn-sm mt-btn-primary" data-close-modal data-open-modal="m-nuevo" title="Crear ticket solo para esta cuenta">Crear ticket</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="mt-modal-foot">
+      <button class="mt-btn" data-close-modal>Cerrar</button>
+      <button class="mt-btn mt-btn-primary" data-bulk-btn data-bulk-label="Crear tickets" data-close-modal disabled title="Crear tickets Pending para las cuentas seleccionadas"><span class="lbl">Crear tickets</span></button>
+    </div>
+  </div>
+</div>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>

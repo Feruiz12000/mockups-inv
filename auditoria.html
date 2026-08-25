@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Más Tech · Inventario · Auditoría</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="assets/mastech-webmastech.css">
+</head>
+<body data-module="auditoria" data-title="Auditoría" data-breadcrumb="Auditoría de movimientos">
+<div id="mt-page">
+
+  <div class="mt-card">
+    <!-- Header -->
+    <div class="mt-page-header">
+      <div class="mt-header-icon"><span class="material-icons">fact_check</span></div>
+      <div class="mt-header-text">
+        <div class="mt-header-title">Auditoría transversal de movimientos</div>
+        <div class="mt-header-sub">Registro inmutable de todas las transacciones · CMP-INV-14 · regla §14.20 · LLD §6.1</div>
+      </div>
+      <div class="mt-header-badge">1,204 eventos</div>
+      <span class="mt-header-spacer"></span>
+      <button class="mt-btn mt-btn-stroked"><span class="material-icons">download</span> Exportar</button>
+    </div>
+
+    <!-- Filtros -->
+    <div class="mt-filter-bar">
+      <div class="mt-field grow"><span class="material-icons">search</span><input type="text" placeholder="Usuario / referencia / movement_id"></div>
+      <div class="mt-field"><span class="material-icons">person</span>
+        <select><option>Usuario: todos</option><option>jperez</option><option>mgomez</option><option>tecnico.t2291</option><option>admin.inv</option></select></div>
+      <div class="mt-field"><span class="material-icons">widgets</span>
+        <select><option>Módulo: todos</option><option>Recepción</option><option>Asignación</option><option>Consumo</option><option>Collection</option><option>Retorno</option><option>Testing</option><option>Loan</option><option>Proyectos</option><option>Catálogos</option><option>Ubicaciones</option></select></div>
+      <div class="mt-field"><span class="material-icons">bolt</span>
+        <select><option>Acción: todas</option><option>Crear</option><option>Confirmar</option><option>Editar</option><option>Anular</option></select></div>
+      <div class="mt-field"><span class="material-icons">rule</span>
+        <select><option>Resultado: todos</option><option>OK</option><option>Error</option></select></div>
+      <div class="mt-field"><span class="material-icons">calendar_today</span><input type="date"></div>
+      <div class="mt-field"><span class="material-icons">receipt_long</span><input type="text" placeholder="Orden / ticket" style="min-width:120px"></div>
+      <button class="mt-icon-btn primary" title="Buscar"><span class="material-icons">search</span></button>
+      <button class="mt-icon-btn" title="Limpiar"><span class="material-icons">clear</span></button>
+    </div>
+
+    <!-- Tabla de auditoría -->
+    <div class="mt-table-wrap">
+      <table class="mt-table">
+        <thead>
+          <tr>
+            <th>Fecha / hora</th><th class="left">Usuario</th><th>Módulo</th><th class="left">Acción</th>
+            <th class="left">Referencia</th><th class="left">Ubicación</th><th>Resultado</th><th class="left">Detalle</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="cell-mono">04/08 09:12</td><td class="left">jperez</td>
+            <td><span class="mt-chip chip-teal">Recepción</span></td><td class="left">Confirmar recepción</td>
+            <td class="left"><span class="cell-mono">#DOC-8841 · mv-100231</span></td><td class="left">Warehouse 351</td>
+            <td><span class="mt-chip chip-green">OK</span></td><td class="left">Receipt confirmado · 120 ítems</td>
+          </tr>
+          <tr>
+            <td class="cell-mono">04/08 08:55</td><td class="left">mgomez</td>
+            <td><span class="mt-chip chip-teal">Asignación</span></td><td class="left">Asignar a técnico</td>
+            <td class="left"><span class="cell-mono">#ASG-4521 · mv-100230</span></td><td class="left">Sublocación T-2291</td>
+            <td><span class="mt-chip chip-green">OK</span></td><td class="left">40 ítems asignados a T-2291</td>
+          </tr>
+          <tr>
+            <td class="cell-mono">04/08 08:40</td><td class="left">tecnico.t2291</td>
+            <td><span class="mt-chip chip-teal">Consumo</span></td><td class="left">Instalar CPE</td>
+            <td class="left"><span class="cell-mono">#SO-99120 · mv-100229</span></td><td class="left">Customer premise</td>
+            <td><span class="mt-chip chip-green">OK</span></td><td class="left">FTTH ONT SN-77Q1183 instalado</td>
+          </tr>
+          <tr>
+            <td class="cell-mono">04/08 08:22</td><td class="left">tecnico.t1180</td>
+            <td><span class="mt-chip chip-teal">Collection</span></td><td class="left">Registrar recolección</td>
+            <td class="left"><span class="cell-mono">#COL-004520 · mv-100228</span></td><td class="left">Customer premise</td>
+            <td><span class="mt-chip chip-red">Error</span></td><td class="left">Reason code faltante — bloqueado (§14.11)</td>
+          </tr>
+          <tr>
+            <td class="cell-mono">04/08 07:58</td><td class="left">jperez</td>
+            <td><span class="mt-chip chip-teal">Retorno</span></td><td class="left">Confirmar retorno</td>
+            <td class="left"><span class="cell-mono">#RET-2201 · mv-100227</span></td><td class="left">Warehouse 351</td>
+            <td><span class="mt-chip chip-green">OK</span></td><td class="left">Retorno confirmado · 18 CPE</td>
+          </tr>
+          <tr>
+            <td class="cell-mono">03/08 17:30</td><td class="left">qa.lab</td>
+            <td><span class="mt-chip chip-teal">Testing</span></td><td class="left">Enviar a testing</td>
+            <td class="left"><span class="cell-mono">#TST-0231 · mv-100226</span></td><td class="left">Lab de testing</td>
+            <td><span class="mt-chip chip-green">OK</span></td><td class="left">5 equipos movidos a testing</td>
+          </tr>
+          <tr>
+            <td class="cell-mono">03/08 16:10</td><td class="left">contrata44</td>
+            <td><span class="mt-chip chip-teal">Loan</span></td><td class="left">Registrar préstamo</td>
+            <td class="left"><span class="cell-mono">#LN-0442 · mv-100225</span></td><td class="left">Contrata 44</td>
+            <td><span class="mt-chip chip-red">Error</span></td><td class="left">Préstamo vencido — sin devolución</td>
+          </tr>
+          <tr>
+            <td class="cell-mono">03/08 15:40</td><td class="left">admin.inv</td>
+            <td><span class="mt-chip chip-teal">Proyectos</span></td><td class="left">Reservar a proyecto</td>
+            <td class="left"><span class="cell-mono">#PRJ-FTTH-COL · mv-100224</span></td><td class="left">Proyecto FTTH-Colón</td>
+            <td><span class="mt-chip chip-green">OK</span></td><td class="left">Reserva por project ID · 60 ítems</td>
+          </tr>
+          <tr>
+            <td class="cell-mono">03/08 14:05</td><td class="left">admin.inv</td>
+            <td><span class="mt-chip chip-teal">Catálogos</span></td><td class="left">Editar material</td>
+            <td class="left"><span class="cell-mono">MAT-HFC-CPE · mv-100223</span></td><td class="left">—</td>
+            <td><span class="mt-chip chip-green">OK</span></td><td class="left">UOM actualizado a EA</td>
+          </tr>
+          <tr>
+            <td class="cell-mono">03/08 11:20</td><td class="left">supervisor</td>
+            <td><span class="mt-chip chip-teal">Ubicaciones</span></td><td class="left">Crear sublocación</td>
+            <td class="left"><span class="cell-mono">LOC-T-3402 · mv-100222</span></td><td class="left">Contrata 41</td>
+            <td><span class="mt-chip chip-green">OK</span></td><td class="left">Sublocación de técnico creada</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="mt-paginator">
+      <span>Filas por página: 25</span>
+      <span>1 – 25 de 1,204</span>
+      <span class="material-icons">first_page</span><span class="material-icons">chevron_left</span>
+      <span class="material-icons">chevron_right</span><span class="material-icons">last_page</span>
+    </div>
+  </div>
+
+  <div class="mt-note">
+    Toda transacción queda auditada por <b>usuario, fecha, hora, ubicación, orden / ticket y resultado</b> (§14.20); la correlación entre módulos se realiza por <span class="cell-mono">movement_id</span> / <span class="cell-mono">ticket_id</span> / <span class="cell-mono">orderRef</span> (LLD §6.1). El registro es <b>inmutable</b>.
+  </div>
+</div>
+  <script src="assets/app.js"></script>
+</body>
+</html>

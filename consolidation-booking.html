@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Más Tech · Inventario · Consolidación & Booking</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="assets/mastech-webmastech.css">
+</head>
+<body data-module="consolidation-booking" data-title="Consolidación & Booking" data-breadcrumb="Consolidación y booking (221)">
+<div id="mt-page">
+
+  <div class="mt-card">
+    <!-- Header -->
+    <div class="mt-page-header">
+      <div class="mt-header-icon"><span class="material-icons">request_quote</span></div>
+      <div class="mt-header-text">
+        <div class="mt-header-title">Consolidación de consumo y booking a CAPEX</div>
+        <div class="mt-header-sub">Consolidación diaria · salida 221 · debita inventario de la ubicación · HU-INV-07 · §11.8 · CU-INV-06</div>
+      </div>
+      <div class="mt-header-badge">Cierre 04/08 · EP-INV-04</div>
+    </div>
+
+    <!-- Filtros + Generar 221 -->
+    <div class="mt-filter-bar">
+      <div class="mt-field"><span class="material-icons">event</span><input type="date" title="Fecha del cierre"></div>
+      <div class="mt-field"><span class="material-icons">engineering</span>
+        <select><option>Contratista: todos</option><option>Contrata 44</option><option>Contrata 12</option><option>Más Tech (interno)</option></select></div>
+      <div class="mt-field"><span class="material-icons">warehouse</span>
+        <select><option>Ubicación: todas</option><option>Bodega David</option><option>Bodega Colón</option><option>Bodega Panamá Centro</option></select></div>
+      <div class="mt-field grow"><span class="material-icons">account_tree</span><input type="text" placeholder="Proyecto / WBS (ej. WBS-CAPEX-PA-4471)"></div>
+      <button class="mt-icon-btn primary" title="Buscar"><span class="material-icons">search</span></button>
+      <button class="mt-btn mt-btn-primary" data-open-modal="m-221"><span class="material-icons">receipt</span> Generar 221</button>
+    </div>
+
+    <!-- KPIs -->
+    <div class="mt-kpi-grid" style="margin-bottom:16px">
+      <div class="mt-kpi">
+        <div class="k-top">
+          <div class="k-icon" style="background:var(--primary-tint);color:var(--primary)"><span class="material-icons">inventory_2</span></div>
+          <span class="k-delta">Cierre diario</span>
+        </div>
+        <div class="k-value">342</div>
+        <div class="k-label">Ítems consolidados</div>
+      </div>
+      <div class="mt-kpi">
+        <div class="k-top">
+          <div class="k-icon" style="background:#e8f5e9;color:var(--success)"><span class="material-icons">savings</span></div>
+          <span class="k-delta k-up">CAPEX</span>
+        </div>
+        <div class="k-value">$ 48 210</div>
+        <div class="k-label">Valor capitalizable</div>
+      </div>
+      <div class="mt-kpi">
+        <div class="k-top">
+          <div class="k-icon" style="background:#F3E3F3;color:var(--info)"><span class="material-icons">verified</span></div>
+          <span class="k-delta">96 / 118</span>
+        </div>
+        <div class="k-value">96</div>
+        <div class="k-label">CPE validados en Liberate</div>
+      </div>
+      <div class="mt-kpi">
+        <div class="k-top">
+          <div class="k-icon" style="background:#fff3e0;color:var(--amber)"><span class="material-icons">receipt_long</span></div>
+          <span class="k-delta">SO / repair / TR</span>
+        </div>
+        <div class="k-value">74</div>
+        <div class="k-label">Órdenes consolidadas</div>
+      </div>
+    </div>
+
+    <!-- Tabla consumo consolidado -->
+    <div class="mt-section-title"><span class="material-icons">table_view</span> Consumo consolidado del día</div>
+    <div class="mt-table-wrap">
+      <table class="mt-table">
+        <thead>
+          <tr>
+            <th class="left">Serial / MAC</th><th class="left">Material</th><th>Cantidad</th><th>Valor</th><th>Contratista</th>
+            <th>Ubicación</th><th>Service order / Repair ticket</th><th class="left">Proyecto / WBS</th><th>Fecha de uso</th><th>¿CPE?</th><th>Validado Liberate</th><th>Destino contable / 221</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="left cell-mono">SN-77Q1183</td><td class="left">FTTH ONT</td><td>1</td><td class="cell-mono">$ 320.00</td><td>Contrata 44</td>
+            <td>Bodega David</td><td class="cell-mono">SO-7789102</td><td class="left cell-mono">PRJ-2025-FTTH-CHQ · WBS-CAPEX-PA-4471</td><td class="cell-mono">04/08</td>
+            <td><span class="mt-chip chip-green">Sí</span></td><td><span class="mt-chip chip-green">Validado</span></td>
+            <td><span class="mt-chip chip-green">CAPEX → 221</span></td>
+          </tr>
+          <tr>
+            <td class="left cell-mono">A1:B2:C3:D4:E5</td><td class="left">HFC CPE</td><td>1</td><td class="cell-mono">$ 280.00</td><td>Contrata 12</td>
+            <td>Bodega Colón</td><td class="cell-mono">RT-3391</td><td class="left cell-mono">— · OPEX</td><td class="cell-mono">04/08</td>
+            <td><span class="mt-chip chip-green">Sí</span></td><td><span class="mt-chip chip-amber">Pendiente</span></td>
+            <td><span class="mt-chip chip-grey">OPEX · no va al 221</span></td>
+          </tr>
+          <tr>
+            <td class="left cell-mono">—</td><td class="left">Drop cable FTTH <span class="mt-tag sky">No serializado</span></td><td>120 FT</td><td class="cell-mono">$ 108.00</td><td>Contrata 44</td>
+            <td>Bodega David</td><td class="cell-mono">SO-7789102</td><td class="left cell-mono">PRJ-2025-FTTH-CHQ · WBS-CAPEX-PA-4471</td><td class="cell-mono">04/08</td>
+            <td><span class="mt-chip chip-grey">No</span></td><td><span class="mt-chip chip-grey">N/A</span></td>
+            <td><span class="mt-chip chip-green">CAPEX → 221</span></td>
+          </tr>
+          <tr>
+            <td class="left cell-mono">SN-AT55210</td><td class="left">ATA</td><td>1</td><td class="cell-mono">$ 95.00</td><td>Contrata 44</td>
+            <td>Bodega David</td><td class="cell-mono">TR-55120</td><td class="left cell-mono">PRJ-2025-FTTH-CHQ · WBS-CAPEX-PA-4471</td><td class="cell-mono">04/08</td>
+            <td><span class="mt-chip chip-green">Sí</span></td><td><span class="mt-chip chip-green">Validado</span></td>
+            <td><span class="mt-chip chip-green">CAPEX → 221</span></td>
+          </tr>
+          <tr>
+            <td class="left cell-mono">—</td><td class="left">Conector SC/APC <span class="mt-tag sky">No serializado</span></td><td>12 UND</td><td class="cell-mono">$ 36.00</td><td>Contrata 12</td>
+            <td>Bodega Colón</td><td class="cell-mono">SO-7770021</td><td class="left cell-mono">— · OPEX</td><td class="cell-mono">04/08</td>
+            <td><span class="mt-chip chip-grey">No</span></td><td><span class="mt-chip chip-grey">N/A</span></td>
+            <td><span class="mt-chip chip-grey">OPEX · no va al 221</span></td>
+          </tr>
+          <tr>
+            <td class="left cell-mono">SN-ONT-9008</td><td class="left">FTTH Gateway</td><td>1</td><td class="cell-mono">$ 320.00</td><td>Contrata 44</td>
+            <td>Bodega David</td><td class="cell-mono">SO-7781900</td><td class="left cell-mono">PRJ-2025-FTTH-CHQ · WBS-CAPEX-PA-4471</td><td class="cell-mono">04/08</td>
+            <td><span class="mt-chip chip-green">Sí</span></td><td><span class="mt-chip chip-green">Validado</span></td>
+            <td><span class="mt-chip chip-green">CAPEX → 221</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="mt-paginator">
+      <span>Filas por página: 25</span>
+      <span>1 – 25 de 342</span>
+      <span class="material-icons">first_page</span><span class="material-icons">chevron_left</span>
+      <span class="material-icons">chevron_right</span><span class="material-icons">last_page</span>
+    </div>
+  </div>
+
+  <div style="display:flex; align-items:center; gap:22px; flex-wrap:wrap; margin-top:6px">
+    <span class="small muted" style="display:inline-flex; align-items:center">
+      Qué entra al documento 221 (CAPEX)
+      <span class="mt-help" tabindex="0" role="button" aria-label="Ver qué entra al documento 221">?<span class="mt-help-bubble">Las líneas imputadas a un <b>proyecto/WBS de CAPEX</b> — <b>incluidos los materiales no serializados</b> (p. ej. el <i>Drop cable FTTH</i>, que sí aparece en el 221) — se envían para el booking a CAPEX. Los ítems marcados <b>OPEX</b> (reparaciones, consumibles no capitalizables) <b>no</b> entran al 221. El criterio de exclusión es <b>CAPEX vs OPEX (proyecto/WBS)</b>, no serializado vs no serializado. La regla exacta de qué es capitalizable proviene del diagrama funcional pendiente <b>PEND-INV-03</b>.</span></span>
+    </span>
+    <span class="small muted" style="display:inline-flex; align-items:center">
+      Reglas del módulo
+      <span class="mt-help" tabindex="0" role="button" aria-label="Ver reglas del módulo">?<span class="mt-help-bubble"><b>Reglas del módulo (HU-INV-07 · §11.8):</b> la consolidación es <b>diaria</b> y debita el inventario de la ubicación · solo se capitaliza información de ítems validados como <b>CPE en Liberate</b> cuando corresponda (§11.8) · el proceso <b>batch</b> de generación del 221 debe ser <b>idempotente</b> ante reejecución, sin duplicar bookings (LLD §5.4).</span></span>
+    </span>
+  </div>
+</div>
+
+<!-- ================= MODAL: Vista previa documento 221 ================= -->
+<div class="mt-modal-overlay" id="m-221">
+  <div class="mt-modal lg">
+    <div class="mt-modal-head">
+      <span class="material-icons">request_quote</span><h3>Vista previa · documento 221 (booking a CAPEX)</h3>
+      <button class="mt-icon-btn mt-modal-close" data-close-modal><span class="material-icons">close</span></button>
+    </div>
+    <div class="mt-modal-body">
+      <ul class="mt-list-plain small" style="margin-bottom:14px">
+        <li><span class="muted">Tipo de movimiento</span><b style="margin-left:auto">221 · Consumo / booking a WBS (CAPEX)</b></li>
+        <li><span class="muted">Fecha del cierre</span><b style="margin-left:auto" class="cell-mono">04/08/2026</b></li>
+        <li><span class="muted">Plant / Location</span><b style="margin-left:auto">Bodega David · PA-DAV</b></li>
+        <li><span class="muted">Líneas · Valor total</span><b style="margin-left:auto" class="cell-mono">4 líneas · $ 843.00</b></li>
+      </ul>
+      <div class="mt-table-wrap">
+        <table class="mt-table">
+          <thead>
+            <tr><th class="left">materialId</th><th>cantidad</th><th>valor</th><th class="left">projectWbs</th><th>serviceOrderRef</th><th>fecha</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="left cell-mono">MAT-ONT-FTTH</td><td>1</td><td class="cell-mono">$ 320.00</td><td class="left cell-mono">WBS-CAPEX-PA-4471</td><td class="cell-mono">SO-7789102</td><td class="cell-mono">04/08</td></tr>
+            <tr><td class="left cell-mono">MAT-DROP-FTTH</td><td>120</td><td class="cell-mono">$ 108.00</td><td class="left cell-mono">WBS-CAPEX-PA-4471</td><td class="cell-mono">SO-7789102</td><td class="cell-mono">04/08</td></tr>
+            <tr><td class="left cell-mono">MAT-ATA</td><td>1</td><td class="cell-mono">$ 95.00</td><td class="left cell-mono">WBS-CAPEX-PA-4471</td><td class="cell-mono">TR-55120</td><td class="cell-mono">04/08</td></tr>
+            <tr><td class="left cell-mono">MAT-GW-FTTH</td><td>1</td><td class="cell-mono">$ 320.00</td><td class="left cell-mono">WBS-CAPEX-PA-4471</td><td class="cell-mono">SO-7781900</td><td class="cell-mono">04/08</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="display:flex; align-items:center; gap:22px; flex-wrap:wrap; margin-top:14px">
+        <span class="small muted" style="display:inline-flex; align-items:center">
+          Reenvío del 221 sin duplicados
+          <span class="mt-help warn" tabindex="0" role="button" aria-label="Ver detalle de reenvío idempotente">!<span class="mt-help-bubble up">El batch de envío del 221 es <b>idempotente</b>: reejecutar el cierre del día no genera bookings duplicados en SAP (LLD §5.4).</span></span>
+        </span>
+        <span class="small muted" style="display:inline-flex; align-items:center">
+          Validación Liberate requerida
+          <span class="mt-help ok" tabindex="0" role="button" aria-label="Ver validación Liberate">✓<span class="mt-help-bubble up">Solo se capitaliza información de ítems validados como CPE en Liberate cuando corresponda (§11.8).</span></span>
+        </span>
+      </div>
+    </div>
+    <div class="mt-modal-foot">
+      <button class="mt-btn" data-close-modal>Cancelar</button>
+      <button class="mt-btn mt-btn-accent" data-close-modal><span class="material-icons">cloud_upload</span> Enviar a SAP</button>
+    </div>
+  </div>
+</div>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>

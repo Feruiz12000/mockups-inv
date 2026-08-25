@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Más Tech · Inventario · Dashboard</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="assets/mastech-webmastech.css">
+</head>
+<body data-module="dashboard" data-title="Dashboard · Inventario" data-breadcrumb="Dashboard">
+<div id="mt-page">
+
+  <div class="mt-page-header">
+    <div class="mt-header-icon"><span class="material-icons">dashboard</span></div>
+    <div class="mt-header-text">
+      <div class="mt-header-title">Dashboard de Inventario</div>
+      <div class="mt-header-sub">KPIs ejecutivos y alarm center · spec §16.2.9 / §18.2.8</div>
+    </div>
+    <span class="mt-header-spacer"></span>
+    <div class="mt-field"><span class="material-icons">business</span><select><option>Contratista: todos</option><option>Contrata 44</option><option>Contrata 41</option></select></div>
+    <div class="mt-field"><span class="material-icons">date_range</span><select><option>Este mes</option><option>Hoy</option><option>Semana</option></select></div>
+  </div>
+
+  <!-- KPIs ejecutivos -->
+  <div class="mt-kpi-grid" style="margin-bottom:16px">
+    <div class="mt-kpi"><div class="k-top"><span class="k-label">Inventario operativo</span><span class="k-icon" style="background:var(--primary-tint);color:var(--primary)"><span class="material-icons">inventory</span></span></div><span class="k-value">18,420</span><span class="k-delta k-up">▲ 3.2% vs mes ant.</span></div>
+    <div class="mt-kpi"><div class="k-top"><span class="k-label">Consumo del período</span><span class="k-icon" style="background:rgba(152,29,151,.1);color:var(--info)"><span class="material-icons">build</span></span></div><span class="k-value">2,913</span><span class="k-delta k-up">▲ 5.1%</span></div>
+    <div class="mt-kpi"><div class="k-top"><span class="k-label">CPE instalados</span><span class="k-icon" style="background:rgba(31,179,112,.1);color:var(--success)"><span class="material-icons">router</span></span></div><span class="k-value">1,204</span><span class="k-delta k-up">▲ 2.0%</span></div>
+    <div class="mt-kpi"><div class="k-top"><span class="k-label">CPE recolectados</span><span class="k-icon" style="background:var(--magenta-soft);color:var(--purple)"><span class="material-icons">assignment_returned</span></span></div><span class="k-value">687</span><span class="k-delta k-up">▲ 8.4%</span></div>
+    <div class="mt-kpi"><div class="k-top"><span class="k-label">Devoluciones pendientes</span><span class="k-icon" style="background:rgba(255,152,0,.12);color:var(--amber)"><span class="material-icons">pending_actions</span></span></div><span class="k-value">42</span><span class="k-delta k-down">▲ 6 sin confirmar</span></div>
+    <div class="mt-kpi"><div class="k-top"><span class="k-label">Quiebres de stock</span><span class="k-icon" style="background:rgba(244,67,54,.1);color:var(--warn)"><span class="material-icons">error_outline</span></span></div><span class="k-value">9</span><span class="k-delta k-down">▲ 2 alertas</span></div>
+    <div class="mt-kpi"><div class="k-top"><span class="k-label">Exceso de stock</span><span class="k-icon" style="background:rgba(255,152,0,.12);color:var(--amber)"><span class="material-icons">move_up</span></span></div><span class="k-value">5</span><span class="k-delta">técnicos / ubicaciones</span></div>
+    <div class="mt-kpi"><div class="k-top"><span class="k-label">Tasa de reutilización</span><span class="k-icon" style="background:rgba(0,194,146,.12);color:var(--success-dark)"><span class="material-icons">autorenew</span></span></div><span class="k-value">63%</span><span class="k-delta k-up">▲ equipos reinyectados</span></div>
+  </div>
+
+  <!-- Gráficos -->
+  <div class="mt-grid-3" style="margin-bottom:16px">
+    <div class="mt-chart">
+      <div class="c-title"><span class="material-icons" style="color:var(--primary)">bar_chart</span> Consumo por semana</div>
+      <div class="mt-bars">
+        <div class="bar" style="height:55%"><span>S1</span></div>
+        <div class="bar" style="height:72%"><span>S2</span></div>
+        <div class="bar" style="height:48%"><span>S3</span></div>
+        <div class="bar" style="height:88%"><span>S4</span></div>
+        <div class="bar" style="height:66%"><span>S5</span></div>
+      </div>
+    </div>
+    <div class="mt-chart">
+      <div class="c-title"><span class="material-icons" style="color:var(--primary)">donut_large</span> Stock por estado</div>
+      <div style="display:flex;align-items:center;gap:16px">
+        <div class="mt-donut"><div class="hole">18.4k</div></div>
+        <ul class="mt-list-plain small" style="flex:1">
+          <li><span class="mt-chip chip-green">Deployable</span><b style="margin-left:auto">55%</b></li>
+          <li><span class="mt-chip chip-purple">Recuperado -R</span><b style="margin-left:auto">23%</b></li>
+          <li><span class="mt-chip chip-amber">En testing</span><b style="margin-left:auto">14%</b></li>
+          <li><span class="mt-chip chip-red">Undeployable</span><b style="margin-left:auto">8%</b></li>
+        </ul>
+      </div>
+    </div>
+    <div class="mt-chart">
+      <div class="c-title"><span class="material-icons" style="color:var(--primary)">label</span> Collection por reason</div>
+      <div class="mt-bars">
+        <div class="bar" style="height:80%"><span>C</span></div>
+        <div class="bar" style="height:60%"><span>ID</span></div>
+        <div class="bar" style="height:35%"><span>TR</span></div>
+        <div class="bar" style="height:50%"><span>D</span></div>
+        <div class="bar" style="height:25%"><span>PC</span></div>
+        <div class="bar" style="height:18%"><span>M</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Alarm center + pending -->
+  <div class="mt-row">
+    <div class="mt-col">
+      <div class="mt-card tight">
+        <div style="padding:14px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)">
+          <span class="material-icons" style="color:var(--warn)">notifications_active</span>
+          <b>Alarm center — quiebre y exceso de stock</b>
+          <span class="mt-header-badge" style="margin-left:auto;background:rgba(244,67,54,.1);color:var(--warn)">14 alarmas</span>
+        </div>
+        <div class="mt-table-wrap">
+          <table class="mt-table">
+            <thead><tr><th>Tipo</th><th class="left">Ámbito</th><th class="left">Material</th><th>Actual</th><th>Umbral</th><th>Acción</th></tr></thead>
+            <tbody>
+              <tr><td><span class="mt-chip chip-red">Quiebre</span></td><td class="left">Técnico T-2291</td><td class="left">FTTH ONT</td><td>0</td><td>≥ 3</td><td><button class="mt-icon-btn primary" title="Sugerir replenishment"><span class="material-icons">add_shopping_cart</span></button></td></tr>
+              <tr><td><span class="mt-chip chip-red">Quiebre</span></td><td class="left">Ubicación CWP-Colón</td><td class="left">Drop cable</td><td>40 FT</td><td>≥ 200 FT</td><td><button class="mt-icon-btn primary"><span class="material-icons">add_shopping_cart</span></button></td></tr>
+              <tr><td><span class="mt-chip chip-amber">Exceso</span></td><td class="left">Contrata 41</td><td class="left">Extender</td><td>180</td><td>≤ 100</td><td><button class="mt-icon-btn" title="Redistribuir"><span class="material-icons">swap_horiz</span></button></td></tr>
+              <tr><td><span class="mt-chip chip-amber">Exceso</span></td><td class="left">Técnico T-1180</td><td class="left">Conectores</td><td>60</td><td>≤ 30</td><td><button class="mt-icon-btn"><span class="material-icons">swap_horiz</span></button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="mt-col" style="max-width:360px">
+      <div class="mt-card tight">
+        <div style="padding:14px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)">
+          <span class="material-icons" style="color:var(--amber)">pending_actions</span><b>Pending confirmations</b>
+        </div>
+        <ul class="mt-list-plain small" style="padding:6px 16px">
+          <li><span class="material-icons" style="color:var(--amber)">local_shipping</span> Retorno 351 · #RET-2201 <span class="mt-chip chip-amber" style="margin-left:auto">in transit</span></li>
+          <li><span class="material-icons" style="color:var(--amber)">local_shipping</span> Retorno 351 · #RET-2199 <span class="mt-chip chip-amber" style="margin-left:auto">in transit</span></li>
+          <li><span class="material-icons" style="color:var(--info)">move_to_inbox</span> Receipt 351 · #DOC-8841 <span class="mt-chip chip-blue" style="margin-left:auto">por recibir</span></li>
+          <li><span class="material-icons" style="color:var(--warn)">swap_horiz</span> Préstamo · #LN-0442 <span class="mt-chip chip-red" style="margin-left:auto">vencido</span></li>
+        </ul>
+        <div style="padding:8px 16px 14px"><a href="return.html">Ver todos los retornos →</a></div>
+      </div>
+    </div>
+  </div>
+</div>
+  <script src="assets/app.js"></script>
+</body>
+</html>

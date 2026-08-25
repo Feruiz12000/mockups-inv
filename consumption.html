@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Más Tech · Inventario · Consumo</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="assets/mastech-webmastech.css">
+</head>
+<body data-module="consumption" data-title="Consumo · Consumption" data-breadcrumb="Consumo por orden">
+<div id="mt-page">
+
+  <div class="mt-card">
+    <div class="mt-page-header">
+      <div class="mt-header-icon"><span class="material-icons">build</span></div>
+      <div class="mt-header-text">
+        <div class="mt-header-title">Consumo por orden</div>
+        <div class="mt-header-sub">Service order / repair ticket / truck roll · captura serial/MAC · HU-INV-05/06</div>
+      </div>
+      <span class="mt-mobile-hint"><span class="material-icons">smartphone</span> Pantalla de técnico (app móvil) — representada como panel web</span>
+      <span class="mt-header-spacer"></span>
+      <span class="mt-chip chip-amber">Orden abierta</span>
+    </div>
+
+    <!-- Stepper -->
+    <div class="mt-steps">
+      <div class="mt-step done"><span class="n"><span class="material-icons" style="font-size:16px">check</span></span> Orden</div>
+      <span class="mt-step-sep"></span>
+      <div class="mt-step done"><span class="n">2</span> Equipo removido</div>
+      <span class="mt-step-sep"></span>
+      <div class="mt-step active"><span class="n">3</span> CPE instalado</div>
+      <span class="mt-step-sep"></span>
+      <div class="mt-step"><span class="n">4</span> Materiales</div>
+      <span class="mt-step-sep"></span>
+      <div class="mt-step"><span class="n">5</span> Cierre</div>
+    </div>
+
+    <div class="mt-row">
+      <!-- Columna izquierda: contexto + inventario asignado -->
+      <div class="mt-col" style="max-width:340px">
+        <div class="mt-section-title"><span class="material-icons">description</span> Orden en contexto</div>
+        <ul class="mt-list-plain small">
+          <li><span class="muted">Service order</span><b style="margin-left:auto">SO-7789102</b></li>
+          <li><span class="muted">Repair ticket</span><b style="margin-left:auto">—</b></li>
+          <li><span class="muted">Truck roll</span><b style="margin-left:auto">TR-55120</b></li>
+          <li><span class="muted">tap_id</span><b style="margin-left:auto">TAP-0912</b></li>
+          <li><span class="muted">Residential ticket</span><b style="margin-left:auto">RT-3391</b></li>
+          <li><span class="muted">Técnico</span><b style="margin-left:auto">T-2291 · J. Gómez</b></li>
+        </ul>
+
+        <div class="mt-section-title" style="margin-top:16px"><span class="material-icons">inventory_2</span> Inventario asignado</div>
+        <p class="mt-hint">Solo se muestra el stock asignado a tu sublocación (§11.7 / §14.6).</p>
+        <ul class="mt-list-plain small">
+          <li><span class="material-icons" style="color:var(--primary)">router</span> FTTH ONT <span class="mt-tag" style="margin-left:auto">1</span></li>
+          <li><span class="material-icons" style="color:var(--primary)">wifi</span> Extender <span class="mt-tag" style="margin-left:auto">2</span></li>
+          <li><span class="material-icons" style="color:var(--primary)">cable</span> Drop cable (FT) <span class="mt-tag" style="margin-left:auto">300</span></li>
+          <li><span class="material-icons" style="color:var(--primary)">settings_input_component</span> Conectores <span class="mt-tag" style="margin-left:auto">12</span></li>
+        </ul>
+      </div>
+
+      <!-- Columna derecha: captura -->
+      <div class="mt-col">
+        <!-- Tipo de trabajo -->
+        <div class="mt-form-grid cols-1" style="margin-bottom:14px">
+          <div class="mt-form-field"><label>Tipo de trabajo</label>
+            <select class="mt-select" data-toggle="#removed-section" data-toggle-show="Reemplazo">
+              <option>Reemplazo</option>
+              <option>Instalación nueva</option>
+            </select>
+            <span class="mt-hint">Solo en <b>reemplazo</b> se registra el equipo removido, y <b>antes</b> del nuevo (§14.7). En una <b>instalación nueva</b> no se escanea equipo removido (prueba a cambiarlo).</span></div>
+        </div>
+
+        <!-- Equipo removido (solo si es reemplazo) -->
+        <div id="removed-section">
+          <div class="mt-section-title"><span class="material-icons">remove_circle_outline</span> Equipo removido (reemplazo)</div>
+          <div class="mt-scan-field plain" style="margin-bottom:8px">
+            <button type="button" class="mt-icon-btn primary" title="Escanear"><span class="material-icons">qr_code_scanner</span></button>
+            <input value="SN-OLD-4471X" placeholder="Escanear serial/MAC del equipo retirado">
+          </div>
+          <div style="display:flex; align-items:center; justify-content:flex-end; gap:22px; flex-wrap:wrap; margin-bottom:18px">
+            <span class="small muted" style="display:inline-flex; align-items:center">
+              Trazabilidad del reemplazo
+              <span class="mt-help" tabindex="0" role="button" aria-label="Ver trazabilidad del reemplazo">?<span class="mt-help-bubble"><b>Trazabilidad del reemplazo:</b> removido <span class="cell-mono">SN-OLD-4471X</span> → instalado <span class="cell-mono">SN-77Q1183</span>, ambos registrados en la <b>misma orden</b> (SO-7789102). La secuencia (removido <b>antes</b> del nuevo, §14.7) los vincula; la transacción queda auditada por usuario/orden (§14.20).</span></span>
+            </span>
+            <span class="small muted" style="display:inline-flex; align-items:center">
+              Registrar antes del nuevo equipo
+              <span class="mt-help warn" tabindex="0" role="button" aria-label="Ver advertencia de orden de registro">!<span class="mt-help-bubble">Si existe reemplazo, el equipo removido debe registrarse <b>antes</b> de instalar el nuevo (§14.7).</span></span>
+            </span>
+          </div>
+        </div>
+
+        <!-- CPE instalado -->
+        <div class="mt-section-title"><span class="material-icons">add_circle_outline</span> CPE a instalar</div>
+        <div class="mt-form-grid" style="margin-bottom:8px">
+          <div class="mt-form-field"><label>CPE (catálogo)</label><select class="mt-select"><option>FTTH ONT</option><option>HFC CPE</option><option>FTTH Gateway</option><option>ATA</option><option>Extender</option></select></div>
+          <div class="mt-form-field"><label>Identificador</label><input class="mt-input readonly" value="Serial Number" readonly></div>
+        </div>
+        <div class="mt-scan-field plain" style="margin-bottom:8px">
+          <button type="button" class="mt-icon-btn primary" title="Escanear"><span class="material-icons">qr_code_scanner</span></button>
+          <input value="SN-77Q1183" placeholder="Escanear serial/MAC del CPE a instalar">
+        </div>
+        <div style="margin-bottom:8px">
+          <span class="small muted" style="display:inline-flex; align-items:center">
+            Validación Liberate
+            <span class="mt-help ok" tabindex="0" role="button" aria-label="Ver validación Liberate">✓<span class="mt-help-bubble"><b>Validación Liberate:</b> CPE activado · tipo ONT · cuenta 8{ }001234567 (RF 1.4.3).</span></span>
+          </span>
+        </div>
+        <p class="mt-hint" style="margin-bottom:18px">La validación contra Liberate es obligatoria para CPE instalado, <b>excepto extender</b> (§14.10).</p>
+
+        <!-- Materiales no serializados -->
+        <div class="mt-section-title"><span class="material-icons">category</span> Materiales no serializados</div>
+        <div class="mt-filter-bar" style="margin-bottom:6px">
+          <div class="mt-field grow"><span class="material-icons">search</span><select style="width:100%"><option selected>Drop cable (FT)</option><option>Conectores</option><option>Grapas</option></select></div>
+          <div class="mt-field"><span class="material-icons">straighten</span><input type="text" value="FT" style="min-width:64px"></div>
+          <div class="mt-field"><span class="material-icons">tag</span><input type="number" placeholder="Cantidad" data-expected="300" data-uom="FT" data-qty-mode="max" style="min-width:90px"></div>
+          <span class="mt-chip" data-qty-status></span>
+          <button class="mt-btn mt-btn-stroked mt-btn-sm" data-confirm-btn><span class="material-icons">add</span> Agregar</button>
+        </div>
+        <p class="mt-hint" style="margin:0 0 12px"><span class="material-icons" style="font-size:14px;vertical-align:middle;color:var(--primary)">inventory_2</span> Disponible asignado del material seleccionado: <b>300 FT</b>. No puedes consumir más de lo asignado (§14.6); escribe más de 300 y el botón <b>Agregar</b> se bloquea.</p>
+        <div class="mt-table-wrap" style="margin-bottom:18px">
+          <table class="mt-table">
+            <thead><tr><th class="left">Material</th><th>UOM</th><th>Cantidad</th><th>Acción</th></tr></thead>
+            <tbody>
+              <tr><td class="left">Drop cable</td><td>FT</td><td>120</td><td><button class="mt-icon-btn warn"><span class="material-icons">delete</span></button></td></tr>
+              <tr><td class="left">Conectores</td><td>UND</td><td>4</td><td><button class="mt-icon-btn warn"><span class="material-icons">delete</span></button></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="mt-section-title"><span class="material-icons">photo_camera</span> Evidencia</div>
+        <button class="mt-btn mt-btn-stroked" style="margin-bottom:16px"><span class="material-icons">add_a_photo</span> Adjuntar foto / video</button>
+
+        <div style="margin:4px 0 14px">
+          <span class="small muted" style="display:inline-flex; align-items:center">
+            Motivos de bloqueo del cierre
+            <span class="mt-help err" tabindex="0" role="button" aria-label="Ver motivos de bloqueo del cierre">!<span class="mt-help-bubble">El sistema bloquea el cierre si el serial no pertenece a tu inventario (§14.8), o si faltan CPE/materiales obligatorios o falla la validación Liberate (§14.9).</span></span>
+          </span>
+        </div>
+
+        <div class="mt-form-actions">
+          <button class="mt-btn">Guardar borrador</button>
+          <button class="mt-btn mt-btn-primary"><span class="material-icons">lock_open</span> Cerrar orden</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:10px">
+    <span class="small muted" style="display:inline-flex; align-items:center">
+      Qué pasa al cerrar la orden
+      <span class="mt-help" tabindex="0" role="button" aria-label="Ver qué pasa al cerrar la orden">?<span class="mt-help-bubble">Al cierre exitoso, Más Tech envía a Liberate la confirmación del CPE desplegado (RF 1.4.6, excepto extender) y consolida el consumo diario por técnico, orden, contratista, ubicación y proyecto/WBS (§11.7) para el booking equivalente a 221.</span></span>
+    </span>
+  </div>
+</div>
+  <script src="assets/app.js"></script>
+</body>
+</html>

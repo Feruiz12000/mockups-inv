@@ -1,0 +1,53 @@
+<mt-modal [open]="!!data" (closed)="cancelar.emit()">
+  <ng-container head>
+    <span class="material-icons">report_problem</span>
+    <h3>{{ esRechazado ? 'Agregar comentario' : 'Registrar discrepancia' }}</h3>
+    <mt-help align="start">
+      <ng-container *ngIf="esRechazado; else ayudaUnidad">
+        Este serial se escaneó pero <b>no pertenece al documento 351</b>, así que fue rechazado (§14.1).
+        Deja constancia de <b>qué pasó</b>: el comentario queda visible en la lista y viaja a
+        <b>reconciliación</b> (§11.5.6).
+        <span class="mt-help-sep"></span>
+        <b>Al guardar:</b> el serial sigue <b>rechazado</b> y fuera del 101; solo se añade tu comentario
+        como evidencia. Puedes editarlo después desde la lista.
+      </ng-container>
+      <ng-template #ayudaUnidad>
+        Indica <b>por qué</b> esta unidad no se puede recibir. El motivo queda visible en la lista y
+        viaja a <b>reconciliación</b> (§11.5.6).
+        <span class="mt-help-sep"></span>
+        <b>Al confirmar:</b> la unidad pasa a <b>Con discrepancia</b>, <b>no entra al 101</b> y el motivo
+        queda registrado junto a ella. Puedes revertirla después desde el mismo botón de su fila.
+      </ng-template>
+    </mt-help>
+  </ng-container>
+
+  <ng-container body>
+    <ul class="mt-list-plain small" style="margin-bottom:14px">
+      <li><span class="muted">Material</span><b style="margin-left:auto">{{ data?.material || '—' }}</b></li>
+      <li><span class="muted">Serial / MAC</span>
+        <b style="margin-left:auto" class="cell-mono">{{ data?.serial || '—' }}</b></li>
+    </ul>
+
+    <div class="mt-section-title" style="margin-bottom:8px">
+      <span class="material-icons">edit_note</span>
+      <span>{{ esRechazado ? 'Comentario del serial rechazado' : 'Motivo de la discrepancia' }}</span>
+    </div>
+
+    <div class="rcp-motivos">
+      <button *ngFor="let p of presets" type="button" class="mt-chip chip-grey" (click)="usarPreset(p)">
+        {{ p }}
+      </button>
+    </div>
+
+    <textarea class="mt-textarea" rows="3" [(ngModel)]="texto"
+              [placeholder]="'Escribe el ' + kind + ' o elige uno de los anteriores…'"></textarea>
+  </ng-container>
+
+  <ng-container foot>
+    <button type="button" class="mt-btn" (click)="cancelar.emit()">Cancelar</button>
+    <button type="button" class="mt-btn mt-btn-primary" [disabled]="!valido" (click)="onGuardar()">
+      <span class="material-icons">check_circle</span>
+      {{ esRechazado ? 'Guardar comentario' : 'Confirmar discrepancia' }}
+    </button>
+  </ng-container>
+</mt-modal>

@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Más Tech · Inventario · Retorno</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="assets/mastech-webmastech.css">
+</head>
+<body data-module="return" data-title="Retorno · Return" data-breadcrumb="Retorno a bodega">
+<div id="mt-page">
+
+  <div class="mt-card">
+    <!-- Header -->
+    <div class="mt-page-header">
+      <div class="mt-header-icon"><span class="material-icons">local_shipping</span></div>
+      <div class="mt-header-text">
+        <div class="mt-header-title">Consolidación y retorno a main warehouse</div>
+        <div class="mt-header-sub">Consolidación de stock recuperado y transferencia 351 al main warehouse · HU-INV-11 · §11.12 · CU-INV-08 · EP-INV-07</div>
+      </div>
+      <div class="mt-header-badge">42 por consolidar</div>
+      <span class="mt-header-spacer"></span>
+      <div class="mt-header-actions">
+        <button class="mt-btn mt-btn-stroked" data-open-modal="m-501"><span class="material-icons">inventory_2</span> Registrar 501</button>
+        <button class="mt-btn mt-btn-primary" data-open-modal="m-351" title="Consolidación diaria automática de TODO el stock recuperado pendiente"><span class="material-icons">move_up</span> Generar retorno diario (351)</button>
+      </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="mt-filter-bar">
+      <div class="mt-field grow"><span class="material-icons">search</span><input type="text" placeholder="Documento 351 / 501 · serial / MAC"></div>
+      <div class="mt-field"><span class="material-icons">business</span>
+        <select><option>Contratista: todos</option><option>Contrata 44 · CP-44</option><option>Contrata 41 · CP-41</option><option>Tercero · CP-08</option></select></div>
+      <div class="mt-field"><span class="material-icons">warehouse</span>
+        <select><option>Ubicación: todas</option><option>Contractor plant · SL-REC</option><option>Contractor plant · SL-DOA</option><option>Main WH Panamá</option></select></div>
+      <div class="mt-field"><span class="material-icons">label</span>
+        <select><option>Reason code: todos</option><option>ID · Involuntary Disconnect</option><option>C · Voluntary / Churn</option><option>PC · Collection Plan</option><option>TR · Truck Roll</option><option>D · Dead on Arrival</option><option>M · Migration</option></select></div>
+      <div class="mt-field"><span class="material-icons">flag</span>
+        <select><option>Estado: todos</option><option>Por consolidar</option><option>In transit</option><option>Received</option><option>Confirmed</option></select></div>
+      <div class="mt-field"><span class="material-icons">calendar_today</span><input type="date"></div>
+      <button class="mt-icon-btn primary" title="Buscar"><span class="material-icons">search</span></button>
+      <button class="mt-icon-btn" title="Limpiar"><span class="material-icons">clear</span></button>
+      <button class="mt-icon-btn" title="Exportar"><span class="material-icons">download</span></button>
+    </div>
+  </div>
+
+  <!-- ================= Pestañas ================= -->
+  <div class="mt-card" data-tabs data-select-scope>
+    <div class="mt-tabs">
+      <div class="mt-tab active" data-tab="cons">Por consolidar</div>
+      <div class="mt-tab" data-tab="ret351">Retornos 351</div>
+      <div class="mt-tab" data-tab="pend">Pending confirmations</div>
+      <div class="mt-tab" data-tab="rep501">Reporte 501 (manual)</div>
+    </div>
+
+    <!-- Tab: Por consolidar -->
+    <div data-tabpanel="cons">
+      <div class="mt-alert warn" style="margin-bottom:10px"><span class="material-icons">move_up</span> Stock recuperado en contractor plant listo para consolidar en un retorno diario (documento 351) hacia el main warehouse. El inventario recuperado se mantiene separado del deployable y bajo código <b>-R</b> (§14.15/§14.16).</div>
+      <p class="mt-hint" style="margin:0 0 14px"><span class="material-icons" style="font-size:15px;vertical-align:middle;color:var(--primary)">info</span> Marca ítems y usa <b>“Consolidar seleccionados en 351”</b> para armar un retorno con lo elegido, o <span class="material-icons" style="font-size:15px;vertical-align:middle">playlist_add</span> por fila para agregar uno; el botón <b>“Generar retorno diario (351)”</b> del encabezado consolida <b>todo</b> lo pendiente de forma automática.</p>
+      <div class="mt-table-wrap">
+        <table class="mt-table">
+          <thead>
+            <tr>
+              <th style="width:34px"><input type="checkbox" class="mt-check chk-all" title="Seleccionar todo"></th>
+              <th class="left">Material</th><th class="left">Serial / MAC</th><th>Reason</th>
+              <th class="left">Origen</th><th>Cantidad</th><th>Acción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input type="checkbox" class="mt-check chk-row"></td>
+              <td class="left"><span class="cell-mono">ONT-HG8145</span> <span class="mt-tag r">-R</span></td>
+              <td class="left cell-mono">SN-77Q1183</td>
+              <td><span class="mt-tag">ID</span></td>
+              <td class="left"><span class="mt-chip chip-indigo">Técnico · T-2291</span></td>
+              <td>1</td>
+              <td class="row-actions"><button class="mt-icon-btn primary" title="Agregar este ítem al retorno 351"><span class="material-icons">playlist_add</span></button></td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="mt-check chk-row"></td>
+              <td class="left"><span class="cell-mono">GW-F670</span> <span class="mt-tag r">-R</span></td>
+              <td class="left cell-mono">B8:44:12:9A:0C</td>
+              <td><span class="mt-tag">C</span></td>
+              <td class="left"><span class="mt-chip chip-indigo">Tienda · Vía España</span></td>
+              <td>1</td>
+              <td class="row-actions"><button class="mt-icon-btn primary" title="Agregar este ítem al retorno 351"><span class="material-icons">playlist_add</span></button></td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="mt-check chk-row"></td>
+              <td class="left"><span class="cell-mono">HFC-CM8200</span> <span class="mt-tag r">-R</span></td>
+              <td class="left cell-mono">A1:B2:C3:D4:E5</td>
+              <td><span class="mt-tag">TR</span></td>
+              <td class="left"><span class="mt-chip chip-indigo">Tercero · CP-08</span></td>
+              <td>1</td>
+              <td class="row-actions"><button class="mt-icon-btn primary" title="Agregar este ítem al retorno 351"><span class="material-icons">playlist_add</span></button></td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="mt-check chk-row"></td>
+              <td class="left"><span class="cell-mono">ATA-HT812</span> <span class="mt-tag r">-R</span></td>
+              <td class="left cell-mono">SN-AT55210</td>
+              <td><span class="mt-tag">D</span></td>
+              <td class="left"><span class="mt-chip chip-indigo">Técnico · T-1180</span></td>
+              <td>1</td>
+              <td class="row-actions"><button class="mt-icon-btn primary" title="Agregar este ítem al retorno 351"><span class="material-icons">playlist_add</span></button></td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="mt-check chk-row"></td>
+              <td class="left"><span class="cell-mono">EXT-WX3000</span> <span class="mt-tag r">-R</span></td>
+              <td class="left cell-mono">SN-EX99120</td>
+              <td><span class="mt-tag">M</span></td>
+              <td class="left"><span class="mt-chip chip-indigo">Técnico · T-2291</span></td>
+              <td>1</td>
+              <td class="row-actions"><button class="mt-icon-btn primary" title="Agregar este ítem al retorno 351"><span class="material-icons">playlist_add</span></button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="mt-form-actions">
+        <button class="mt-btn mt-btn-primary" data-bulk-btn data-bulk-label="Consolidar seleccionados en 351" data-open-modal="m-351" disabled title="Consolidar en un retorno 351 los ítems marcados"><span class="lbl">Consolidar seleccionados en 351</span></button>
+      </div>
+    </div>
+
+    <!-- Tab: Retornos 351 -->
+    <div data-tabpanel="ret351" style="display:none">
+      <div class="mt-alert ok" style="margin-bottom:14px"><span class="material-icons">info</span> El estado <b>in transit</b> se mantiene hasta el <b>Goods Receipt de SAP</b> que cierra la transferencia (RF 2.2.3).</div>
+      <div class="mt-table-wrap">
+        <table class="mt-table">
+          <thead>
+            <tr>
+              <th>Documento 351</th><th class="left">Origen · contractor plant</th><th class="left">Destino · main warehouse</th>
+              <th>Ítems</th><th>Estado</th><th>Fecha</th><th>Acción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="cell-mono">#351-0087</td>
+              <td class="left">CP-44 · SL-REC</td>
+              <td class="left">Main WH Panamá</td>
+              <td>24</td>
+              <td><span class="mt-chip chip-amber">in transit</span></td>
+              <td class="cell-mono">04/08 07:30</td>
+              <td class="row-actions">
+                <button class="mt-icon-btn" title="Ver documento"><span class="material-icons">visibility</span></button>
+                <button class="mt-icon-btn" title="Trazabilidad"><span class="material-icons">timeline</span></button>
+              </td>
+            </tr>
+            <tr>
+              <td class="cell-mono">#351-0086</td>
+              <td class="left">CP-44 · SL-REC</td>
+              <td class="left">Main WH Panamá</td>
+              <td>31</td>
+              <td><span class="mt-chip chip-blue">received</span></td>
+              <td class="cell-mono">03/08 07:15</td>
+              <td class="row-actions">
+                <button class="mt-icon-btn" title="Ver documento"><span class="material-icons">visibility</span></button>
+                <button class="mt-icon-btn" title="Trazabilidad"><span class="material-icons">timeline</span></button>
+              </td>
+            </tr>
+            <tr>
+              <td class="cell-mono">#351-0085</td>
+              <td class="left">CP-41 · SL-REC</td>
+              <td class="left">Main WH Panamá</td>
+              <td>18</td>
+              <td><span class="mt-chip chip-green">confirmed</span></td>
+              <td class="cell-mono">02/08 07:20</td>
+              <td class="row-actions">
+                <button class="mt-icon-btn" title="Ver documento"><span class="material-icons">visibility</span></button>
+                <button class="mt-icon-btn" title="Trazabilidad"><span class="material-icons">timeline</span></button>
+              </td>
+            </tr>
+            <tr>
+              <td class="cell-mono">#351-0084</td>
+              <td class="left">CP-08 · SL-DOA</td>
+              <td class="left">Main WH Panamá</td>
+              <td>12</td>
+              <td><span class="mt-chip chip-green">confirmed</span></td>
+              <td class="cell-mono">01/08 07:05</td>
+              <td class="row-actions">
+                <button class="mt-icon-btn" title="Ver documento"><span class="material-icons">visibility</span></button>
+                <button class="mt-icon-btn" title="Trazabilidad"><span class="material-icons">timeline</span></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tab: Pending confirmations -->
+    <div data-tabpanel="pend" style="display:none">
+      <div class="mt-alert warn" style="margin-bottom:14px"><span class="material-icons">pending_actions</span> Transferencias 351 pendientes de confirmación por <b>Supply Chain / Warehouse</b> — reporte de pending confirmations (RF 2.2.4).</div>
+      <div class="mt-table-wrap">
+        <table class="mt-table">
+          <thead>
+            <tr>
+              <th>Documento 351</th><th class="left">Transferencia</th><th>Ítems</th>
+              <th class="left">Pendiente de</th><th>Estado</th><th>Fecha</th><th>Acción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="cell-mono">#351-0087</td>
+              <td class="left">CP-44 · SL-REC → Main WH Panamá</td>
+              <td>24</td>
+              <td class="left">Supply Chain</td>
+              <td><span class="mt-chip chip-amber">in transit</span></td>
+              <td class="cell-mono">04/08 07:30</td>
+              <td class="row-actions"><button class="mt-icon-btn primary" title="Confirmar Goods Receipt"><span class="material-icons">check_circle</span></button></td>
+            </tr>
+            <tr>
+              <td class="cell-mono">#351-0086</td>
+              <td class="left">CP-44 · SL-REC → Main WH Panamá</td>
+              <td>31</td>
+              <td class="left">Warehouse · Goods Receipt SAP</td>
+              <td><span class="mt-chip chip-blue">por recibir</span></td>
+              <td class="cell-mono">03/08 07:15</td>
+              <td class="row-actions"><button class="mt-icon-btn primary" title="Confirmar Goods Receipt"><span class="material-icons">check_circle</span></button></td>
+            </tr>
+            <tr>
+              <td class="cell-mono">#351-0083</td>
+              <td class="left">CP-41 · SL-REC → Main WH Panamá</td>
+              <td>9</td>
+              <td class="left">Supply Chain</td>
+              <td><span class="mt-chip chip-amber">in transit</span></td>
+              <td class="cell-mono">02/08 07:10</td>
+              <td class="row-actions"><button class="mt-icon-btn primary" title="Confirmar Goods Receipt"><span class="material-icons">check_circle</span></button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tab: Reporte 501 (manual) -->
+    <div data-tabpanel="rep501" style="display:none">
+      <div class="mt-alert warn" style="margin-bottom:14px"><span class="material-icons">edit_note</span> Captura manual del <b>current stock devuelto por clientes</b>, desglosado por <b>storage location</b> bajo el contractor plant.</div>
+      <div class="mt-form-grid cols-3" style="margin-bottom:16px">
+        <div class="mt-form-field"><label>Contractor plant <span class="req">*</span></label>
+          <select class="mt-select"><option>CP-44 · Contrata 44</option><option>CP-41 · Contrata 41</option><option>CP-08 · Tercero</option></select></div>
+        <div class="mt-form-field"><label>Storage location <span class="req">*</span></label>
+          <select class="mt-select"><option>SL-REC · Recuperado</option><option>SL-DOA · Dead on Arrival</option><option>SL-CLI · Devuelto por cliente</option></select></div>
+        <div class="mt-form-field"><label>Material <span class="req">*</span></label>
+          <select class="mt-select"><option>ONT-HG8145 -R</option><option>GW-F670 -R</option><option>HFC-CM8200 -R</option><option>ATA-HT812 -R</option><option>EXT-WX3000 -R</option></select></div>
+        <div class="mt-form-field"><label>Serial / MAC</label><input class="mt-input" placeholder="Serial / MAC (si aplica)"></div>
+        <div class="mt-form-field"><label>Cantidad <span class="req">*</span></label><input class="mt-input" type="number" value="1"></div>
+        <div class="mt-form-field" style="justify-content:flex-end"><button class="mt-btn mt-btn-primary" data-open-modal="m-501"><span class="material-icons">add</span> Registrar 501</button></div>
+      </div>
+      <div class="mt-table-wrap">
+        <table class="mt-table">
+          <thead>
+            <tr>
+              <th>Documento 501</th><th class="left">Contractor plant</th><th class="left">Storage location</th>
+              <th class="left">Material</th><th class="left">Serial / MAC</th><th>Cantidad</th><th>Fecha</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="cell-mono">#501-0042</td>
+              <td class="left">CP-44 · Contrata 44</td>
+              <td class="left">SL-CLI · Devuelto por cliente</td>
+              <td class="left"><span class="cell-mono">GW-F670</span> <span class="mt-tag r">-R</span></td>
+              <td class="left cell-mono">B8:44:12:9A:0C</td>
+              <td>1</td>
+              <td class="cell-mono">04/08 10:12</td>
+            </tr>
+            <tr>
+              <td class="cell-mono">#501-0041</td>
+              <td class="left">CP-44 · Contrata 44</td>
+              <td class="left">SL-DOA · Dead on Arrival</td>
+              <td class="left"><span class="cell-mono">ATA-HT812</span> <span class="mt-tag r">-R</span></td>
+              <td class="left cell-mono">SN-AT55210</td>
+              <td>1</td>
+              <td class="cell-mono">03/08 16:40</td>
+            </tr>
+            <tr>
+              <td class="cell-mono">#501-0040</td>
+              <td class="left">CP-41 · Contrata 41</td>
+              <td class="left">SL-CLI · Devuelto por cliente</td>
+              <td class="left"><span class="cell-mono">HFC-CM8200</span> <span class="mt-tag r">-R</span></td>
+              <td class="left cell-mono">A1:B2:C3:D4:E5</td>
+              <td>3</td>
+              <td class="cell-mono">02/08 09:55</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-note">
+    <b>Reglas del módulo (spec §14):</b> el stock recuperado se registra separado del deployable (§14.15) y bajo código refurbished <b>-R</b> (§14.16) · el estado <i>in transit</i> se mantiene hasta el Goods Receipt de SAP que cierra la transferencia (RF 2.2.3) · las transferencias 351 no confirmadas se listan en el reporte de <i>pending confirmations</i> (RF 2.2.4).
+  </div>
+
+  <div class="mt-note" style="margin-top:12px">
+    <b>Precisión sobre el 351 del retorno:</b> es una <b>transferencia interna de stock</b> (contractor plant → main warehouse), <b>no una devolución a proveedor</b>. Usa el patrón SAP de traslado en dos pasos: <b>351</b> (salida a stock en tránsito) → <b>Goods Receipt</b> en el destino, que cierra la transferencia (RF 2.2.2 / RF 2.2.3). La spec exige el 351 para el retorno de forma explícita (§11.12.5 · §12.1.2.5 · RF 2.2.2); el <b>mapeo exacto en SAP</b> (movement type y campos del 351/501) queda por definir con SAP en <b>PEND‑INV‑01</b>.
+  </div>
+</div>
+
+<!-- ================= MODAL: Generar retorno 351 ================= -->
+<div class="mt-modal-overlay" id="m-351">
+  <div class="mt-modal lg">
+    <div class="mt-modal-head">
+      <span class="material-icons">move_up</span><h3>Generar retorno diario (documento 351)</h3>
+      <button class="mt-icon-btn mt-modal-close" data-close-modal><span class="material-icons">close</span></button>
+    </div>
+    <div class="mt-modal-body">
+      <div class="mt-form-grid">
+        <div class="mt-form-field"><label>Origen · contractor plant <span class="req">*</span></label>
+          <select class="mt-select"><option>CP-44 · SL-REC</option><option>CP-41 · SL-REC</option><option>CP-08 · SL-DOA</option></select></div>
+        <div class="mt-form-field"><label>Destino · main warehouse <span class="req">*</span></label>
+          <input class="mt-input readonly" value="Main WH Panamá" readonly></div>
+        <div class="mt-form-field"><label>Fecha de retorno</label><input class="mt-input" type="date"></div>
+        <div class="mt-form-field"><label>Ítems a consolidar</label><input class="mt-input readonly" value="5 equipos recuperados (-R)" readonly></div>
+      </div>
+      <div class="mt-alert ok" style="margin-top:14px"><span class="material-icons">verified</span> Al generar el 351 la transferencia queda en estado <b>in transit</b> hasta el Goods Receipt de SAP (RF 2.2.3).</div>
+    </div>
+    <div class="mt-modal-foot">
+      <button class="mt-btn" data-close-modal>Cancelar</button>
+      <button class="mt-btn mt-btn-primary" data-close-modal><span class="material-icons">local_shipping</span> Generar 351 (in transit)</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MODAL: Registrar 501 ================= -->
+<div class="mt-modal-overlay" id="m-501">
+  <div class="mt-modal">
+    <div class="mt-modal-head">
+      <span class="material-icons">inventory_2</span><h3>Registrar retorno / 501</h3>
+      <button class="mt-icon-btn mt-modal-close" data-close-modal><span class="material-icons">close</span></button>
+    </div>
+    <div class="mt-modal-body">
+      <div class="mt-form-grid cols-1">
+        <div class="mt-form-field"><label>Contractor plant <span class="req">*</span></label>
+          <select class="mt-select"><option>CP-44 · Contrata 44</option><option>CP-41 · Contrata 41</option><option>CP-08 · Tercero</option></select></div>
+        <div class="mt-form-field"><label>Storage location <span class="req">*</span></label>
+          <select class="mt-select"><option>SL-CLI · Devuelto por cliente</option><option>SL-REC · Recuperado</option><option>SL-DOA · Dead on Arrival</option></select></div>
+        <div class="mt-form-field"><label>Material <span class="req">*</span></label>
+          <select class="mt-select"><option>ONT-HG8145 -R</option><option>GW-F670 -R</option><option>HFC-CM8200 -R</option><option>ATA-HT812 -R</option><option>EXT-WX3000 -R</option></select></div>
+        <div class="mt-form-field"><label>Serial / MAC</label><input class="mt-input" placeholder="Serial / MAC (si aplica)"></div>
+        <div class="mt-form-field"><label>Cantidad <span class="req">*</span></label><input class="mt-input" type="number" value="1"></div>
+        <div class="mt-form-field"><label>Observaciones</label><textarea class="mt-textarea" placeholder="Current stock devuelto por clientes…"></textarea></div>
+      </div>
+      <div class="mt-alert warn" style="margin-top:12px"><span class="material-icons">rule</span> El stock recuperado se registra separado del deployable y bajo código <b>-R</b> (§14.15/§14.16).</div>
+    </div>
+    <div class="mt-modal-foot">
+      <button class="mt-btn" data-close-modal>Cancelar</button>
+      <button class="mt-btn mt-btn-primary" data-close-modal><span class="material-icons">save</span> Registrar 501</button>
+    </div>
+  </div>
+</div>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>

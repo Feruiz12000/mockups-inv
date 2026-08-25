@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Más Tech · Inventario · Préstamos</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="assets/mastech-webmastech.css">
+</head>
+<body data-module="loan" data-title="Préstamos · Loan" data-breadcrumb="Préstamos de testing">
+<div id="mt-page">
+
+  <div class="mt-card">
+    <!-- Header -->
+    <div class="mt-page-header">
+      <div class="mt-header-icon"><span class="material-icons">swap_horiz</span></div>
+      <div class="mt-header-text">
+        <div class="mt-header-title">Préstamo de equipos para testing</div>
+        <div class="mt-header-sub">Préstamo de CPE para pruebas de red · Activo → Vencido → Devuelto · HU-INV-13 · §11.14 · CU-INV-10</div>
+      </div>
+      <div class="mt-header-badge">18 préstamos</div>
+      <span class="mt-header-spacer"></span>
+      <button class="mt-btn mt-btn-primary" data-open-modal="m-loan"><span class="material-icons">add</span> Nuevo préstamo</button>
+    </div>
+
+    <!-- Alerta de vencidos -->
+    <div class="mt-alert warn" style="margin-bottom:14px"><span class="material-icons">notification_important</span> <b>2 préstamos vencidos</b> — se genera alerta y correo automático al responsable cuando el tiempo de préstamo se excede (RF 4.1.6 / §11.14.10).</div>
+
+    <!-- Filtros -->
+    <div class="mt-filter-bar">
+      <div class="mt-field grow"><span class="material-icons">search</span><input type="text" placeholder="Buscar equipo / serial / responsable"></div>
+      <div class="mt-field"><span class="material-icons">flag</span>
+        <select><option>Estado: todos</option><option>Activo</option><option>Vencido</option><option>Devuelto</option></select></div>
+      <div class="mt-field"><span class="material-icons">apartment</span>
+        <select><option>Department / Company: todos</option><option>NOC · Más Tech</option><option>Laboratorio de red · Más Tech</option><option>Ingeniería de red · Más Tech</option><option>Testing / QA · Más Tech</option></select></div>
+      <div class="mt-field"><span class="material-icons">calendar_today</span><input type="date"></div>
+      <button class="mt-icon-btn primary" title="Buscar"><span class="material-icons">search</span></button>
+      <button class="mt-icon-btn" title="Limpiar"><span class="material-icons">clear</span></button>
+      <button class="mt-icon-btn" title="Exportar"><span class="material-icons">download</span></button>
+    </div>
+
+    <!-- Tabla -->
+    <div class="mt-table-wrap">
+      <table class="mt-table">
+        <thead>
+          <tr>
+            <th>Loan ID</th><th class="left">Equipo · Serial/MAC</th><th class="left">Responsable</th><th class="left">Department / Company</th>
+            <th>Service order / Customer account</th><th>Loan start</th><th>Due date</th><th>Return</th><th>Resultado testing</th><th>Estado</th><th>Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="cell-mono">LN-000231</td>
+            <td class="left"><b>FTTH ONT (HG8145)</b><br><span class="cell-mono">SN-ONT-77Q1183</span></td>
+            <td class="left">Carlos Mendoza</td>
+            <td class="left">Laboratorio de red · Más Tech</td>
+            <td class="cell-mono">SO-7789102</td>
+            <td class="cell-mono">22/07</td>
+            <td class="cell-mono">29/07</td>
+            <td>—</td>
+            <td><span class="mt-chip chip-grey">Pendiente</span></td>
+            <td><span class="mt-chip chip-red">Vencido</span></td>
+            <td class="row-actions">
+              <button class="mt-icon-btn" title="Ver"><span class="material-icons">visibility</span></button>
+              <button class="mt-icon-btn primary" title="Registrar devolución / resultado" data-open-modal="m-return"><span class="material-icons">assignment_return</span></button>
+            </td>
+          </tr>
+          <tr>
+            <td class="cell-mono">LN-000229</td>
+            <td class="left"><b>HFC CPE (CM8200)</b><br><span class="cell-mono">A1:B2:C3:D4:E5</span></td>
+            <td class="left">Ana Ríos</td>
+            <td class="left">NOC · Más Tech</td>
+            <td class="cell-mono">8{ }001234567</td>
+            <td class="cell-mono">28/07</td>
+            <td class="cell-mono">04/08</td>
+            <td>—</td>
+            <td><span class="mt-chip chip-grey">Pendiente</span></td>
+            <td><span class="mt-chip chip-blue">Activo</span></td>
+            <td class="row-actions">
+              <button class="mt-icon-btn" title="Ver"><span class="material-icons">visibility</span></button>
+              <button class="mt-icon-btn primary" title="Registrar devolución / resultado" data-open-modal="m-return"><span class="material-icons">assignment_return</span></button>
+            </td>
+          </tr>
+          <tr>
+            <td class="cell-mono">LN-000225</td>
+            <td class="left"><b>FTTH Gateway (F670)</b><br><span class="cell-mono">B8:44:12:9A:0C</span></td>
+            <td class="left">Luis Ortega</td>
+            <td class="left">Ingeniería de red · Más Tech</td>
+            <td class="cell-mono">SO-7781900</td>
+            <td class="cell-mono">15/07</td>
+            <td class="cell-mono">25/07</td>
+            <td class="cell-mono">31/07</td>
+            <td><span class="mt-chip chip-green">OK</span></td>
+            <td><span class="mt-chip chip-green">Devuelto</span></td>
+            <td class="row-actions">
+              <button class="mt-icon-btn" title="Ver"><span class="material-icons">visibility</span></button>
+              <button class="mt-icon-btn" title="Trazabilidad"><span class="material-icons">timeline</span></button>
+            </td>
+          </tr>
+          <tr>
+            <td class="cell-mono">LN-000221</td>
+            <td class="left"><b>Extender (WX3000)</b><br><span class="cell-mono">SN-EXT-99120</span></td>
+            <td class="left">Pedro Sánchez</td>
+            <td class="left">Testing / QA · Más Tech</td>
+            <td class="cell-mono">SO-7770021</td>
+            <td class="cell-mono">20/07</td>
+            <td class="cell-mono">27/07</td>
+            <td>—</td>
+            <td><span class="mt-chip chip-grey">Pendiente</span></td>
+            <td><span class="mt-chip chip-red">Vencido</span></td>
+            <td class="row-actions">
+              <button class="mt-icon-btn" title="Ver"><span class="material-icons">visibility</span></button>
+              <button class="mt-icon-btn primary" title="Registrar devolución / resultado" data-open-modal="m-return"><span class="material-icons">assignment_return</span></button>
+            </td>
+          </tr>
+          <tr>
+            <td class="cell-mono">LN-000218</td>
+            <td class="left"><b>ATA (HT812)</b><br><span class="cell-mono">SN-ATA-55210</span></td>
+            <td class="left">María Pérez</td>
+            <td class="left">NOC · Más Tech</td>
+            <td class="cell-mono">TR-55120</td>
+            <td class="cell-mono">30/07</td>
+            <td class="cell-mono">06/08</td>
+            <td>—</td>
+            <td><span class="mt-chip chip-grey">Pendiente</span></td>
+            <td><span class="mt-chip chip-blue">Activo</span></td>
+            <td class="row-actions">
+              <button class="mt-icon-btn" title="Ver"><span class="material-icons">visibility</span></button>
+              <button class="mt-icon-btn primary" title="Registrar devolución / resultado" data-open-modal="m-return"><span class="material-icons">assignment_return</span></button>
+            </td>
+          </tr>
+          <tr>
+            <td class="cell-mono">LN-000210</td>
+            <td class="left"><b>FTTH ONT (HG8145)</b><br><span class="cell-mono">SN-ONT-9008</span></td>
+            <td class="left">Jorge Vega</td>
+            <td class="left">Laboratorio de red · Más Tech</td>
+            <td class="cell-mono">SO-7765540</td>
+            <td class="cell-mono">10/07</td>
+            <td class="cell-mono">20/07</td>
+            <td class="cell-mono">19/07</td>
+            <td><span class="mt-chip chip-red">Falla</span></td>
+            <td><span class="mt-chip chip-green">Devuelto</span></td>
+            <td class="row-actions">
+              <button class="mt-icon-btn" title="Ver"><span class="material-icons">visibility</span></button>
+              <button class="mt-icon-btn" title="Trazabilidad"><span class="material-icons">timeline</span></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="mt-paginator">
+      <span>Filas por página: 25</span>
+      <span>1 – 18 de 18</span>
+      <span class="material-icons">first_page</span><span class="material-icons">chevron_left</span>
+      <span class="material-icons">chevron_right</span><span class="material-icons">last_page</span>
+    </div>
+  </div>
+
+  <div class="mt-note">
+    <b>Reglas del módulo (HU-INV-13 · §11.14):</b> se rastrea el <i>loan period length</i> desde loan start hasta due date (RF 4.1.3) · al exceder el tiempo de préstamo el sistema marca el registro como <b>Vencido</b> y genera alerta + correo automático al responsable (RF 4.1.6 / §11.14.10) · el cierre del préstamo requiere registrar la devolución (return) y el resultado del testing.
+  </div>
+
+  <div class="mt-note" style="margin-top:12px">
+    <b>Origen del inventario prestado:</b> es <b>inventario propio de Más Tech (WFM)</b> prestado a <b>usuarios internos</b> para pruebas de red (§15.10 <i>"WFM inventory loan for network testing"</i> · RF 4.1.1). <b>No</b> sale del stock de campo de un contratista y <b>no</b> genera documento SAP — el préstamo es control operativo interno + notificaciones (sin 351/101/221/501). La <b>ubicación de origen exacta</b> del equipo (bodega principal / pool de testing / recuperado ‑R) <b>no está especificada en la spec</b> → a confirmar con el cliente.
+  </div>
+</div>
+
+<!-- ================= MODAL: Nuevo préstamo ================= -->
+<div class="mt-modal-overlay" id="m-loan">
+  <div class="mt-modal lg">
+    <div class="mt-modal-head">
+      <span class="material-icons">swap_horiz</span><h3>Nuevo préstamo de equipo</h3>
+      <button class="mt-icon-btn mt-modal-close" data-close-modal><span class="material-icons">close</span></button>
+    </div>
+    <div class="mt-modal-body">
+      <div class="mt-form-grid">
+        <div class="mt-form-field"><label>CPE <span class="req">*</span></label>
+          <select class="mt-select"><option>Seleccionar CPE desde catálogo…</option><option>FTTH ONT (HG8145)</option><option>HFC CPE (CM8200)</option><option>FTTH Gateway (F670)</option><option>Extender (WX3000)</option><option>ATA (HT812)</option></select></div>
+        <div class="mt-form-field"><label>Serial / MAC</label><input class="mt-input readonly" value="SN-ONT-77Q1183" readonly></div>
+        <div class="mt-form-field"><label>Usuario responsable <span class="req">*</span></label><input class="mt-input" placeholder="Nombre del responsable"></div>
+        <div class="mt-form-field"><label>Department / Company area <span class="req">*</span></label>
+          <select class="mt-select"><option>NOC · Más Tech</option><option>Laboratorio de red · Más Tech</option><option>Ingeniería de red · Más Tech</option><option>Testing / QA · Más Tech</option></select></div>
+        <div class="mt-form-field"><label>Service order o customer account</label><input class="mt-input" placeholder="SO-xxxxxxx / 8{ }00xxxxxxxx"></div>
+        <div class="mt-form-field"><label>Fecha de entrega (loan start) <span class="req">*</span></label><input class="mt-input" type="date"></div>
+        <div class="mt-form-field"><label>Fecha esperada de devolución (due date) <span class="req">*</span></label><input class="mt-input" type="date"></div>
+        <div class="mt-form-field"><label>Observaciones</label><textarea class="mt-textarea" placeholder="Motivo del préstamo / testing a realizar…"></textarea></div>
+      </div>
+      <div class="mt-alert warn" style="margin-top:12px"><span class="material-icons">schedule</span> El <b>loan period length</b> (loan start → due date) se rastrea automáticamente; al superarlo se dispara alerta y correo al responsable (RF 4.1.3 / RF 4.1.6).</div>
+    </div>
+    <div class="mt-modal-foot">
+      <button class="mt-btn" data-close-modal>Cancelar</button>
+      <button class="mt-btn mt-btn-primary" data-close-modal><span class="material-icons">save</span> Registrar préstamo (Activo)</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MODAL: Registrar devolución / resultado ================= -->
+<div class="mt-modal-overlay" id="m-return">
+  <div class="mt-modal">
+    <div class="mt-modal-head">
+      <span class="material-icons">assignment_return</span><h3>Registrar devolución / resultado</h3>
+      <button class="mt-icon-btn mt-modal-close" data-close-modal><span class="material-icons">close</span></button>
+    </div>
+    <div class="mt-modal-body">
+      <ul class="mt-list-plain small" style="margin-bottom:14px">
+        <li><span class="muted">Loan ID</span><b style="margin-left:auto" class="cell-mono">LN-000231</b></li>
+        <li><span class="muted">Equipo (CPE)</span><b style="margin-left:auto">FTTH ONT (HG8145) · <span class="cell-mono">SN-ONT-77Q1183</span></b></li>
+        <li><span class="muted">Responsable</span><b style="margin-left:auto">Carlos Mendoza · Laboratorio de red · Más Tech</b></li>
+        <li><span class="muted">Loan start → Due date</span><b style="margin-left:auto" class="cell-mono">22/07 → 29/07</b></li>
+      </ul>
+      <div class="mt-form-grid cols-1">
+        <div class="mt-form-field"><label>Confirmación de return (fecha de devolución) <span class="req">*</span></label><input class="mt-input" type="date"></div>
+        <div class="mt-form-field"><label>Resultado del testing <span class="req">*</span></label>
+          <select class="mt-select"><option>OK · equipo operativo</option><option>Falla · requiere revisión</option><option>Requiere refurbishment</option></select></div>
+        <div class="mt-form-field"><label>Evidencia (foto / video)</label>
+          <button class="mt-btn mt-btn-stroked"><span class="material-icons">photo_camera</span> Adjuntar evidencia</button></div>
+        <div class="mt-form-field"><label>Observaciones</label><textarea class="mt-textarea" placeholder="Notas de la devolución y del testing…"></textarea></div>
+      </div>
+      <div class="mt-alert ok" style="margin-top:12px"><span class="material-icons">check_circle</span> Al confirmar el return se cierra el préstamo (Devuelto) y se detiene el conteo del loan period length.</div>
+    </div>
+    <div class="mt-modal-foot">
+      <button class="mt-btn" data-close-modal>Cancelar</button>
+      <button class="mt-btn mt-btn-accent" data-close-modal><span class="material-icons">check_circle</span> Confirmar devolución</button>
+    </div>
+  </div>
+</div>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<div class="mt-card">
+
+  <!-- Header -->
+  <div class="mt-page-header">
+    <div class="mt-header-icon"><span class="material-icons">move_to_inbox</span></div>
+    <div class="mt-header-text">
+      <div class="mt-header-title">
+        Recepción de inventario en tránsito (351 → 101)
+        <mt-help>
+          <b>Reglas del módulo</b> (HU-INV-02 · spec §11.5): no se pueden confirmar ítems no incluidos
+          en el documento origen 351 (§14.1) · los cables transferidos en ROL se muestran en FT/MT
+          según el factor de conversión (RF 1.2.4) · el CPE nuevo se diferencia del refurbished con el
+          sufijo <span class="mt-tag r">-R</span> (RF 1.2.5).
+          <span class="mt-help-sep"></span>
+          El estado del inventario en tránsito se mantiene <b>Por recibir / Parcial</b> hasta la
+          confirmación 101; solo entonces pasa al stock del contratista.
+        </mt-help>
+      </div>
+      <div class="mt-header-sub">
+        Transferencia desde main warehouse · HU-INV-02 · spec §11.5 · CU-INV-02 · EP-INV-02
+      </div>
+    </div>
+    <div class="mt-header-badge">{{ documentos.length }} documentos en tránsito</div>
+    <span class="mt-header-spacer"></span>
+    <button type="button" class="mt-btn mt-btn-stroked">
+      <span class="material-icons">download</span> Exportar
+    </button>
+  </div>
+
+  <!-- Filtros -->
+  <div class="mt-filter-bar">
+    <div class="mt-field grow">
+      <span class="material-icons">search</span>
+      <input type="text" [(ngModel)]="filtro.q" (keydown.enter)="buscar()"
+             placeholder="Buscar por documento 351 / ubicación destino">
+    </div>
+    <div class="mt-field">
+      <span class="material-icons">flag</span>
+      <select [(ngModel)]="filtro.estado">
+        <option value="todos">Estado: todos</option>
+        <option value="por-recibir">Por recibir</option>
+        <option value="parcial">Parcial</option>
+        <option value="confirmado">Confirmado</option>
+      </select>
+    </div>
+    <div class="mt-field">
+      <span class="material-icons">place</span>
+      <select [(ngModel)]="filtro.destino">
+        <option value="">Ubicación destino: todas</option>
+        <option value="CONT-44 · Contrata 44">CONT-44 · Contrata 44</option>
+        <option value="CONT-12 · Contrata 12">CONT-12 · Contrata 12</option>
+        <option value="CONT-08 · Tercero CP-08">CONT-08 · Tercero CP-08</option>
+      </select>
+    </div>
+    <div class="mt-field">
+      <span class="material-icons">calendar_today</span>
+      <input type="date" [(ngModel)]="filtro.fecha">
+    </div>
+    <button type="button" class="mt-icon-btn primary" (click)="buscar()" title="Buscar">
+      <span class="material-icons">search</span>
+    </button>
+    <button type="button" class="mt-icon-btn" (click)="limpiar()" title="Limpiar">
+      <span class="material-icons">clear</span>
+    </button>
+  </div>
+
+  <!-- Pestañas -->
+  <div class="mt-tabs">
+    <div class="mt-tab" [class.active]="tab === 'transito'" (click)="tab = 'transito'">
+      En tránsito (351)
+      <mt-help>
+        Cada fila es un <b>documento 351</b>. Usa el ícono
+        <span class="material-icons" style="font-size:15px;vertical-align:middle">move_to_inbox</span>
+        de la fila para abrir el documento que vas a recibir; al abrirlo se muestran
+        <b>solo los materiales de ese documento</b> y el panel de escaneo rápido.
+      </mt-help>
+    </div>
+    <div class="mt-tab" [class.active]="tab === 'confirmados'" (click)="tab = 'confirmados'">
+      Confirmados (101)
+    </div>
+    <div class="mt-tab" [class.active]="tab === 'discrepancias'" (click)="tab = 'discrepancias'">
+      Discrepancias
+      <mt-help>
+        Unidades y cantidades cuyo resultado difiere de lo esperado en el documento origen 351 (§14.1).
+        Requieren <b>reconciliación</b> antes de cerrar el 101.
+      </mt-help>
+    </div>
+  </div>
+
+  <!-- Panel: En tránsito -->
+  <div *ngIf="tab === 'transito'">
+    <div class="mt-table-wrap">
+      <table class="mt-table">
+        <thead>
+          <tr>
+            <th>Documento 351</th><th class="left">Ubicación destino (contratista)</th><th>Líneas</th>
+            <th>Ítems serializados</th><th>Ítems no serializados</th><th>Valor</th>
+            <th>Fecha envío</th><th>Estado</th><th>Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let d of documentos; trackBy: trackDoc">
+            <td class="cell-mono">{{ d.id }}</td>
+            <td class="left">{{ d.destino }}</td>
+            <td>{{ d.lineas }}</td>
+            <td>
+              <ng-container *ngIf="d.itemsSerializados; else sinSerie">
+                <b>{{ d.itemsSerializados }}</b>
+                <span class="small muted" *ngIf="d.confirmados"> ({{ d.confirmados }} confirmados)</span>
+                <span class="mt-tag r" *ngIf="d.refurbished">-R</span>
+              </ng-container>
+              <ng-template #sinSerie>—</ng-template>
+            </td>
+            <td>{{ d.itemsNoSerializados || '—' }}</td>
+            <td class="cell-mono">{{ d.valor | currency:'USD' }}</td>
+            <td class="cell-mono">{{ d.fechaEnvio | date:'dd/MM' }}</td>
+            <td><span class="mt-chip" [ngClass]="chipEstado(d).clase">{{ chipEstado(d).texto }}</span></td>
+            <td class="row-actions">
+              <button type="button" class="mt-icon-btn primary" (click)="abrir(d)"
+                      title="Abrir y confirmar este documento">
+                <span class="material-icons">move_to_inbox</span>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="mt-empty" *ngIf="!documentos.length && !cargando">
+        <span class="material-icons">inbox</span><p>No hay documentos en tránsito con esos filtros.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Los paneles Confirmados y Discrepancias se alimentan de sus propios
+       endpoints; se dejan como marcador para que los conectes. -->
+  <div *ngIf="tab === 'confirmados'" class="mt-empty">
+    <span class="material-icons">fact_check</span><p>Conectar GET /api/recepcion/confirmados</p>
+  </div>
+  <div *ngIf="tab === 'discrepancias'" class="mt-empty">
+    <span class="material-icons">report_problem</span><p>Conectar GET /api/recepcion/discrepancias</p>
+  </div>
+</div>
+
+<!-- Ventana de confirmación -->
+<rcp-confirmar-recepcion [detalle]="detalle"
+                         (confirmar)="confirmar($event)"
+                         (cerrar)="detalle = null"></rcp-confirmar-recepcion>

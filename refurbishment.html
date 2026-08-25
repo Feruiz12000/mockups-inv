@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Más Tech · Inventario · Refurbishment</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="assets/mastech-webmastech.css">
+</head>
+<body data-module="refurbishment" data-title="Refurbishment" data-breadcrumb="Stock recuperado / refurbished">
+<div id="mt-page">
+
+  <div class="mt-card">
+    <!-- Header -->
+    <div class="mt-page-header">
+      <div class="mt-header-icon"><span class="material-icons">autorenew</span></div>
+      <div class="mt-header-text">
+        <div class="mt-header-title">Stock recuperado y refurbished (-R)</div>
+        <div class="mt-header-sub">Consulta del inventario recuperado y reacondicionado · §11.2 / §11.12 · pantalla §19.16 · KPIs §16.2.7</div>
+      </div>
+      <div class="mt-header-badge">4,218 equipos -R</div>
+    </div>
+
+    <!-- KPIs (§16.2.7) -->
+    <div class="mt-kpi-grid">
+      <div class="mt-kpi"><div class="k-top"><span class="k-label">% equipos reutilizables</span><span class="k-icon" style="background:rgba(31,179,112,.1);color:var(--success)"><span class="material-icons">recycling</span></span></div><span class="k-value">63%</span><span class="k-delta k-up">▲ 2.4% vs mes ant.</span></div>
+      <div class="mt-kpi"><div class="k-top"><span class="k-label">% descartados</span><span class="k-icon" style="background:rgba(244,67,54,.1);color:var(--warn)"><span class="material-icons">delete_forever</span></span></div><span class="k-value">12%</span><span class="k-delta k-down">▲ 0.8%</span></div>
+      <div class="mt-kpi"><div class="k-top"><span class="k-label">Equipos enviados a prueba</span><span class="k-icon" style="background:rgba(152,29,151,.1);color:var(--info)"><span class="material-icons">science</span></span></div><span class="k-value">512</span><span class="k-delta k-up">▲ 5.1%</span></div>
+      <div class="mt-kpi"><div class="k-top"><span class="k-label">Equipos reacondicionados</span><span class="k-icon" style="background:rgba(0,194,146,.12);color:var(--success-dark)"><span class="material-icons">build_circle</span></span></div><span class="k-value">328</span><span class="k-delta k-up">▲ 4.2%</span></div>
+      <div class="mt-kpi"><div class="k-top"><span class="k-label">% reinyectados</span><span class="k-icon" style="background:var(--primary-tint);color:var(--primary)"><span class="material-icons">autorenew</span></span></div><span class="k-value">57%</span><span class="k-delta k-up">▲ equipos a stock desplegable</span></div>
+    </div>
+  </div>
+
+  <div class="mt-card">
+    <!-- Filtros -->
+    <div class="mt-filter-bar">
+      <div class="mt-field grow"><span class="material-icons">search</span><input type="text" placeholder="Material -R · serial / MAC"></div>
+      <div class="mt-field"><span class="material-icons">memory</span>
+        <select><option>Material -R: todos</option><option>ONT-HG8145 -R</option><option>GW-F670 -R</option><option>HFC-CM8200 -R</option><option>ATA-HT812 -R</option><option>EXT-WX3000 -R</option></select></div>
+      <div class="mt-field"><span class="material-icons">router</span>
+        <select><option>Tipo CPE: todos</option><option>FTTH ONT</option><option>FTTH Gateway</option><option>HFC CPE</option><option>Extender</option><option>ATA</option></select></div>
+      <div class="mt-field"><span class="material-icons">timeline</span>
+        <select><option>Estado: todos</option><option>Recuperado</option><option>En testing</option><option>Reacondicionado</option><option>Aprobado</option><option>Descartado</option><option>Reutilizado</option></select></div>
+      <div class="mt-field"><span class="material-icons">warehouse</span>
+        <select><option>Ubicación: todas</option><option>Contractor plant · SL-REC</option><option>Warehouse · testing</option><option>Main WH · deployable -R</option></select></div>
+      <button class="mt-icon-btn primary" title="Buscar"><span class="material-icons">search</span></button>
+      <button class="mt-icon-btn" title="Limpiar"><span class="material-icons">clear</span></button>
+      <button class="mt-icon-btn" title="Exportar"><span class="material-icons">download</span></button>
+    </div>
+
+    <!-- Tabla de stock recuperado / refurbished -->
+    <div class="mt-table-wrap">
+      <table class="mt-table">
+        <thead>
+          <tr>
+            <th class="left">Material</th><th class="left">Serial / MAC</th><th class="left">Tipo CPE</th>
+            <th>Estado</th><th class="left">Ubicación / estado de stock</th><th>Fecha collection</th><th>Vida útil remanente</th><th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="left"><span class="cell-mono">ONT-HG8145</span> <span class="mt-tag r">-R</span></td>
+            <td class="left cell-mono">SN-77Q1183</td>
+            <td class="left">FTTH ONT</td>
+            <td><span class="mt-chip chip-amber">En testing</span></td>
+            <td class="left">Warehouse · testing</td>
+            <td class="cell-mono">28/07</td>
+            <td>18 meses</td>
+            <td class="row-actions">
+              <button class="mt-icon-btn primary" title="Enviar a testing"><span class="material-icons">science</span></button>
+              <button class="mt-icon-btn accent" title="Aprobar reinyección"><span class="material-icons">check_circle</span></button>
+              <button class="mt-icon-btn warn" title="Descartar"><span class="material-icons">delete_forever</span></button>
+            </td>
+          </tr>
+          <tr>
+            <td class="left"><span class="cell-mono">GW-F670</span> <span class="mt-tag r">-R</span></td>
+            <td class="left cell-mono">B8:44:12:9A:0C</td>
+            <td class="left">FTTH Gateway</td>
+            <td><span class="mt-chip chip-grey">Recuperado</span></td>
+            <td class="left">Contractor plant · SL-REC</td>
+            <td class="cell-mono">30/07</td>
+            <td>24 meses</td>
+            <td class="row-actions">
+              <button class="mt-icon-btn primary" title="Enviar a testing"><span class="material-icons">science</span></button>
+              <button class="mt-icon-btn accent" title="Aprobar reinyección"><span class="material-icons">check_circle</span></button>
+              <button class="mt-icon-btn warn" title="Descartar"><span class="material-icons">delete_forever</span></button>
+            </td>
+          </tr>
+          <tr>
+            <td class="left"><span class="cell-mono">HFC-CM8200</span> <span class="mt-tag r">-R</span></td>
+            <td class="left cell-mono">A1:B2:C3:D4:E5</td>
+            <td class="left">HFC CPE</td>
+            <td><span class="mt-chip chip-purple">Reacondicionado</span></td>
+            <td class="left">Warehouse · testing</td>
+            <td class="cell-mono">25/07</td>
+            <td>30 meses</td>
+            <td class="row-actions">
+              <button class="mt-icon-btn primary" title="Enviar a testing"><span class="material-icons">science</span></button>
+              <button class="mt-icon-btn accent" title="Aprobar reinyección"><span class="material-icons">check_circle</span></button>
+              <button class="mt-icon-btn warn" title="Descartar"><span class="material-icons">delete_forever</span></button>
+            </td>
+          </tr>
+          <tr>
+            <td class="left"><span class="cell-mono">EXT-WX3000</span> <span class="mt-tag r">-R</span></td>
+            <td class="left cell-mono">SN-EX99120</td>
+            <td class="left">Extender</td>
+            <td><span class="mt-chip chip-green">Aprobado</span></td>
+            <td class="left">Main WH · deployable -R</td>
+            <td class="cell-mono">20/07</td>
+            <td>36 meses</td>
+            <td class="row-actions">
+              <button class="mt-icon-btn primary" title="Enviar a testing"><span class="material-icons">science</span></button>
+              <button class="mt-icon-btn accent" title="Aprobar reinyección"><span class="material-icons">check_circle</span></button>
+              <button class="mt-icon-btn warn" title="Descartar"><span class="material-icons">delete_forever</span></button>
+            </td>
+          </tr>
+          <tr>
+            <td class="left"><span class="cell-mono">ATA-HT812</span> <span class="mt-tag r">-R</span></td>
+            <td class="left cell-mono">SN-AT55210</td>
+            <td class="left">ATA</td>
+            <td><span class="mt-chip chip-red">Descartado</span></td>
+            <td class="left">Warehouse · scrap</td>
+            <td class="cell-mono">22/07</td>
+            <td>0 meses</td>
+            <td class="row-actions">
+              <button class="mt-icon-btn primary" title="Enviar a testing"><span class="material-icons">science</span></button>
+              <button class="mt-icon-btn accent" title="Aprobar reinyección"><span class="material-icons">check_circle</span></button>
+              <button class="mt-icon-btn warn" title="Descartar"><span class="material-icons">delete_forever</span></button>
+            </td>
+          </tr>
+          <tr>
+            <td class="left"><span class="cell-mono">ONT-HG8145</span> <span class="mt-tag r">-R</span></td>
+            <td class="left cell-mono">SN-77Q2044</td>
+            <td class="left">FTTH ONT</td>
+            <td><span class="mt-chip chip-indigo">Reutilizado</span></td>
+            <td class="left">Reinyectado · nueva instalación</td>
+            <td class="cell-mono">18/07</td>
+            <td>21 meses</td>
+            <td class="row-actions">
+              <button class="mt-icon-btn primary" title="Enviar a testing"><span class="material-icons">science</span></button>
+              <button class="mt-icon-btn accent" title="Aprobar reinyección"><span class="material-icons">check_circle</span></button>
+              <button class="mt-icon-btn warn" title="Descartar"><span class="material-icons">delete_forever</span></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="mt-paginator">
+      <span>Filas por página: 25</span>
+      <span>1 – 25 de 4,218</span>
+      <span class="material-icons">first_page</span><span class="material-icons">chevron_left</span>
+      <span class="material-icons">chevron_right</span><span class="material-icons">last_page</span>
+    </div>
+  </div>
+
+  <div class="mt-note">
+    <b>Reglas del módulo (spec §14):</b> el inventario recuperado se registra separado del stock desplegable (§14.15) y se clasifica bajo código refurbished <b>-R</b> (§14.16) · KPIs de reutilización, descarte y reinyección según §16.2.7.
+  </div>
+</div>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>
