@@ -568,11 +568,12 @@ table.mt-table td.left, table.mt-table th.left { text-align: left; }
 /* sin padding superior: así el bloque sticky topa a ras del borde del scroll */
 .mt-modal.rcp-modal .mt-modal-body { flex:1 1 auto; max-height:none; overflow-y:auto; padding-top:0; }
 
-/* Bloque de escaneo: scrollea con la info y se queda fijo (sticky) al llegar arriba */
+/* Bloque fijo: info del documento + escaneo/cámara suben juntos como una sola unidad y se quedan
+   fijos (sticky) al llegar arriba; de ahí para abajo scrollea solo la tabla */
 .rcp-sticky { position:sticky; top:0; z-index:6; background:#fff; margin:0 -22px 4px; padding:10px 22px 12px; border-bottom:1px solid var(--border); }
 
-/* Info compacta del documento (ahora scrollea) */
-.rcp-docinfo { display:flex; flex-wrap:wrap; align-items:center; gap:8px 16px; padding-top:16px; margin-bottom:12px; font-size:12.5px; color:var(--text-secondary); }
+/* Info compacta del documento (ahora vive dentro del bloque sticky, junto con la cámara) */
+.rcp-docinfo { display:flex; flex-wrap:wrap; align-items:center; gap:8px 16px; margin-bottom:12px; font-size:12.5px; color:var(--text-secondary); }
 .rcp-docinfo .rcp-di { display:inline-flex; align-items:center; gap:5px; }
 .rcp-docinfo .rcp-di .material-icons { font-size:16px; color:var(--primary); }
 .rcp-docinfo .rcp-di b { color:var(--text); font-weight:600; }
