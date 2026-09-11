@@ -293,8 +293,8 @@
               <input class="mt-input" data-ln-mat autocomplete="off" placeholder="Escribe para buscar, o haz clic para ver el catálogo…">
               <div class="ln-combo-list" data-ln-opts hidden></div>
             </div></div>
-          <div class="mt-form-field"><label>Cantidad</label>
-            <input class="mt-input" type="number" value="1" min="1" data-ln-qty></div>
+          <div class="mt-form-field"><label>Serial / MAC</label>
+            <input class="mt-input" data-ln-serial placeholder="Escanea o teclea el serial / MAC…"></div>
           <div class="mt-form-field"><button class="mt-btn mt-btn-stroked" data-ln-add><span class="material-icons">add</span> Agregar</button></div>
           <span class="mt-hint ln-add-hint" data-ln-hint>Elige un material o escribe su código.</span>
         </div>
@@ -302,7 +302,7 @@
         <div class="mt-table-wrap">
           <table class="mt-table">
             <thead>
-              <tr><th class="left">Material ID</th><th class="left">Descripción</th><th>Cantidad</th><th>Quitar</th></tr>
+              <tr><th class="left">Material ID</th><th class="left">Descripción</th><th class="left">Serial / MAC</th><th>Quitar</th></tr>
             </thead>
             <tbody data-ln-body="ser"></tbody>
           </table>
@@ -370,24 +370,58 @@
 
 <!-- ================= MODAL: Registrar devolución / resultado ================= -->
 <div class="mt-modal-overlay" id="m-return">
-  <div class="mt-modal">
+  <div class="mt-modal lg" style="max-width:840px">
     <div class="mt-modal-head">
-      <span class="material-icons">assignment_return</span><h3>Registrar devolución / resultado</h3><span class="mt-help ok" tabindex="0" role="button" aria-label="Ver detalle">?<span class="mt-help-bubble start">Al confirmar el return se cierra el préstamo (<b>Devuelto</b>) y se detiene el conteo del <i>loan period length</i>. La <b>fecha de devolución</b> no se captura acá: la toma el sistema en el momento de confirmar.</span></span>
+      <span class="material-icons">assignment_return</span><h3>Registrar devolución / resultado</h3><span class="mt-help ok" tabindex="0" role="button" aria-label="Ver detalle">?<span class="mt-help-bubble start">La devolución es <b>por material</b>: cada equipo del préstamo lleva su propio resultado de testing. El <b>estado del préstamo</b> se deriva solo (Devuelto / con fallas / requiere refurbishment). Al confirmar el return se cierra el préstamo y se detiene el conteo del <i>loan period length</i>. La <b>fecha de devolución</b> no se captura acá: la toma el sistema al confirmar.</span></span>
       <button class="mt-icon-btn mt-modal-close" data-close-modal><span class="material-icons">close</span></button>
     </div>
     <div class="mt-modal-body">
       <ul class="mt-list-plain small" style="margin-bottom:14px">
         <li><span class="muted">Loan ID</span><b style="margin-left:auto" class="cell-mono">LN-000231</b></li>
-        <li><span class="muted">Equipo (CPE)</span><b style="margin-left:auto">FTTH ONT (HG8145) · <span class="cell-mono">SN-ONT-77Q1183</span></b></li>
         <li><span class="muted">Responsable</span><b style="margin-left:auto">Carlos Mendoza · Laboratorio de red · Más Tech</b></li>
         <li><span class="muted">Loan start → Due date</span><b style="margin-left:auto" class="cell-mono">22/07 → 29/07</b></li>
+        <li><span class="muted">Estado del préstamo</span><span style="margin-left:auto" data-ret-estado><span class="mt-chip chip-grey">—</span></span></li>
       </ul>
-      <div class="mt-form-grid cols-1">
-        <div class="mt-form-field"><label>Resultado del testing <span class="req">*</span></label>
-          <select class="mt-select"><option>OK · equipo operativo</option><option>Falla · requiere revisión</option><option>Requiere refurbishment</option></select></div>
-        <div class="mt-form-field"><label>Evidencia (foto / video)</label>
+
+      <div class="mt-section-title"><span class="material-icons">inventory_2</span> Resultado del testing por material <span class="mt-tag mt-tag-count">4</span></div>
+      <div class="mt-table-wrap">
+        <table class="mt-table">
+          <thead>
+            <tr><th class="left">Material</th><th class="left">Serial / MAC · Cantidad</th><th class="left">Resultado del testing <span class="req">*</span></th><th class="left">Observación</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="left"><b>FTTH ONT (HG8145)</b><br><span class="mt-chip chip-slate">Serializado</span></td>
+              <td class="left cell-mono">SN-ONT-77Q1183</td>
+              <td class="left"><select class="mt-select" data-ret-res style="min-width:210px"><option>OK · equipo operativo</option><option>Falla · requiere revisión</option><option>Requiere refurbishment</option></select></td>
+              <td class="left"><input class="mt-input" placeholder="Opcional…"></td>
+            </tr>
+            <tr>
+              <td class="left"><b>HFC CPE (CM8200)</b><br><span class="mt-chip chip-slate">Serializado</span></td>
+              <td class="left cell-mono">A1:B2:C3:D4:E5</td>
+              <td class="left"><select class="mt-select" data-ret-res style="min-width:210px"><option>OK · equipo operativo</option><option>Falla · requiere revisión</option><option>Requiere refurbishment</option></select></td>
+              <td class="left"><input class="mt-input" placeholder="Opcional…"></td>
+            </tr>
+            <tr>
+              <td class="left"><b>Cable drop coaxial RG6</b><br><span class="mt-chip chip-sky">No serializado</span></td>
+              <td class="left cell-mono">300 FT</td>
+              <td class="left"><select class="mt-select" data-ret-res style="min-width:210px"><option>OK · equipo operativo</option><option>Falla · requiere revisión</option><option>Requiere refurbishment</option></select></td>
+              <td class="left"><input class="mt-input" placeholder="Opcional…"></td>
+            </tr>
+            <tr>
+              <td class="left"><b>Conector F compresión RG6</b><br><span class="mt-chip chip-sky">No serializado</span></td>
+              <td class="left cell-mono">20 EA</td>
+              <td class="left"><select class="mt-select" data-ret-res style="min-width:210px"><option>OK · equipo operativo</option><option>Falla · requiere revisión</option><option>Requiere refurbishment</option></select></td>
+              <td class="left"><input class="mt-input" placeholder="Opcional…"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="mt-form-grid cols-1" style="margin-top:16px">
+        <div class="mt-form-field"><label>Evidencia general (foto / video)</label>
           <button class="mt-btn mt-btn-stroked"><span class="material-icons">photo_camera</span> Adjuntar evidencia</button></div>
-        <div class="mt-form-field"><label>Observaciones</label><textarea class="mt-textarea" placeholder="Notas de la devolución y del testing…"></textarea></div>
+        <div class="mt-form-field"><label>Observaciones generales</label><textarea class="mt-textarea" placeholder="Notas de la devolución y del testing del préstamo…"></textarea></div>
       </div>
     </div>
     <div class="mt-modal-foot">
@@ -499,7 +533,8 @@
       q("[data-ln-mat]", c).value = m.id + " · " + m.desc;
       cerrarListas();
       pintarHint(sec);
-      q("[data-ln-qty]", c).focus();
+      var next = sec === "ser" ? q("[data-ln-serial]", c) : q("[data-ln-qty]", c);
+      if (next) next.focus();
     }
 
     /* ---------- Líneas del préstamo ---------- */
@@ -512,35 +547,54 @@
       var m = materialDe(inp);
       if (!inp.value.trim()) { hint.textContent = "Elige un material o escribe su código."; return; }
       if (!m) { hint.textContent = "Ese código no está en el catálogo."; hint.style.color = "var(--warn)"; return; }
+      if (sec === "ser") { hint.textContent = "Escanea o teclea el serial / MAC de la unidad a prestar."; return; }
       hint.textContent = "La cantidad se indica en " + m.uom +
         (usado(m.id) ? " · ya agregaste " + num(usado(m.id)) + " " + m.uom : "");
     }
 
     function agregar(sec) {
-      var c = caja(sec), inp = q("[data-ln-mat]", c), qty = q("[data-ln-qty]", c);
-      var m = materialDe(inp), cant = parseInt(qty.value, 10);
+      var c = caja(sec), inp = q("[data-ln-mat]", c);
+      var m = materialDe(inp);
       if (!m) return pintarHint(sec, "Elige un material del catálogo.");
       if (m.ser !== (sec === "ser")) return pintarHint(sec, "Ese material va en la otra sección.");
-      if (!cant || cant < 1) return pintarHint(sec, "Indica una cantidad válida.");
-      var l = linea(m.id);
-      if (l) l.qty += cant; else lineas.push({ id: m.id, qty: cant });
-      inp.value = ""; qty.value = 1;
+      if (sec === "ser") {
+        var serInp = q("[data-ln-serial]", c), serial = (serInp.value || "").trim().toUpperCase();
+        if (!serial) return pintarHint(sec, "Ingresa el serial / MAC de la unidad.");
+        if (lineas.some(function (l) { return l.serial === serial; })) return pintarHint(sec, "Ese serial / MAC ya fue agregado.");
+        lineas.push({ id: m.id, serial: serial });
+        inp.value = ""; serInp.value = "";
+      } else {
+        var qty = q("[data-ln-qty]", c), cant = parseInt(qty.value, 10);
+        if (!cant || cant < 1) return pintarHint(sec, "Indica una cantidad válida.");
+        var l = linea(m.id);
+        if (l) l.qty += cant; else lineas.push({ id: m.id, qty: cant });
+        inp.value = ""; qty.value = 1;
+      }
       cerrarListas();
       pintar();
     }
 
     function quitar(id) {
-      lineas = lineas.filter(function (l) { return l.id !== id; });
+      lineas = lineas.filter(function (l) { return !(l.id === id && !l.serial); });
+      pintar();
+    }
+
+    function quitarSerial(serial) {
+      lineas = lineas.filter(function (l) { return l.serial !== serial; });
       pintar();
     }
 
     function filaMaterial(l) {
       var m = porId(l.id);
+      var colVal = l.serial
+        ? '<td class="left cell-mono">' + esc(l.serial) + "</td>"
+        : '<td class="cell-mono">' + num(l.qty) + " " + m.uom + "</td>";
+      var delAttr = l.serial ? 'data-ln-del-ser="' + esc(l.serial) + '"' : 'data-ln-del="' + m.id + '"';
       return "<tr>" +
         '<td class="left cell-mono">' + m.id + "</td>" +
         '<td class="left"><b>' + esc(m.desc) + '</b><br><span class="small muted">' + esc(m.tipo) + "</span></td>" +
-        '<td class="cell-mono">' + num(l.qty) + " " + m.uom + "</td>" +
-        '<td><button class="mt-icon-btn warn" title="Quitar del préstamo" data-ln-del="' + m.id + '">' +
+        colVal +
+        '<td><button class="mt-icon-btn warn" title="Quitar del préstamo" ' + delAttr + '>' +
         '<span class="material-icons">delete_outline</span></button></td>' +
         "</tr>";
     }
@@ -603,19 +657,23 @@
 
       q("[data-ln-sum-body]").innerHTML = lineas.length ? lineas.map(function (l) {
         var m = porId(l.id);
+        var cantCol = l.serial ? esc(l.serial) : (num(l.qty) + " " + m.uom);
         return '<tr><td class="left cell-mono">' + m.id + "</td>" +
           '<td class="left">' + esc(m.desc) + '<br><span class="small muted">' + esc(m.tipo) + "</span></td>" +
           '<td><span class="mt-chip ' + (m.ser ? "chip-slate" : "chip-sky") + '">' + (m.ser ? "Serializado" : "No serializado") + "</span></td>" +
-          '<td class="cell-mono">' + num(l.qty) + " " + m.uom + "</td></tr>";
+          '<td class="cell-mono">' + cantCol + "</td></tr>";
       }).join("") : '<tr><td colspan="4"><div class="mt-empty" style="padding:22px 12px"><span class="material-icons">inbox</span><div>Sin material agregado al préstamo.</div></div></td></tr>';
       badge(q("[data-ln-sum-count]"), lineas.length);
 
-      // Los totales se agrupan por unidad de medida: no se suman EA con FT
+      // Totales: serializados por unidad; no serializados agrupados por UOM (no se suman EA con FT)
+      var serCount = lineas.filter(function (l) { return l.serial; }).length;
       var porUom = {};
-      lineas.forEach(function (l) { var m = porId(l.id); porUom[m.uom] = (porUom[m.uom] || 0) + l.qty; });
-      var partes = Object.keys(porUom).map(function (u) { return "<span><b>" + num(porUom[u]) + " " + u + "</b></span>"; });
-      q("[data-ln-sum-tot]").innerHTML = "<span>Total: <b>" + lineas.length + " material" +
-        (lineas.length === 1 ? "" : "es") + "</b></span>" + (partes.length ? "<span>·</span>" + partes.join("<span>·</span>") : "");
+      lineas.forEach(function (l) { if (l.serial) return; var m = porId(l.id); porUom[m.uom] = (porUom[m.uom] || 0) + l.qty; });
+      var partes = [];
+      if (serCount) partes.push("<span><b>" + serCount + " serializado" + (serCount === 1 ? "" : "s") + "</b></span>");
+      Object.keys(porUom).forEach(function (u) { partes.push("<span><b>" + num(porUom[u]) + " " + u + "</b></span>"); });
+      q("[data-ln-sum-tot]").innerHTML = "<span>Total: <b>" + lineas.length + " ítem" +
+        (lineas.length === 1 ? "" : "s") + "</b></span>" + (partes.length ? "<span>·</span>" + partes.join("<span>·</span>") : "");
 
       var d = diasPrestamo();
       q("[data-ln-sum-dias]").textContent = d === null ? "—" : d + (d === 1 ? " día" : " días");
@@ -627,8 +685,9 @@
       var tb = document.querySelector("[data-ln-list]");
       if (!tb || !lineas.length) return;
       var m0 = porId(lineas[0].id);
+      var det0 = lineas[0].serial ? esc(lineas[0].serial) : num(lineas[0].qty) + " " + m0.uom;
       var equipos = lineas.length === 1
-        ? "<b>" + esc(m0.desc) + '</b><br><span class="small muted">' + num(lineas[0].qty) + " " + m0.uom + "</span>"
+        ? "<b>" + esc(m0.desc) + '</b><br><span class="small muted">' + det0 + "</span>"
         : "<b>" + lineas.length + ' materiales</b><br><span class="small muted">' + esc(m0.desc) + " y " + (lineas.length - 1) + " más</span>";
 
       var tr = document.createElement("tr");
@@ -665,6 +724,7 @@
       qa("[data-ln-f]").forEach(function (el) { el.value = ""; });
       qa("[data-ln-mat]").forEach(function (el) { el.value = ""; });
       qa("[data-ln-qty]").forEach(function (el) { el.value = 1; });
+      qa("[data-ln-serial]").forEach(function (el) { el.value = ""; });
       cerrarListas();
       q('[data-ln-f="loanId"]').placeholder = "LN-000" + consecutivo;
       pintar();
@@ -677,6 +737,9 @@
 
       var add = ev.target.closest("[data-ln-add]");
       if (add) { ev.preventDefault(); agregar(add.closest("[data-ln-sec]").getAttribute("data-ln-sec")); return; }
+
+      var delSer = ev.target.closest("[data-ln-del-ser]");
+      if (delSer) { quitarSerial(delSer.getAttribute("data-ln-del-ser")); return; }
 
       var del = ev.target.closest("[data-ln-del]");
       if (del) { quitar(del.getAttribute("data-ln-del")); return; }
@@ -741,6 +804,28 @@
     });
 
     reiniciar();
+  })();
+  </script>
+
+  <script>
+  /* Devolución multi-material: deriva el estado global del préstamo a partir
+     del resultado de testing de cada material. Solo mockup, sin backend. */
+  (function () {
+    var modal = document.getElementById("m-return");
+    if (!modal) return;
+    function derive() {
+      var estado = modal.querySelector("[data-ret-estado]");
+      if (!estado) return;
+      var vals = [].slice.call(modal.querySelectorAll("[data-ret-res]")).map(function (s) { return (s.value || "").toLowerCase(); });
+      var chip, ico, txt;
+      if (vals.some(function (v) { return v.indexOf("falla") >= 0; })) { chip = "chip-red"; ico = "error"; txt = "Devuelto con fallas"; }
+      else if (vals.some(function (v) { return v.indexOf("refurb") >= 0; })) { chip = "chip-amber"; ico = "autorenew"; txt = "Devuelto · requiere refurbishment"; }
+      else { chip = "chip-green"; ico = "check_circle"; txt = "Devuelto"; }
+      estado.innerHTML = '<span class="mt-chip ' + chip + '"><span class="material-icons">' + ico + '</span> ' + txt + '</span>';
+    }
+    modal.addEventListener("change", function (ev) { if (ev.target.closest("[data-ret-res]")) derive(); });
+    document.addEventListener("click", function (ev) { if (ev.target.closest('[data-open-modal="m-return"]')) setTimeout(derive, 30); });
+    derive();
   })();
   </script>
 </body>

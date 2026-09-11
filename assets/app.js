@@ -156,10 +156,13 @@
     var tab = ev.target.closest("[data-tab]");
     if (tab) {
       var key = tab.getAttribute("data-tab");
-      var scope = tab.closest("[data-tabs]") || document;
-      scope.querySelectorAll("[data-tab]").forEach(function (x) { x.classList.toggle("active", x === tab); });
-      scope.querySelectorAll("[data-tabpanel]").forEach(function (p) {
-        p.style.display = p.getAttribute("data-tabpanel") === key ? "" : "none";
+      var scope = tab.closest("[data-tabs]");
+      var root = scope || document;
+      // Solo afecta los tabs/paneles de ESTE grupo → soporta grupos de tabs anidados
+      var own = function (el) { return !scope || el.closest("[data-tabs]") === scope; };
+      root.querySelectorAll("[data-tab]").forEach(function (x) { if (own(x)) x.classList.toggle("active", x === tab); });
+      root.querySelectorAll("[data-tabpanel]").forEach(function (p) {
+        if (own(p)) p.style.display = p.getAttribute("data-tabpanel") === key ? "" : "none";
       });
     }
   });
