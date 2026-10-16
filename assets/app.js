@@ -20,11 +20,13 @@
       { id: "warehouse-receipt",   label: "Recepción",            icon: "move_to_inbox",     href: "warehouse-receipt.html" },
       { id: "assignment",          label: "Asignación",           icon: "assignment_ind",    href: "assignment.html" },
       { id: "confirmacion-tecnico",label: "Confirmación Técnico",  icon: "how_to_reg",        href: "confirmacion-tecnico.html" },
-      { id: "consumption",         label: "Consumo",              icon: "build",             href: "consumption.html" },
-      { id: "consolidation-booking",label:"Consolidación / Booking",icon:"request_quote",     href: "consolidation-booking.html" }
+       { id: "consumption",         label: "Consumo",              icon: "build",             href: "consumption.html" },
+       { id: "transferencias-contratas", label: "Transferencias entre contratas", icon: "swap_horiz", href: "transferencias-contratas.html" },
+       { id: "consolidation-booking",label:"Consolidación / Booking",icon:"request_quote",     href: "consolidation-booking.html" }
     ]},
     { group: "Collection y retorno", items: [
       { id: "collection", label: "Collection", icon: "assignment_returned", href: "collection.html" },
+      { id: "recolectados", label: "Equipos recolectados", icon: "move_to_inbox", href: "recolectados.html" },
       { id: "return",     label: "Retorno a bodega", icon: "local_shipping", href: "return.html" }
     ]},
     { group: "Equipos recuperados", items: [

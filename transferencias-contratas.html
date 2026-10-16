@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Más Tech · Inventario · Transferencias entre contratas</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="assets/mastech-webmastech.css">
+  <style>
+    .ptc-kpis { display:grid; grid-template-columns:repeat(3, minmax(180px, 1fr)); gap:12px; margin:0 0 14px; }
+    .ptc-kpi { padding:15px 17px; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--card); }
+    .ptc-kpi b { display:block; font:800 24px/1 var(--font-display); margin-bottom:5px; }
+    .ptc-kpi span { font-size:12.5px; color:var(--text-secondary); }
+    .ptc-flow { display:flex; align-items:center; gap:8px; color:var(--text-secondary); font-size:12.5px; }
+    .ptc-flow .material-icons { color:var(--primary); font-size:18px; }
+    .ptc-modal { width:min(900px, calc(100vw - 32px)); }
+    .ptc-section { margin:18px 0 10px; font-size:13px; font-weight:700; color:var(--text-2); display:flex; align-items:center; gap:7px; }
+    .ptc-section .material-icons { color:var(--primary); font-size:18px; }
+    .ptc-grid { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:14px 16px; }
+    .ptc-grid .wide { grid-column:1 / -1; }
+    .ptc-material { display:grid; grid-template-columns:2fr 1fr auto; gap:10px; align-items:end; padding:12px; background:var(--bg); border:1px solid var(--border); border-radius:var(--radius-sm); }
+    .ptc-material .mt-btn { height:40px; }
+    @media (max-width:700px) { .ptc-kpis,.ptc-grid { grid-template-columns:1fr; } .ptc-material { grid-template-columns:1fr; } .ptc-grid .wide { grid-column:auto; } }
+  </style>
+</head>
+<body data-module="transferencias-contratas" data-title="Transferencias entre contratas" data-breadcrumb="Operación · Transferencias entre contratas">
+<div id="mt-page">
+  <div class="mt-card">
+    <div class="mt-page-header">
+      <div class="mt-header-icon"><span class="material-icons">swap_horiz</span></div>
+      <div class="mt-header-text">
+        <div class="mt-header-title">Transferencias entre contratas</div>
+        <div class="mt-header-sub">Traslado controlado de materiales entre bodegas de contratas autorizadas</div>
+      </div>
+      <div class="mt-header-badge">Operación controlada</div>
+      <span class="mt-header-spacer"></span>
+      <button class="mt-btn mt-btn-primary" data-open-modal="m-nueva-transferencia"><span class="material-icons">add</span> Nueva transferencia</button>
+    </div>
+
+    <div class="mt-alert warn" style="margin:14px 0"><span class="material-icons">gpp_good</span><span>Este flujo es independiente de la reasignación a técnicos: solo permite relaciones entre contratas previamente autorizadas.</span></div>
+
+    <div class="ptc-kpis">
+      <div class="ptc-kpi"><b>8</b><span>Transferencias en tránsito</span></div>
+      <div class="ptc-kpi"><b>2</b><span>Pendientes de recepción</span></div>
+      <div class="ptc-kpi"><b>14</b><span>Transferencias recibidas este mes</span></div>
+    </div>
+
+    <div class="mt-filter-bar">
+      <div class="mt-field grow"><span class="material-icons">search</span><input placeholder="Buscar ID, material, serial o contrata"></div>
+      <div class="mt-field"><span class="material-icons">business</span><select><option>Prestamista: todas</option><option>Grupo V</option><option>Instalaciones del Istmo</option></select></div>
+      <div class="mt-field"><span class="material-icons">business</span><select><option>Receptora: todas</option><option>Grupo V</option><option>Instalaciones del Istmo</option></select></div>
+      <div class="mt-field"><span class="material-icons">flag</span><select><option>Estado: todos</option><option>En tránsito</option><option>Por recibir</option><option>Recibida</option><option>Con discrepancia</option></select></div>
+      <button class="mt-icon-btn primary" title="Buscar"><span class="material-icons">search</span></button>
+      <button class="mt-icon-btn" title="Exportar"><span class="material-icons">download</span></button>
+    </div>
+
+    <div class="mt-table-wrap">
+      <table class="mt-table">
+        <thead><tr><th>ID</th><th class="left">Contrata origen</th><th class="left">Contrata destino</th><th class="left">Materiales</th><th>Salida</th><th>Recepción</th><th>Estado</th><th>Acciones</th></tr></thead>
+        <tbody>
+          <tr><td class="cell-mono">TC-000184</td><td class="left">Grupo V<br><span class="small muted">CON-44-PPAL</span></td><td class="left">Instalaciones del Istmo<br><span class="small muted">CON-41-PPAL</span></td><td class="left">4 ONT + 300 FT cable</td><td class="cell-mono">22/09/2026</td><td>—</td><td><span class="mt-chip chip-blue">En tránsito</span></td><td class="row-actions"><button class="mt-icon-btn" title="Ver detalle"><span class="material-icons">visibility</span></button><button class="mt-icon-btn primary" title="Confirmar recepción"><span class="material-icons">how_to_reg</span></button></td></tr>
+          <tr><td class="cell-mono">TC-000183</td><td class="left">Instalaciones del Istmo<br><span class="small muted">CON-41-PPAL</span></td><td class="left">Grupo V<br><span class="small muted">CON-44-PPAL</span></td><td class="left">2 Gateway F670</td><td class="cell-mono">23/09/2026</td><td>—</td><td><span class="mt-chip chip-amber">Por recibir</span></td><td class="row-actions"><button class="mt-icon-btn" title="Ver detalle"><span class="material-icons">visibility</span></button><button class="mt-icon-btn primary" title="Confirmar recepción"><span class="material-icons">how_to_reg</span></button></td></tr>
+          <tr><td class="cell-mono">TC-000175</td><td class="left">Grupo V<br><span class="small muted">CON-44-PPAL</span></td><td class="left">Instalaciones del Istmo<br><span class="small muted">CON-41-PPAL</span></td><td class="left">8 ONT HG8145</td><td class="cell-mono">02/09/2026</td><td class="cell-mono">03/09/2026</td><td><span class="mt-chip chip-green">Recibida</span></td><td class="row-actions"><button class="mt-icon-btn" title="Ver detalle"><span class="material-icons">visibility</span></button></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="mt-modal-overlay" id="m-nueva-transferencia">
+    <div class="mt-modal lg">
+      <div class="mt-modal-head"><span class="material-icons">swap_horiz</span><h3>Transferir entre contratas</h3><button class="mt-icon-btn" data-close-modal title="Cerrar"><span class="material-icons">close</span></button></div>
+      <div class="mt-modal-body">
+        <div class="mt-picker-selects">
+          <div class="mt-form-field"><label>Contrata y bodega origen <span class="req">*</span></label><select class="mt-select" data-picker-origin><option>CON-44-PPAL · Grupo V</option><option>CON-41-PPAL · Instalaciones del Istmo</option></select></div>
+          <button type="button" class="mt-picker-swap" data-picker-swap title="Intercambiar origen y destino"><span class="material-icons">swap_horiz</span></button>
+          <div class="mt-form-field"><label>Contrata y bodega destino <span class="req">*</span></label><select class="mt-select" data-picker-target><option>CON-41-PPAL · Instalaciones del Istmo</option><option>CON-44-PPAL · Grupo V</option></select></div>
+        </div>
+        <div class="mt-alert ok" style="margin:12px 0"><span class="material-icons">verified</span><span>Transferencia autorizada entre las contratas seleccionadas. El material quedará en tránsito hasta que el destino confirme la recepción.</span></div>
+        <div class="mt-divider"></div>
+        <div class="mt-section-title"><span class="material-icons">inventory_2</span> Equipos y materiales</div>
+        <div class="mt-picker" data-picker>
+          <div class="mt-picker-col">
+            <div class="mt-picker-head">En <b data-picker-src-label>CON-44-PPAL</b><span class="mt-picker-count" data-picker-count="src">0</span></div>
+            <div class="mt-picker-searchrow"><div class="mt-field"><span class="material-icons">search</span><input data-picker-search="src" placeholder="Buscar o escanear serial / MAC"></div><button class="mt-picker-scan" data-picker-scan-btn title="Escanear"><span class="material-icons">qr_code_scanner</span></button></div>
+            <ul class="mt-picker-list" data-picker-list="src">
+              <li data-sl="CON-44-PPAL" data-code="SN-EX-9931" data-name="Extender"><span class="p-code">SN-EX-9931</span><span class="p-name">Extender</span><span class="p-meta">UND</span></li>
+              <li data-sl="CON-44-PPAL" data-code="SN-77Q1044" data-name="FTTH ONT"><span class="p-code">SN-77Q1044</span><span class="p-name">FTTH ONT</span><span class="p-meta">UND</span></li>
+              <li data-sl="CON-44-PPAL" data-code="A1:B2:C3:D4:90" data-name="HFC CPE"><span class="p-code">A1:B2:C3:D4:90</span><span class="p-name">HFC CPE</span><span class="p-meta">UND</span></li>
+              <li data-sl="CON-41-PPAL" data-code="SN-77Q2210" data-name="FTTH ONT"><span class="p-code">SN-77Q2210</span><span class="p-name">FTTH ONT</span><span class="p-meta">UND</span></li>
+              <li data-sl="CON-41-PPAL" data-code="A1:B2:C3:D4:E5" data-name="HFC CPE"><span class="p-code">A1:B2:C3:D4:E5</span><span class="p-name">HFC CPE</span><span class="p-meta">UND</span></li>
+              <li class="mt-picker-empty" data-picker-empty hidden></li>
+            </ul>
+          </div>
+          <div class="mt-picker-ctrls"><button data-picker-move="all-right" title="Pasar todos"><span class="material-icons">keyboard_double_arrow_right</span></button><button data-picker-move="right" title="Pasar seleccionados"><span class="material-icons">chevron_right</span></button><button data-picker-move="left" title="Devolver seleccionados"><span class="material-icons">chevron_left</span></button><button data-picker-move="all-left" title="Devolver todos"><span class="material-icons">keyboard_double_arrow_left</span></button></div>
+          <div class="mt-picker-col is-target">
+            <div class="mt-picker-head">A transferir a <b data-picker-dst-label>CON-41-PPAL</b><span class="mt-picker-count" data-picker-count="dst">0</span><span class="mt-picker-owned" data-picker-owned hidden></span></div>
+            <div class="mt-picker-searchrow"><div class="mt-field"><span class="material-icons">search</span><input data-picker-search="dst" placeholder="Buscar en el destino"></div></div>
+            <ul class="mt-picker-list" data-picker-list="dst"><li class="mt-picker-empty" data-picker-empty hidden></li></ul>
+          </div>
+        </div>
+        <p class="mt-hint" style="margin-top:12px">Selecciona los equipos de la bodega origen y pásalos a la derecha. La transferencia registra salida a tránsito; no es un préstamo ni requiere devolución.</p>
+      </div>
+      <div class="mt-modal-foot"><span class="mt-hint" style="margin-right:auto"><b data-picker-summary>0</b> equipo(s) por transferir</span><button class="mt-btn" data-close-modal>Cancelar</button><button class="mt-btn mt-btn-primary" data-picker-submit><span class="material-icons">local_shipping</span> Transferir</button></div>
+    </div>
+  </div>
+</div>
+<script src="assets/app.js"></script>
+</body>
+</html>

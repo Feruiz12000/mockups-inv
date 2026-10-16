@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Más Tech · Inventario · Equipos recolectados</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="assets/mastech-webmastech.css">
+  <style>
+    /* Solo lo propio de esta vista; el resto sale del sistema de diseño. */
+    .rc-fuente { display:inline-flex; align-items:center; gap:5px; }
+    .rc-fuente .material-icons { font-size:14px; }
+    .rc-cita { line-height:1.25; }
+    .rc-cita b { font-family: var(--font-mono); font-weight:500; }
+    .rc-evid { display:inline-flex; align-items:center; gap:3px; font-size:12px; color: var(--text-secondary); }
+    .rc-evid .material-icons { font-size:16px; color: var(--accent); }
+    .rc-evid.none .material-icons { color: var(--text-hint); }
+    .rc-thumbs { display:grid; grid-template-columns: repeat(4, 1fr); gap:10px; }
+    .rc-thumb { aspect-ratio: 4/3; border-radius: 10px; border:1px solid var(--border); background: var(--bg-2); display:grid; place-items:center; position:relative; overflow:hidden; }
+    .rc-thumb .material-icons { font-size:30px; color: var(--text-hint); }
+    .rc-thumb .lbl { position:absolute; left:0; right:0; bottom:0; font-size:10.5px; padding:3px 6px; background:rgba(0,0,0,.55); color:#fff; text-align:center; }
+    .rc-thumb .src { position:absolute; top:6px; left:6px; font-size:9.5px; font-weight:700; padding:1px 6px; border-radius:10px; background:#fff; color: var(--text-secondary); border:1px solid var(--border); }
+    .rc-grid2 { display:grid; grid-template-columns: 1.1fr .9fr; gap:18px; }
+    @media (max-width: 860px) { .rc-grid2 { grid-template-columns: 1fr; } .rc-thumbs { grid-template-columns: repeat(2,1fr); } }
+    .rc-kv { list-style:none; margin:0; padding:0; }
+    .rc-kv li { display:flex; gap:10px; padding:7px 0; border-bottom:1px solid var(--border); font-size:13px; }
+    .rc-kv li span:first-child { color: var(--text-secondary); min-width:150px; }
+    .rc-kv li span:last-child { margin-left:auto; text-align:right; font-weight:600; }
+    .rc-mono { font-family: var(--font-mono); font-weight:500; }
+    .rc-union table td, .rc-union table th { font-size:12.5px; }
+    .rc-union code { font-family: var(--font-mono); font-size:11.5px; background: var(--bg-2); padding:1px 5px; border-radius:4px; }
+    .rc-alert-hist { background: var(--bg-2); color: var(--text-secondary); }
+    .rc-alert-hist .material-icons { color: var(--amber); }
+  </style>
+</head>
+<body data-module="recolectados" data-title="Equipos recolectados" data-breadcrumb="Equipos recolectados">
+<div id="mt-page">
+
+  <div class="mt-card">
+    <!-- Header -->
+    <div class="mt-page-header">
+      <div class="mt-header-icon"><span class="material-icons">move_to_inbox</span></div>
+      <div class="mt-header-text">
+        <div class="mt-header-title">Equipos recolectados
+          <span class="mt-help" tabindex="0" role="button" aria-label="Qué muestra esta vista">?<span class="mt-help-bubble start">
+            <b>Una sola lista</b> con todo lo que volvió de un cliente, venga de donde venga: <b>tienda</b> (Recepción Tienda), <b>recuperación</b> (citas de la campaña 189 · área Refurbished), <b>reparación</b> y <b>instalación</b> (los <i>removidos</i> del consumo del técnico).
+            <span class="mt-help-sep"></span>El hilo que une todo es la <b>cita</b> (<code>ref_cita.id</code>): por ella se llega al cliente (<code>base</code>), a la campaña y al área, y al equipo que Liberate tenía asociado a la cuenta (<code>ref_producto</code>).
+            <span class="mt-help-sep"></span>Serializados y no serializados van en la <b>misma lista</b> (columna <b>Tipo</b> y filtro): el serializado se identifica por serial / MAC y el no serializado por cantidad + UOM.
+          </span></span>
+        </div>
+        <div class="mt-header-sub">Serializados y no serializados · tienda · recuperación · reparación · instalación · con evidencia y trazabilidad</div>
+      </div>
+      <div class="mt-header-badge">1 284 equipos · sept 2026</div>
+      <span class="mt-header-spacer"></span>
+      <div class="mt-header-actions">
+        <button class="mt-btn mt-btn-stroked" data-open-modal="m-union"><span class="material-icons">hub</span> Cómo se unen las fuentes</button>
+        <button class="mt-btn mt-btn-stroked"><span class="material-icons">download</span> Exportar</button>
+      </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="mt-filter-bar">
+      <div class="mt-field grow"><span class="material-icons">search</span><input type="text" placeholder="Serial / MAC · cuenta · nº de orden · id de cita · cliente"></div>
+      <div class="mt-field"><span class="material-icons">qr_code_2</span>
+        <select><option>Tipo: todos</option><option>Serializados</option><option>No serializados</option></select></div>
+      <div class="mt-field"><span class="material-icons">alt_route</span>
+        <select><option>Fuente: todas</option><option>Tienda</option><option>Recuperación (campaña 189)</option><option>Reparación</option><option>Instalación</option></select></div>
+      <div class="mt-field"><span class="material-icons">label</span>
+        <select><option>Reason code: todos</option><option>ID · Involuntary Disconnect</option><option>C · Voluntary / Churn</option><option>PC · Collection Plan</option><option>TR · Truck Roll</option><option>D · Dead on Arrival</option><option>M · Migration</option></select></div>
+      <div class="mt-field"><span class="material-icons">groups</span>
+        <select><option>Contrata / tienda: todas</option><option>PILOTO CWP</option><option>WODEN</option><option>Interna CWP</option><option>Tienda Vía España</option><option>Tienda Albrook</option></select></div>
+      <div class="mt-field"><span class="material-icons">where_to_vote</span>
+        <select><option>Dónde está hoy: todos</option><option>Recuperado · con el técnico</option><option>Recuperado · en tienda</option><option>En tránsito a bodega</option><option>Recuperado · en bodega</option><option>Sin inventario (histórico)</option></select></div>
+      <div class="mt-field"><span class="material-icons">photo_library</span>
+        <select><option>Evidencia: todas</option><option>Con fotos / video</option><option>Sin evidencia</option></select></div>
+      <div class="mt-field"><span class="material-icons">calendar_today</span><input type="date" value="2026-09-01"></div>
+      <div class="mt-field"><span class="material-icons">calendar_today</span><input type="date" value="2026-09-19"></div>
+      <button class="mt-icon-btn primary" title="Buscar"><span class="material-icons">search</span></button>
+      <button class="mt-icon-btn" title="Limpiar"><span class="material-icons">clear</span></button>
+    </div>
+
+    <!-- KPIs -->
+    <div class="mt-kpi-grid" style="margin-bottom:16px">
+      <div class="mt-kpi">
+        <div class="k-top"><div class="k-icon" style="background:var(--primary-tint);color:var(--primary)"><span class="material-icons">move_to_inbox</span></div><span class="k-delta">periodo</span></div>
+        <div class="k-value">1 284</div><div class="k-label">Equipos recolectados · 1 102 serializados · 182 líneas no serializadas</div>
+      </div>
+      <div class="mt-kpi">
+        <div class="k-top"><div class="k-icon" style="background:#e8f5e9;color:var(--success)"><span class="material-icons">alt_route</span></div><span class="k-delta">por fuente</span></div>
+        <div class="k-value">4</div><div class="k-label">Tienda 412 · Recuperación 347 · Reparación 398 · Instalación 127</div>
+      </div>
+      <div class="mt-kpi">
+        <div class="k-top"><div class="k-icon" style="background:#F3E3F3;color:var(--info)"><span class="material-icons">photo_library</span></div><span class="k-delta k-up">74 %</span></div>
+        <div class="k-value">951</div><div class="k-label">Con evidencia (foto / video)</div>
+      </div>
+      <div class="mt-kpi">
+        <div class="k-top"><div class="k-icon" style="background:#fff3e0;color:var(--amber)"><span class="material-icons">inventory</span></div><span class="k-delta">ledger</span></div>
+        <div class="k-value">1 259</div><div class="k-label">En inventario (RECUPERADO / en tránsito) · 25 histórico sin serial usable</div>
+      </div>
+    </div>
+
+    <div class="mt-alert rc-alert-hist" style="margin-bottom:14px">
+      <span class="material-icons">history</span>
+      <div><b>25 equipos históricos sin inventario.</b> Vienen de citas de refurbish anteriores al app nuevo (<code>ref_cita_equipos</code>) con serial <code>-1</code> o <code>N/A-CNT</code>: se muestran para no perder la evidencia, pero no tienen movimiento en el ledger. El resto del histórico (322) sí se puenteó.</div>
+    </div>
+
+    <!-- Una sola tabla: serializados y no serializados juntos, con la columna
+         "Tipo" y el filtro de la barra para separarlos cuando haga falta. -->
+    <div class="mt-section-title" style="margin-bottom:8px">
+      <span class="material-icons">table_view</span> Equipos y materiales recolectados
+      <span class="mt-chip chip-slate" style="margin-left:6px">1 102 serializados</span>
+      <span class="mt-chip chip-sky">182 no serializados</span>
+    </div>
+    <div class="mt-table-wrap">
+      <table class="mt-table">
+        <thead>
+          <tr>
+            <th class="left">Identificación</th><th class="left">Material</th><th>Tipo</th><th>Fuente</th>
+            <th class="left">Cita · ticket</th><th class="left">Cuenta / Cliente</th><th>Reason</th>
+            <th class="left">Recolectado por</th><th>Fecha</th><th>Evidencia</th><th>Dónde está hoy</th><th>Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+
+              <tr>
+                <td class="left"><span class="cell-mono">SN-ONT-77Q1183</span><br><span class="small muted cell-mono">MAC B8:44:12:9A:0C</span></td>
+                <td class="left">FTTH ONT<br><span class="small muted">CPE-ONT-01 · <span class="mt-tag r">-R</span></span></td>
+                <td><span class="mt-chip chip-slate">Serializado</span></td>
+                <td><span class="mt-chip chip-purple soft rc-fuente"><span class="material-icons">autorenew</span>Recuperación</span></td>
+                <td class="left rc-cita"><b>#186926</b><br><span class="small muted">Refurbished · campaña 189 PLAN PILOTO CWP</span></td>
+                <td class="left"><b>8001234567</b><br><span class="small muted">María Pérez · Panamá</span></td>
+                <td><span class="mt-tag">PC</span></td>
+                <td class="left">Técnico T-2291<br><span class="small muted">PILOTO CWP</span></td>
+                <td class="cell-mono">18/09 10:42</td>
+                <td><span class="rc-evid"><span class="material-icons">photo_library</span>3 · <span class="material-icons">videocam</span>1</span></td>
+                <td><span class="mt-chip chip-green">Recuperado · técnico</span></td>
+                <td class="row-actions">
+                  <button class="mt-icon-btn primary" title="Ver detalle y evidencias" data-open-modal="m-detalle"><span class="material-icons">visibility</span></button>
+                  <button class="mt-icon-btn" title="Trazabilidad del serial"><span class="material-icons">timeline</span></button>
+                </td>
+              </tr>
+              <tr>
+                <td class="left"><span class="cell-mono">SN-VIEJA-0002</span><br><span class="small muted cell-mono">MAC 11:22:33:44:55:66</span></td>
+                <td class="left">HFC CPE<br><span class="small muted">CPE-RECUP-GEN · <span class="mt-tag r">-R</span></span></td>
+                <td><span class="mt-chip chip-slate">Serializado</span></td>
+                <td><span class="mt-chip chip-amber rc-fuente"><span class="material-icons">build</span>Reparación</span></td>
+                <td class="left rc-cita"><b>#186901</b> · orden <span class="rc-mono">TR-300088</span><br><span class="small muted">Reparaciones · WODEN</span></td>
+                <td class="left"><b>8009988776</b><br><span class="small muted">Juan Gómez · San Miguelito</span></td>
+                <td><span class="mt-tag">TR</span></td>
+                <td class="left">Técnico T-1180<br><span class="small muted">WODEN</span></td>
+                <td class="cell-mono">18/09 09:15</td>
+                <td><span class="rc-evid"><span class="material-icons">photo_library</span>2</span></td>
+                <td><span class="mt-chip chip-green">Recuperado · técnico</span></td>
+                <td class="row-actions">
+                  <button class="mt-icon-btn primary" title="Ver detalle y evidencias" data-open-modal="m-detalle"><span class="material-icons">visibility</span></button>
+                  <button class="mt-icon-btn" title="Trazabilidad del serial"><span class="material-icons">timeline</span></button>
+                </td>
+              </tr>
+              <tr>
+                <td class="left"><span class="cell-mono">SN-GW-44120</span><br><span class="small muted cell-mono">MAC A1:B2:C3:D4:E5:F6</span></td>
+                <td class="left">FTTH Gateway<br><span class="small muted">CPE-GW-02 · <span class="mt-tag r">-R</span></span></td>
+                <td><span class="mt-chip chip-slate">Serializado</span></td>
+                <td><span class="mt-chip chip-indigo rc-fuente"><span class="material-icons">storefront</span>Tienda</span></td>
+                <td class="left rc-cita"><b>RT-000318</b> · orden <span class="rc-mono">SO-451209</span><br><span class="small muted">Recepción Tienda · sin cita</span></td>
+                <td class="left"><b>8004455661</b><br><span class="small muted">Retail · Tienda Vía España</span></td>
+                <td><span class="mt-tag">C</span></td>
+                <td class="left">Tienda Vía España<br><span class="small muted">Encargado: L. Castillo</span></td>
+                <td class="cell-mono">17/09 17:05</td>
+                <td><span class="rc-evid none"><span class="material-icons">hide_image</span>—</span></td>
+                <td><span class="mt-chip chip-amber">En tránsito · bodega</span></td>
+                <td class="row-actions">
+                  <button class="mt-icon-btn primary" title="Ver detalle y evidencias" data-open-modal="m-detalle"><span class="material-icons">visibility</span></button>
+                  <button class="mt-icon-btn" title="Trazabilidad del serial"><span class="material-icons">timeline</span></button>
+                </td>
+              </tr>
+              <tr>
+                <td class="left"><span class="cell-mono">SN-AT55210</span><br><span class="small muted cell-mono">MAC —</span></td>
+                <td class="left">ATA<br><span class="small muted">CPE-ATA-01 · <span class="mt-tag r">-R</span></span></td>
+                <td><span class="mt-chip chip-slate">Serializado</span></td>
+                <td><span class="mt-chip chip-teal rc-fuente"><span class="material-icons">home_repair_service</span>Instalación</span></td>
+                <td class="left rc-cita"><b>#186877</b> · orden <span class="rc-mono">SO-451300</span><br><span class="small muted">Instalaciones · Interna CWP</span></td>
+                <td class="left"><b>8007766554</b><br><span class="small muted">Ana Ruiz · Colón</span></td>
+                <td><span class="mt-tag">D</span></td>
+                <td class="left">Técnico T-0412<br><span class="small muted">Interna CWP</span></td>
+                <td class="cell-mono">16/09 14:22</td>
+                <td><span class="rc-evid"><span class="material-icons">photo_library</span>1</span></td>
+                <td><span class="mt-chip chip-blue">Recuperado · bodega</span></td>
+                <td class="row-actions">
+                  <button class="mt-icon-btn primary" title="Ver detalle y evidencias" data-open-modal="m-detalle"><span class="material-icons">visibility</span></button>
+                  <button class="mt-icon-btn" title="Trazabilidad del serial"><span class="material-icons">timeline</span></button>
+                </td>
+              </tr>
+              <tr>
+                <td class="left"><span class="cell-mono">SN-HFC-2210</span><br><span class="small muted cell-mono">MAC 00:1A:2B:3C:4D:5E</span></td>
+                <td class="left">HFC CPE<br><span class="small muted">CPE-HFC-03 · <span class="mt-tag r">-R</span></span></td>
+                <td><span class="mt-chip chip-slate">Serializado</span></td>
+                <td><span class="mt-chip chip-purple soft rc-fuente"><span class="material-icons">autorenew</span>Recuperación</span></td>
+                <td class="left rc-cita"><b>#170115</b><br><span class="small muted">Refurbished · campaña 189 · <i>histórico</i></span></td>
+                <td class="left"><b>8003310022</b><br><span class="small muted">Carlos Vega · La Chorrera</span></td>
+                <td><span class="mt-tag" title="Sin reason code: anterior a la regla §14.11">—</span></td>
+                <td class="left">Técnico T-0930<br><span class="small muted">PILOTO CWP</span></td>
+                <td class="cell-mono">12/03 11:08</td>
+                <td><span class="rc-evid"><span class="material-icons">photo_library</span>4 · <span class="material-icons">videocam</span>1</span></td>
+                <td><span class="mt-chip chip-grey" title="Puenteado del histórico (ref_cita_equipos) al ledger">Recuperado · técnico</span></td>
+                <td class="row-actions">
+                  <button class="mt-icon-btn primary" title="Ver detalle y evidencias" data-open-modal="m-detalle"><span class="material-icons">visibility</span></button>
+                  <button class="mt-icon-btn" title="Trazabilidad del serial"><span class="material-icons">timeline</span></button>
+                </td>
+              </tr>
+              <tr>
+                <td class="left"><span class="cell-mono muted">N/A-CNT</span><br><span class="small muted cell-mono">MAC —</span></td>
+                <td class="left">Equipo sin identificar<br><span class="small muted">CPE-RECUP-GEN</span></td>
+                <td><span class="mt-chip chip-slate">Serializado</span></td>
+                <td><span class="mt-chip chip-purple soft rc-fuente"><span class="material-icons">autorenew</span>Recuperación</span></td>
+                <td class="left rc-cita"><b>#168420</b><br><span class="small muted">Refurbished · campaña 185 · <i>histórico</i></span></td>
+                <td class="left"><b>8002200145</b><br><span class="small muted">Rosa Díaz · David</span></td>
+                <td><span class="mt-tag">—</span></td>
+                <td class="left">Técnico T-0930<br><span class="small muted">Interna CWP</span></td>
+                <td class="cell-mono">03/02 16:40</td>
+                <td><span class="rc-evid"><span class="material-icons">photo_library</span>2</span></td>
+                <td><span class="mt-chip chip-red" title="Sin serial ni MAC utilizable: no entró al ledger">Sin inventario</span></td>
+                <td class="row-actions">
+                  <button class="mt-icon-btn primary" title="Ver detalle y evidencias" data-open-modal="m-detalle"><span class="material-icons">visibility</span></button>
+                  <button class="mt-icon-btn" title="Sin trazabilidad: no tiene serial" disabled><span class="material-icons">timeline</span></button>
+                </td>
+              </tr>
+            
+              <tr>
+                <td class="left"><span class="cell-mono">2 UND</span><br><span class="small muted">cantidad · UOM</span></td>
+                <td class="left">Control remoto TV<br><span class="small muted">ACC-CTRL-01 · accesorio</span></td>
+                <td><span class="mt-chip chip-sky">No serializado</span></td>
+                <td><span class="mt-chip chip-indigo rc-fuente"><span class="material-icons">storefront</span>Tienda</span></td>
+                <td class="left rc-cita"><b>RT-000318</b> · orden <span class="rc-mono">SO-451209</span><br><span class="small muted">Recepción Tienda · kit del FTTH Gateway</span></td>
+                <td class="left"><b>8004455661</b><br><span class="small muted">Retail · Tienda Vía España</span></td>
+                <td><span class="mt-tag">C</span></td>
+                <td class="left">Tienda Vía España</td>
+                <td class="cell-mono">17/09 17:05</td>
+                <td><span class="rc-evid none"><span class="material-icons">hide_image</span>—</span></td>
+                <td><span class="mt-chip chip-amber">En tránsito · bodega</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" title="Ver detalle" data-open-modal="m-detalle"><span class="material-icons">visibility</span></button></td>
+              </tr>
+              <tr>
+                <td class="left"><span class="cell-mono">1 UND</span><br><span class="small muted">cantidad · UOM</span></td>
+                <td class="left">Fuente de poder 12 V<br><span class="small muted">ACC-PSU-12 · accesorio</span></td>
+                <td><span class="mt-chip chip-sky">No serializado</span></td>
+                <td><span class="mt-chip chip-purple soft rc-fuente"><span class="material-icons">autorenew</span>Recuperación</span></td>
+                <td class="left rc-cita"><b>#186926</b><br><span class="small muted">Refurbished · campaña 189 PLAN PILOTO CWP</span></td>
+                <td class="left"><b>8001234567</b><br><span class="small muted">María Pérez · Panamá</span></td>
+                <td><span class="mt-tag">PC</span></td>
+                <td class="left">Técnico T-2291<br><span class="small muted">PILOTO CWP</span></td>
+                <td class="cell-mono">18/09 10:42</td>
+                <td><span class="rc-evid"><span class="material-icons">photo_library</span>1</span></td>
+                <td><span class="mt-chip chip-green">Recuperado · técnico</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" title="Ver detalle" data-open-modal="m-detalle"><span class="material-icons">visibility</span></button></td>
+              </tr>
+              <tr>
+                <td class="left"><span class="cell-mono">15 FT</span><br><span class="small muted">cantidad · UOM</span></td>
+                <td class="left">Cable coaxial RG6<br><span class="small muted">MAT-COAX-RG6</span></td>
+                <td><span class="mt-chip chip-sky">No serializado</span></td>
+                <td><span class="mt-chip chip-amber rc-fuente"><span class="material-icons">build</span>Reparación</span></td>
+                <td class="left rc-cita"><b>#186901</b> · orden <span class="rc-mono">TR-300088</span><br><span class="small muted">Reparaciones · WODEN</span></td>
+                <td class="left"><b>8009988776</b><br><span class="small muted">Juan Gómez · San Miguelito</span></td>
+                <td><span class="mt-tag">TR</span></td>
+                <td class="left">Técnico T-1180<br><span class="small muted">WODEN</span></td>
+                <td class="cell-mono">18/09 09:15</td>
+                <td><span class="rc-evid none"><span class="material-icons">hide_image</span>—</span></td>
+                <td><span class="mt-chip chip-green">Recuperado · técnico</span></td>
+                <td class="row-actions"><button class="mt-icon-btn primary" title="Ver detalle" data-open-modal="m-detalle"><span class="material-icons">visibility</span></button></td>
+              </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="mt-paginator">
+      <span>Filas por página: 25</span>
+      <span>1 – 25 de 1 284</span>
+      <span class="material-icons">first_page</span><span class="material-icons">chevron_left</span>
+      <span class="material-icons">chevron_right</span><span class="material-icons">last_page</span>
+    </div>
+  </div>
+
+  <div style="margin-top:10px; display:flex; gap:22px; flex-wrap:wrap">
+    <span class="small muted" style="display:inline-flex; align-items:center">
+      De dónde sale cada columna
+      <span class="mt-help" tabindex="0" role="button" aria-label="Ver origen de los datos">?<span class="mt-help-bubble"><b>Fuente</b>: área de la cita (<code>ref_cita.id_client → base.id → base_campana → campana.idarea</code>: 12 Refurbished = Recuperación, 14 Instalación, 15 Reparación) o Recepción Tienda cuando no hay cita. <b>Cuenta / cliente</b>: <code>base</code>. <b>Reason</b>: <code>inv_motivo_devolucion</code> (el motivo que mandó el app o la tienda). <b>Evidencia</b>: fotos y video de <code>ref_cita_equipos</code> más las del ledger (<code>inv_movimiento_evidencia</code>). <b>Dónde está hoy</b>: saldo actual del serial en el ledger (<code>inv_stock_actual_unidad</code>).</span></span>
+    </span>
+    <span class="small muted" style="display:inline-flex; align-items:center">
+      Regla -R
+      <span class="mt-help" tabindex="0" role="button" aria-label="Ver regla -R">?<span class="mt-help-bubble">Todo lo recolectado entra al estado <b>RECUPERADO</b>, separado del stock desplegable (§14.15) y clasificado bajo código <b>-R</b> (§14.16), sin importar la fuente. Un serial en "En tránsito" va camino a bodega (traslado TRAS) hasta que la bodega lo escanea (GRB).</span></span>
+    </span>
+  </div>
+</div>
+
+<!-- ================= MODAL: detalle del equipo ================= -->
+<div class="mt-modal-overlay" id="m-detalle">
+  <div class="mt-modal md rcp-modal">
+    <div class="mt-modal-head">
+      <span class="material-icons">devices</span><h3>FTTH ONT · <span class="rc-mono">SN-ONT-77Q1183</span></h3>
+      <span class="mt-chip chip-purple soft rc-fuente" style="margin-left:6px"><span class="material-icons">autorenew</span>Recuperación</span>
+      <span class="mt-chip chip-green">Recuperado · técnico</span>
+      <button class="mt-icon-btn mt-modal-close" data-close-modal><span class="material-icons">close</span></button>
+    </div>
+    <div class="mt-modal-body" data-tabs>
+      <div class="mt-tabs">
+        <div class="mt-tab active" data-tab="d-ficha">Ficha</div>
+        <div class="mt-tab" data-tab="d-evid">Evidencias <span class="mt-chip chip-sky" style="margin-left:6px">4</span></div>
+        <div class="mt-tab" data-tab="d-traza">Trazabilidad</div>
+      </div>
+
+      <div data-tabpanel="d-ficha">
+        <div class="rc-grid2">
+          <div>
+            <div class="mt-section-title"><span class="material-icons">event</span> Cita · ticket #186926</div>
+            <ul class="rc-kv">
+              <li><span>Área · campaña</span><span>Refurbished · 189 PLAN PILOTO CWP</span></li>
+              <li><span>Estado de la cita</span><span>Finalizado (Collected)</span></li>
+              <li><span>Contrata · técnico</span><span>PILOTO CWP · T-2291 J. Morales</span></li>
+              <li><span>En sitio (In progress)</span><span class="rc-mono">18/09/2026 10:21</span></li>
+              <li><span>Recolectado (Collected)</span><span class="rc-mono">18/09/2026 10:42</span></li>
+              <li><span>Reason code</span><span><span class="mt-tag">PC</span> Collection Plan</span></li>
+              <li><span>Comentario del técnico</span><span>Retiro por desconexión, cliente entregó equipo completo.</span></li>
+              <li><span>Contactos al cliente</span><span>2 (base_campana.nivelcontacto)</span></li>
+            </ul>
+          </div>
+          <div>
+            <div class="mt-section-title"><span class="material-icons">person</span> Cliente · cuenta 8001234567</div>
+            <ul class="rc-kv">
+              <li><span>Nombre</span><span>María Pérez</span></li>
+              <li><span>Dirección</span><span>Calle 50, Ciudad de Panamá</span></li>
+              <li><span>Servicio</span><span>Internet · status <span class="mt-chip chip-red">C</span> · desconexión 04/09/2026</span></li>
+              <li><span>CPE asociado (Liberate)</span><span class="rc-mono">SN-ONT-77Q1183</span></li>
+              <li><span>Validación §14.14</span><span><span class="mt-chip chip-green"><span class="material-icons" style="font-size:13px">verified</span> Coincide</span></span></li>
+              <li><span>Correo de confirmación</span><span>Enviado 18/09 10:44</span></li>
+              <li><span>Update a Liberate</span><span><span class="mt-chip chip-amber">Pendiente · PEND-INV-06</span></span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="mt-section-title" style="margin-top:16px"><span class="material-icons">inventory_2</span> Inventario</div>
+        <ul class="rc-kv">
+          <li><span>Material</span><span>CPE-ONT-01 · FTTH ONT · <span class="mt-tag r">-R</span> refurbished</span></li>
+          <li><span>Documento</span><span class="rc-mono">RECU-000731</span></li>
+          <li><span>Estado · ubicación</span><span>RECUPERADO (4) · Sublocación técnico T-2291 · PILOTO CWP</span></li>
+        </ul>
+      </div>
+
+      <div data-tabpanel="d-evid" style="display:none">
+        <p class="mt-hint" style="margin:0 0 12px">Se juntan las evidencias de todas las tablas donde este serial aparece: las fotos del app (<code>ref_cita_equipos</code>: frente, atrás, lateral, video) y las adjuntas al movimiento de inventario (<code>inv_movimiento_evidencia</code>).</p>
+        <div class="rc-thumbs">
+          <div class="rc-thumb"><span class="src">app · cita</span><span class="material-icons">photo</span><span class="lbl">Frente · 18/09 10:40</span></div>
+          <div class="rc-thumb"><span class="src">app · cita</span><span class="material-icons">photo</span><span class="lbl">Atrás (serial) · 18/09 10:40</span></div>
+          <div class="rc-thumb"><span class="src">app · cita</span><span class="material-icons">photo</span><span class="lbl">Lateral · 18/09 10:41</span></div>
+          <div class="rc-thumb"><span class="src">app · cita</span><span class="material-icons">videocam</span><span class="lbl">Video · 18/09 10:41</span></div>
+        </div>
+        <div class="mt-section-title" style="margin-top:16px"><span class="material-icons">fact_check</span> Validación de evidencia (Equipo recolectado)</div>
+        <ul class="rc-kv">
+          <li><span>Estado</span><span><span class="mt-chip chip-green">Validado</span> 18/09 15:02 · Supervisor R. Pinto</span></li>
+          <li><span>Comentario</span><span>Serial legible en la foto trasera; coincide con el escaneo.</span></li>
+        </ul>
+      </div>
+
+      <div data-tabpanel="d-traza" style="display:none">
+        <ul class="mt-timeline">
+          <li class="done"><div class="t-title">Instalado en cliente · 8001234567</div><div class="t-meta">14/02/2025 · orden SO-390112 · CONS-018220 · Técnico T-0871</div></li>
+          <li class="done"><div class="t-title">Cita de recuperación creada · #186926</div><div class="t-meta">10/09/2026 · campaña 189 · agente A. Quintero · Pending</div></li>
+          <li class="done"><div class="t-title">Técnico en sitio · In progress</div><div class="t-meta">18/09/2026 10:21 · T-2291</div></li>
+          <li class="current"><div class="t-title">Recolectado · RECU-000731 · reason PC</div><div class="t-meta">18/09/2026 10:42 · RECUPERADO en sublocación T-2291 · 4 evidencias</div></li>
+          <li><div class="t-title">Retorno a bodega · 351 diario</div><div class="t-meta">Pendiente · se genera con el cierre del día</div></li>
+          <li><div class="t-title">Testing / refurbishment</div><div class="t-meta">Pendiente · al recibirse en main warehouse</div></li>
+        </ul>
+      </div>
+    </div>
+    <div class="mt-modal-foot">
+      <button class="mt-btn" data-close-modal>Cerrar</button>
+      <button class="mt-btn mt-btn-stroked"><span class="material-icons">open_in_new</span> Abrir cita</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= MODAL: cómo se unen las fuentes ================= -->
+<div class="mt-modal-overlay" id="m-union">
+  <div class="mt-modal md rcp-modal rc-union">
+    <div class="mt-modal-head">
+      <span class="material-icons">hub</span><h3>Cómo se unen las fuentes en una sola lista</h3>
+      <button class="mt-icon-btn mt-modal-close" data-close-modal><span class="material-icons">close</span></button>
+    </div>
+    <div class="mt-modal-body">
+      <p style="margin:0 0 12px">El <b>ledger de inventario</b> es la columna vertebral: todo equipo recolectado, venga de donde venga, termina como un movimiento <code>RECU</code> (campo) o <code>COLL</code> (tienda) con estado <b>RECUPERADO</b>. Sobre esa lista se <b>cuelgan</b> las demás tablas por dos llaves: la <b>cita</b> y el <b>serial / MAC normalizado</b> (<code>UPPER(COALESCE(NULLIF(serie,''), mac))</code>).</p>
+      <div class="mt-table-wrap">
+        <table class="mt-table">
+          <thead><tr><th class="left">Qué aporta</th><th class="left">Tabla</th><th class="left">Se une por</th><th class="left">Fuentes</th></tr></thead>
+          <tbody>
+            <tr><td class="left"><b>El equipo y dónde está</b></td><td class="left"><code>inv_movimiento</code> (RECU/COLL/TRAS/GRB) + <code>inv_movimiento_linea_serial</code> / <code>_cantidad</code> + <code>inv_stock_actual_unidad</code></td><td class="left">—  (base de la lista)</td><td class="left">Todas</td></tr>
+            <tr><td class="left"><b>Cita, orden, reason, comentario</b></td><td class="left"><code>inv_consumo</code> · <code>inv_movimiento.cita_id</code> · <code>inv_movimiento_linea_*.motivo</code></td><td class="left"><code>movimiento_id</code></td><td class="left">Recuperación · Reparación · Instalación</td></tr>
+            <tr><td class="left"><b>Fuente (área) y campaña</b></td><td class="left"><code>ref_cita → base → base_campana → campana → area</code> (respaldo: <code>ref_cita.id_contrata → distribuidor.idarea</code>)</td><td class="left"><code>cita_id</code></td><td class="left">Las tres de campo</td></tr>
+            <tr><td class="left"><b>Cliente, dirección, contactos</b></td><td class="left"><code>base</code> · <code>base_campana.nivelcontacto</code></td><td class="left"><code>ref_cita.id_client</code> / <code>recepcion_tienda.cuenta</code></td><td class="left">Todas</td></tr>
+            <tr><td class="left"><b>CPE que Liberate tenía en la cuenta</b> (§14.14)</td><td class="left"><code>ref_servicio</code> (status C) + <code>ref_producto</code> (serial / MAC)</td><td class="left"><code>owning_acct_no</code> + serial normalizado</td><td class="left">Todas</td></tr>
+            <tr><td class="left"><b>Tienda: recepción, kit, traslado</b></td><td class="left"><code>recepcion_tienda</code> + <code>_equipo</code> + <code>_accesorio</code> · <code>retiro_equipo</code></td><td class="left"><code>numero_documento = 'COLL-RT-' + id_recepcion</code> · serial normalizado</td><td class="left">Tienda</td></tr>
+            <tr><td class="left"><b>Autorización del cambio de equipo</b></td><td class="left"><code>solicitud_cambio_equipo</code> + <code>_detalle</code> (equipo retirado, su reemplazo, motivo del cambio)</td><td class="left"><code>id_cita</code> + serial normalizado</td><td class="left">Instalación · Reparación</td></tr>
+            <tr><td class="left"><b>Fotos y video del app</b></td><td class="left"><code>ref_cita_equipos</code> (url, url_back, url_side, url_video, url_file_opt1/2) + <code>log_estado_producto</code> (validación)</td><td class="left"><code>cita_id</code> + serial normalizado</td><td class="left">Las tres de campo</td></tr>
+            <tr><td class="left"><b>Evidencias del ledger</b></td><td class="left"><code>inv_movimiento_evidencia</code></td><td class="left"><code>movimiento_id</code></td><td class="left">Todas</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="mt-hint" style="margin:12px 0 0"><b>Histórico:</b> las citas de refurbish anteriores al app nuevo dejaron sus equipos solo en <code>ref_cita_equipos</code>. Se puentean al ledger una vez (322 de 347 con serial usable; el resto se muestra como <i>Sin inventario</i> para no perder sus fotos). De ahí en adelante <b>no hay dos fuentes</b>: el app registra por <code>CONSUMO_REGISTRAR</code> y la tienda por Recepción Tienda, y las dos escriben el ledger.</p>
+    </div>
+    <div class="mt-modal-foot"><button class="mt-btn" data-close-modal>Cerrar</button></div>
+  </div>
+</div>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>
