@@ -22,6 +22,7 @@
       { id: "confirmacion-tecnico",label: "Confirmación Técnico",  icon: "how_to_reg",        href: "confirmacion-tecnico.html" },
        { id: "consumption",         label: "Consumo",              icon: "build",             href: "consumption.html" },
        { id: "transferencias-contratas", label: "Transferencias entre contratas", icon: "swap_horiz", href: "transferencias-contratas.html" },
+       { id: "transferencias-administrativas", label: "Transferencias administrativas", icon: "sync_alt", href: "transferencias-administrativas.html" },
        { id: "consolidation-booking",label:"Consolidación / Booking",icon:"request_quote",     href: "consolidation-booking.html" }
     ]},
     { group: "Collection y retorno", items: [

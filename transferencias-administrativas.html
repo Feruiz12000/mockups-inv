@@ -1,0 +1,884 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Más Tech · Inventario · Transferencias administrativas</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="assets/mastech-webmastech.css">
+  <style>
+    .tad-steps { display:flex; gap:8px; margin:4px 0 16px; flex-wrap:wrap; }
+    .tad-step { display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--text-secondary); }
+    .tad-step b { width:22px; height:22px; border-radius:50%; display:grid; place-items:center; background:var(--bg-2); color:var(--text-secondary); font-size:11.5px; }
+    .tad-step.done b { background:var(--success); color:#fff; }
+    .tad-step.on b { background:var(--primary); color:#fff; }
+    .tad-step + .tad-step::before { content:''; width:26px; height:1px; background:var(--border); margin-right:2px; }
+
+    .tad-route { display:grid; grid-template-columns:minmax(0,1fr) 44px minmax(0,1fr); gap:14px; align-items:stretch; }
+    .tad-loc { position:relative; border:1px solid var(--border); border-radius:var(--radius-sm); padding:14px; background:#fff; display:flex; flex-direction:column; gap:10px; min-width:0; }
+    .tad-loc.dest { border-color:var(--primary-light); background:linear-gradient(0deg,#fff,#fff); }
+    .tad-loc-title { display:flex; align-items:center; gap:8px; font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--text-secondary); }
+    .tad-loc-title .material-icons { font-size:18px; color:var(--primary); }
+    .tad-loc-filters { display:grid; grid-template-columns:minmax(150px,175px) minmax(0,1fr); gap:8px; }
+    .tad-loc-filters .mt-field { height:38px; padding:0 12px; }
+    .tad-loc-filters .mt-field input, .tad-loc-filters .mt-field select { min-width:0; width:100%; }
+    .tad-combo { position:static; }
+    .tad-drop { position:absolute; left:10px; right:10px; top:92px; z-index:20; background:#fff; border:1px solid var(--border); border-radius:var(--radius-sm); box-shadow:var(--shadow-2); max-height:440px; overflow:auto; display:none; }
+    .tad-drop.open { display:block; }
+    .tad-drop-head { position:sticky; top:0; z-index:1; background:var(--bg); border-bottom:1px solid var(--border); padding:8px 14px; font-size:11.5px; color:var(--text-secondary); display:flex; justify-content:space-between; }
+    .tad-opt { display:grid; grid-template-columns:38px minmax(0,1fr) auto; gap:12px; padding:12px 14px; cursor:pointer; border-bottom:1px solid var(--border); }
+    .tad-opt:last-child { border-bottom:0; }
+    .tad-opt:hover, .tad-opt.act { background:var(--primary-tint); }
+    .tad-opt.is-sel { background:var(--primary-tint); box-shadow:inset 3px 0 0 var(--primary); }
+    .tad-opt .o-elegida { display:inline-flex; align-items:center; gap:3px; font-size:11px; font-weight:700; color:var(--success-dark); }
+    .tad-opt .o-elegida .material-icons { font-size:14px; }
+    .tad-opt .o-ic { width:38px; height:38px; border-radius:10px; background:var(--bg); color:var(--primary); display:grid; place-items:center; }
+    .tad-opt .o-ic .material-icons { font-size:20px; }
+    .tad-opt .o-body { min-width:0; display:flex; flex-direction:column; gap:5px; }
+    .tad-opt .o-main { font-size:13.5px; font-weight:700; color:var(--text); line-height:1.3; overflow-wrap:anywhere; }
+    .tad-opt .o-main code { font-family:var(--font-mono); font-size:12px; color:var(--primary-dark); font-weight:500; margin-right:8px; }
+    .tad-opt .o-tags { display:flex; flex-wrap:wrap; gap:4px; align-items:center; }
+    .tad-opt .o-meta { font-size:11.5px; color:var(--text-secondary); }
+    .tad-opt .o-people { display:flex; flex-direction:column; gap:4px; }
+    .tad-opt .o-person { display:flex; align-items:flex-start; gap:8px; font-size:12px; color:var(--text-2); line-height:1.35; }
+    .tad-opt .o-person .tad-avatar { width:22px; height:22px; font-size:9.5px; }
+    .tad-opt .o-person > span { min-width:0; overflow-wrap:anywhere; }
+    .tad-opt .o-person a { color:var(--accent); text-decoration:none; }
+    .tad-opt .o-stock { display:flex; flex-direction:column; align-items:flex-end; gap:4px; }
+    .tad-opt mark { background:#FFE7A3; color:inherit; border-radius:3px; padding:0 1px; }
+    .tad-drop-empty { padding:16px; text-align:center; font-size:12px; color:var(--text-hint); }
+
+    .tad-card { border-radius:10px; background:var(--bg); padding:12px 14px; display:flex; flex-direction:column; gap:8px; min-height:132px; }
+    .tad-card.empty { align-items:center; justify-content:center; color:var(--text-hint); font-size:12.5px; text-align:center; border:1px dashed var(--border); background:#fff; }
+    .tad-card.empty .material-icons { font-size:30px; opacity:.5; }
+    .tad-card-head { display:flex; align-items:flex-start; gap:12px; }
+    .tad-card-head .material-icons { width:36px; height:36px; border-radius:10px; display:grid; place-items:center; background:#fff; color:var(--primary); font-size:20px; flex-shrink:0; }
+    .tad-card-name { font-size:15px; font-weight:700; color:var(--text); line-height:1.3; overflow-wrap:anywhere; }
+    .tad-card-code { font-family:var(--font-mono); font-size:12px; color:var(--primary-dark); }
+    .tad-card-tags { display:flex; gap:4px; flex-wrap:wrap; margin-top:6px; }
+    .tad-kv { display:grid; grid-template-columns:118px minmax(0,1fr); gap:8px 12px; font-size:12.5px; padding-top:10px; border-top:1px solid var(--border); margin:0; }
+    .tad-kv dt { color:var(--text-secondary); }
+    .tad-kv dd { margin:0; color:var(--text-2); min-width:0; overflow-wrap:anywhere; }
+    .tad-people { display:flex; flex-direction:column; gap:8px; }
+    .tad-person { display:flex; align-items:flex-start; gap:8px; line-height:1.35; }
+    .tad-person > span { min-width:0; overflow-wrap:anywhere; }
+    .tad-avatar { width:24px; height:24px; border-radius:50%; background:var(--primary-soft); color:var(--primary-dark); font-size:10.5px; font-weight:800; display:grid; place-items:center; flex-shrink:0; }
+    .tad-person a { color:var(--accent); text-decoration:none; }
+    .tad-stockline { display:flex; gap:6px; flex-wrap:wrap; }
+
+    .tad-swap { align-self:center; width:44px; height:44px; border-radius:50%; border:1px solid var(--border); background:#fff; display:grid; place-items:center; cursor:pointer; color:var(--text-secondary); }
+    .tad-swap:hover { border-color:var(--primary); color:var(--primary-dark); background:var(--primary-tint); }
+    .tad-alerts { display:flex; flex-direction:column; gap:8px; margin:14px 0 0; }
+
+    .tad-sec { margin-top:20px; border:1px solid var(--border); border-radius:var(--radius-sm); overflow:hidden; }
+    .tad-sec-head { display:flex; align-items:center; gap:10px; padding:12px 16px; background:var(--bg); border-bottom:1px solid var(--border); flex-wrap:wrap; }
+    .tad-sec-head h4 { margin:0; font-size:14px; font-weight:700; display:flex; align-items:center; gap:8px; }
+    .tad-sec-head h4 .material-icons { font-size:19px; color:var(--primary); }
+    .tad-sec-body { padding:14px 16px; }
+    .tad-sec.disabled .tad-sec-body { opacity:.45; pointer-events:none; }
+    .tad-qty { display:inline-flex; align-items:center; border:1px solid var(--border); border-radius:8px; overflow:hidden; background:#fff; }
+    .tad-qty button { width:28px; height:30px; border:0; background:var(--bg); cursor:pointer; color:var(--text-secondary); font-size:16px; }
+    .tad-qty input { width:64px; height:30px; border:0; text-align:center; font-family:var(--font-mono); font-size:13px; outline:0; }
+    .tad-qty.err { border-color:var(--warn); }
+    .tad-row-sel td { background:var(--primary-tint); }
+
+    .tad-bar { position:sticky; bottom:0; z-index:5; margin:18px -22px -20px; padding:14px 22px; background:#fff; border-top:1px solid var(--border); display:flex; align-items:center; gap:14px; flex-wrap:wrap; border-radius:0 0 12px 12px; }
+    .tad-bar-sum { display:flex; gap:18px; flex-wrap:wrap; font-size:12.5px; color:var(--text-secondary); }
+    .tad-bar-sum b { color:var(--text); font-size:15px; font-family:var(--font-display); margin-right:3px; }
+
+    .tad-kpis { display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:12px; margin-bottom:14px; }
+    .tad-kpi { padding:14px 16px; border:1px solid var(--border); border-radius:var(--radius-sm); }
+    .tad-kpi b { display:block; font:800 22px/1 var(--font-display); margin-bottom:5px; }
+    .tad-kpi span { font-size:12px; color:var(--text-secondary); }
+    .tad-filters { display:grid; grid-template-columns:minmax(220px,2fr) repeat(3, minmax(130px,1fr)); gap:10px; margin-bottom:10px; }
+    .tad-filters .mt-field { height:38px; }
+    .tad-filters .mt-field select, .tad-filters .mt-field input { min-width:0; width:100%; }
+    .tad-filters-2 { display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:14px; }
+    .tad-filters-2 .mt-field { height:38px; }
+    .tad-loccell { line-height:1.3; max-width:185px; }
+    .tad-loccell b { font-weight:600; color:var(--text); }
+    .tad-loccell code { font-family:var(--font-mono); font-size:11.5px; color:var(--primary-dark); }
+    .tad-motivo { max-width:150px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:var(--text-2); }
+    .tad-detail td { background:var(--bg) !important; padding:0 !important; }
+    .tad-detail-in { text-align:left; padding:14px 18px; display:grid; grid-template-columns:minmax(0,1.3fr) minmax(0,1fr); gap:18px; }
+    .tad-detail-in h5 { margin:0 0 8px; font-size:12px; text-transform:uppercase; letter-spacing:.04em; color:var(--text-secondary); }
+    .tad-lines { width:100%; border-collapse:collapse; font-size:12px; background:#fff; border-radius:8px; overflow:hidden; }
+    .tad-lines th, .tad-lines td { padding:6px 10px !important; border-bottom:1px solid var(--border); text-align:left !important; }
+    #tHist > tr > td { padding-left:8px; padding-right:8px; }
+    .tad-meta b { overflow-wrap:anywhere; }
+    .tad-lines th { font-size:11px; color:var(--text-secondary); font-weight:600; background:#fff; }
+    .tad-quote { background:#fff; border-left:3px solid var(--primary); padding:10px 12px; border-radius:0 8px 8px 0; font-size:12.5px; color:var(--text-2); margin-bottom:10px; }
+    .tad-meta { font-size:12px; color:var(--text-secondary); display:grid; grid-template-columns:110px 1fr; gap:4px 10px; }
+    .tad-meta b { color:var(--text-2); font-weight:600; }
+
+    .tad-confirm-route { display:grid; grid-template-columns:minmax(0,1fr) 34px minmax(0,1fr); gap:10px; align-items:center; margin-bottom:14px; }
+    .tad-confirm-route .tad-card { min-height:0; }
+    .tad-confirm-arrow { width:34px; height:34px; border-radius:50%; background:var(--primary); color:#fff; display:grid; place-items:center; }
+    .tad-confirm-list { max-height:150px; overflow:auto; border:1px solid var(--border); border-radius:10px; }
+    .tad-counter { font-size:11.5px; color:var(--text-hint); text-align:right; margin-top:4px; }
+    .tad-counter.err { color:var(--warn); }
+    .tad-err { color:var(--warn); font-size:12px; margin-top:4px; display:none; }
+    .tad-who { display:flex; align-items:center; gap:10px; padding:10px 12px; background:var(--bg); border-radius:10px; font-size:12.5px; color:var(--text-secondary); margin-top:14px; }
+    .tad-toast { position:fixed; right:24px; bottom:24px; z-index:80; background:#1f2430; color:#fff; padding:12px 16px; border-radius:12px; font-size:13px; display:none; align-items:center; gap:10px; box-shadow:var(--shadow-2); }
+    .tad-toast.show { display:flex; }
+    .tad-toast .material-icons { color:#5fe0b5; }
+    .tad-tabs { margin:4px 0 18px; }
+    .tad-tabs .mt-tab { display:inline-flex; align-items:center; gap:8px; }
+    .tad-tabs .mt-tab .material-icons { font-size:19px; }
+    .tad-tab-count { min-width:22px; padding:1px 8px; border-radius:var(--pill); background:var(--bg-2); color:var(--text-secondary); font-size:11.5px; font-weight:700; text-align:center; }
+    .mt-tab.active .tad-tab-count { background:var(--primary-soft); color:var(--primary-dark); }
+    [data-tad-panel][hidden] { display:none !important; }
+    .tad-hist-head { display:flex; align-items:center; gap:10px; margin-bottom:14px; flex-wrap:wrap; }
+    .tad-hist-head .muted { font-size:12.5px; }
+    .tad-toast button { background:transparent; border:1px solid rgba(255,255,255,.35); color:#fff; border-radius:8px; padding:4px 10px; font-family:var(--font); font-size:12px; font-weight:600; cursor:pointer; margin-left:6px; }
+    .tad-toast button:hover { background:rgba(255,255,255,.12); }
+    .tad-sn { font-family:var(--font-mono); font-size:12.5px; font-weight:600; color:var(--text); }
+    .tad-mac { font-family:var(--font-mono); font-size:11px; color:var(--text-secondary); }
+    .tad-doc-link { font-family:var(--font-mono); font-weight:700; color:var(--primary-dark); cursor:pointer; text-decoration:none; }
+    .tad-doc-link:hover { text-decoration:underline; }
+    .tad-locmini { line-height:1.3; max-width:170px; }
+    .tad-locmini code { font-family:var(--font-mono); font-size:11.5px; color:var(--primary-dark); }
+    .tad-locmini b { display:block; font-weight:600; color:var(--text); font-size:12.5px; }
+    #tLin > tr > td { padding-left:8px; padding-right:8px; vertical-align:middle; }
+    .tad-locmini b { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:220px; }
+    .tad-ruta { display:flex; flex-direction:column; gap:2px; }
+    .tad-ruta > .material-icons { font-size:15px; color:var(--primary); margin-left:14px; }
+    .tad-ruta .tad-locmini { max-width:180px; }
+    .tad-ruta .tad-locmini b { display:block; max-width:180px; }
+    #tLin .tad-person > span { white-space:nowrap; }
+    #tLin .tad-motivo { max-width:150px; white-space:normal; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; }
+    #tLin .tad-matcell { min-width:120px; }
+    #tLin > tr > td:first-child { white-space:nowrap; }
+    #tLin .mt-chip { font-size:10px; padding:1px 7px; }
+    #tLin .tad-mac { white-space:nowrap; }
+    .tad-readonly { display:none; }
+    body.ro .tad-readonly { display:block; }
+    body.ro .tad-only-edit { display:none !important; }
+    body.ro .tad-tabs [data-tad-tab="nueva"] { display:none; }
+    @media (max-width: 980px) {
+      .tad-route, .tad-confirm-route { grid-template-columns:1fr; }
+      .tad-swap, .tad-confirm-arrow { justify-self:center; transform:rotate(90deg); }
+      .tad-kpis { grid-template-columns:repeat(2, minmax(0,1fr)); }
+      .tad-filters { grid-template-columns:1fr 1fr; }
+      .tad-detail-in { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body data-module="transferencias-administrativas" data-title="Transferencias administrativas" data-breadcrumb="Operación · Transferencias administrativas">
+<div id="mt-page">
+
+  <!-- ============ Encabezado + nueva transferencia ============ -->
+  <div class="mt-card">
+    <div class="mt-page-header">
+      <div class="mt-header-icon"><span class="material-icons">sync_alt</span></div>
+      <div class="mt-header-text">
+        <div class="mt-header-title">Transferencias administrativas</div>
+        <div class="mt-header-sub">Mové materiales entre cualquier par de ubicaciones, sin restricciones de nivel ni de contrata. Cada transferencia queda registrada con usuario, rol y motivo.</div>
+      </div>
+      <div class="mt-header-badge">Sin restricciones · Auditada</div>
+      <span class="mt-header-spacer"></span>
+    </div>
+
+    <div class="mt-alert warn tad-readonly" style="margin-bottom:6px"><span class="material-icons">visibility</span><span>Tu rol tiene permiso de <b>solo ver</b> en este módulo: podés consultar el historial, pero no registrar transferencias.</span></div>
+
+    <div class="mt-tabs tad-tabs" role="tablist">
+      <div class="mt-tab active" role="tab" data-tad-tab="nueva"><span class="material-icons">sync_alt</span> Nueva transferencia</div>
+      <div class="mt-tab" role="tab" data-tad-tab="historial"><span class="material-icons">history</span> Historial de transferencias administrativas <span class="tad-tab-count" id="tabCount">0</span></div>
+      <div class="mt-tab" role="tab" data-tad-tab="equipos"><span class="material-icons">qr_code_2</span> Equipos transferidos <span class="tad-tab-count" id="tabCountLin">0</span></div>
+    </div>
+
+    <!-- ============ Pestaña: nueva transferencia ============ -->
+    <div class="tad-only-edit" data-tad-panel="nueva">
+      <div class="tad-steps">
+        <div class="tad-step" id="st1"><b>1</b> Origen y destino</div>
+        <div class="tad-step" id="st2"><b>2</b> Materiales</div>
+        <div class="tad-step" id="st3"><b>3</b> Motivo y confirmación</div>
+      </div>
+
+      <div class="tad-route">
+        <!-- ORIGEN -->
+        <div class="tad-loc" data-lado="origen">
+          <div class="tad-loc-title"><span class="material-icons">logout</span> Ubicación origen</div>
+          <div class="tad-loc-filters">
+            <div class="mt-field"><span class="material-icons">category</span><select data-tipo><option value="">Todos los tipos</option></select></div>
+            <div class="tad-combo">
+              <div class="mt-field"><span class="material-icons">search</span><input data-buscar placeholder="Código, nombre, encargado o correo" autocomplete="off"></div>
+              <div class="tad-drop" data-drop></div>
+            </div>
+          </div>
+          <div class="tad-card empty" data-card><span class="material-icons">warehouse</span>Elegí la ubicación desde donde sale el material</div>
+        </div>
+
+        <button class="tad-swap" id="swap" title="Intercambiar origen y destino"><span class="material-icons">swap_horiz</span></button>
+
+        <!-- DESTINO -->
+        <div class="tad-loc dest" data-lado="destino">
+          <div class="tad-loc-title"><span class="material-icons">login</span> Ubicación destino</div>
+          <div class="tad-loc-filters">
+            <div class="mt-field"><span class="material-icons">category</span><select data-tipo><option value="">Todos los tipos</option></select></div>
+            <div class="tad-combo">
+              <div class="mt-field"><span class="material-icons">search</span><input data-buscar placeholder="Código, nombre, encargado o correo" autocomplete="off"></div>
+              <div class="tad-drop" data-drop></div>
+            </div>
+          </div>
+          <div class="tad-card empty" data-card><span class="material-icons">place</span>Elegí la ubicación que recibe el material</div>
+        </div>
+      </div>
+
+      <div class="tad-alerts" id="alertas"></div>
+
+      <!-- SERIALIZADOS -->
+      <div class="tad-sec disabled" id="secSer">
+        <div class="tad-sec-head">
+          <h4><span class="material-icons">qr_code_2</span> Equipos serializados</h4>
+          <span class="mt-chip chip-slate">Serializado</span>
+          <span class="muted small" style="margin-left:auto">Solo stock <b>Desplegable</b> del origen · doble clic para mover</span>
+        </div>
+        <div class="tad-sec-body">
+          <div class="mt-picker">
+            <div class="mt-picker-col">
+              <div class="mt-picker-head">En <b id="lblOri">—</b><span class="mt-picker-count" id="cntSrc">0</span></div>
+              <div class="mt-picker-searchrow">
+                <div class="mt-field"><span class="material-icons">search</span><input id="fSrc" placeholder="Buscar o escanear serial / MAC (Enter)"></div>
+                <button class="mt-picker-scan" title="Escanear con cámara"><span class="material-icons">qr_code_scanner</span></button>
+              </div>
+              <ul class="mt-picker-list" id="lSrc"></ul>
+            </div>
+            <div class="mt-picker-ctrls">
+              <button data-mv="all-right" title="Pasar todos los visibles"><span class="material-icons">keyboard_double_arrow_right</span></button>
+              <button data-mv="right" title="Pasar seleccionados"><span class="material-icons">chevron_right</span></button>
+              <button data-mv="left" title="Devolver seleccionados"><span class="material-icons">chevron_left</span></button>
+              <button data-mv="all-left" title="Devolver todos"><span class="material-icons">keyboard_double_arrow_left</span></button>
+            </div>
+            <div class="mt-picker-col is-target">
+              <div class="mt-picker-head">A transferir a <b id="lblDst">—</b><span class="mt-picker-count" id="cntDst">0</span></div>
+              <div class="mt-picker-searchrow"><div class="mt-field"><span class="material-icons">search</span><input id="fDst" placeholder="Buscar en lo agregado"></div></div>
+              <ul class="mt-picker-list" id="lDst"></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- NO SERIALIZADOS -->
+      <div class="tad-sec disabled" id="secCan">
+        <div class="tad-sec-head">
+          <h4><span class="material-icons">inventory_2</span> Materiales no serializados</h4>
+          <span class="mt-chip chip-sky">No serializado</span>
+          <div class="mt-field" style="height:34px; margin-left:auto; min-width:240px"><span class="material-icons">search</span><input id="fCan" placeholder="Buscar material"></div>
+        </div>
+        <div class="tad-sec-body" style="padding:0">
+          <div class="mt-table-wrap">
+            <table class="mt-table">
+              <thead><tr><th class="left">ID material</th><th class="left">Material</th><th>UOM</th><th>Disponible en origen</th><th>En destino hoy</th><th>Cantidad a transferir</th><th>Queda en origen</th></tr></thead>
+              <tbody id="tCan"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="tad-bar">
+        <div class="tad-bar-sum">
+          <span><b id="sEq">0</b> equipos</span>
+          <span><b id="sMat">0</b> materiales no serializados</span>
+          <span id="sRuta" class="muted"></span>
+        </div>
+        <span style="flex:1"></span>
+        <button class="mt-btn" id="btnLimpiar"><span class="material-icons">restart_alt</span> Limpiar</button>
+        <button class="mt-btn mt-btn-primary" id="btnRevisar"><span class="material-icons">fact_check</span> Revisar y transferir</button>
+      </div>
+    </div>
+
+    <!-- ============ Pestaña: historial ============ -->
+    <div data-tad-panel="historial" hidden>
+    <div class="tad-hist-head">
+      <span class="muted">Todas las transferencias administrativas registradas, de la más reciente a la más antigua. Hacé clic en una fila para ver su detalle.</span>
+      <span style="flex:1"></span>
+      <button class="mt-btn mt-btn-sm mt-btn-stroked"><span class="material-icons">download</span> Exportar Excel</button>
+    </div>
+
+    <div class="tad-kpis">
+      <div class="tad-kpi"><b id="kHoy">0</b><span>Transferencias hoy</span></div>
+      <div class="tad-kpi"><b id="kMes">0</b><span>Este mes</span></div>
+      <div class="tad-kpi"><b id="kEq">0</b><span>Equipos movidos este mes</span></div>
+      <div class="tad-kpi"><b id="kCon">0</b><span>Entre contratas distintas este mes</span></div>
+    </div>
+
+    <div class="tad-filters">
+      <div class="mt-field"><span class="material-icons">search</span><input id="hQ" placeholder="Documento, serial, material, ubicación o motivo"></div>
+      <div class="mt-field"><span class="material-icons">logout</span><select id="hTO"><option value="">Tipo origen: todos</option></select></div>
+      <div class="mt-field"><span class="material-icons">login</span><select id="hTD"><option value="">Tipo destino: todos</option></select></div>
+      <div class="mt-field"><span class="material-icons">place</span><select id="hUb"><option value="">Ubicación: todas</option></select></div>
+    </div>
+    <div class="tad-filters-2">
+      <div class="mt-field"><span class="material-icons">event</span><input type="date" id="hDesde" title="Desde"></div>
+      <span class="muted small">a</span>
+      <div class="mt-field"><span class="material-icons">event</span><input type="date" id="hHasta" title="Hasta"></div>
+      <div class="mt-field"><span class="material-icons">person</span><select id="hUs"><option value="">Usuario: todos</option></select></div>
+      <div class="mt-field"><span class="material-icons">badge</span><select id="hRol"><option value="">Rol: todos</option></select></div>
+      <div class="mt-field"><span class="material-icons">business</span><select id="hCon"><option value="">Contrata: todas</option><option value="cruce">Solo entre contratas distintas</option></select></div>
+      <button class="mt-btn mt-btn-plain" id="hLimpiar"><span class="material-icons">filter_alt_off</span> Limpiar filtros</button>
+    </div>
+
+    <div class="mt-table-wrap">
+      <table class="mt-table">
+        <thead><tr>
+          <th class="left">Documento</th><th class="left">Fecha y hora</th><th class="left">Origen</th><th class="left">Destino</th>
+          <th class="left">Contenido</th><th class="left">Realizada por</th><th class="left">Motivo</th><th></th>
+        </tr></thead>
+        <tbody id="tHist"></tbody>
+      </table>
+    </div>
+    <div class="mt-paginator">
+      <span>Filas por página <select style="border:0;background:transparent;font-family:var(--font)"><option>25</option><option>50</option><option>100</option></select></span>
+      <span id="hPag">1 – 0 de 0</span>
+      <span class="material-icons">first_page</span><span class="material-icons">chevron_left</span><span class="material-icons">chevron_right</span><span class="material-icons">last_page</span>
+    </div>
+    </div>
+
+    <!-- ============ Pestaña: equipos transferidos (una fila por equipo o material) ============ -->
+    <div data-tad-panel="equipos" hidden>
+    <div class="tad-hist-head">
+      <span class="muted">Una fila por cada equipo serializado y por cada material no serializado que se transfirió, con el detalle de su transferencia. Sirve para rastrear un serial o una MAC.</span>
+      <span style="flex:1"></span>
+      <button class="mt-btn mt-btn-sm mt-btn-stroked"><span class="material-icons">download</span> Exportar Excel</button>
+    </div>
+
+    <div class="tad-kpis">
+      <div class="tad-kpi"><b id="lFilas">0</b><span>Filas con este filtro</span></div>
+      <div class="tad-kpi"><b id="lEq">0</b><span>Equipos serializados</span></div>
+      <div class="tad-kpi"><b id="lMat">0</b><span>Líneas de material no serializado</span></div>
+      <div class="tad-kpi"><b id="lDoc">0</b><span>Transferencias distintas</span></div>
+    </div>
+
+    <div class="tad-filters">
+      <div class="mt-field"><span class="material-icons">search</span><input id="lQ" placeholder="Serial, MAC, material o documento"></div>
+      <div class="mt-field"><span class="material-icons">category</span><select id="lTipo"><option value="">Tipo: todos</option><option value="S">Serializados</option><option value="C">No serializados</option></select></div>
+      <div class="mt-field"><span class="material-icons">inventory_2</span><select id="lMatSel"><option value="">Material: todos</option></select></div>
+      <div class="mt-field"><span class="material-icons">place</span><select id="lUb"><option value="">Ubicación (origen o destino): todas</option></select></div>
+    </div>
+    <div class="tad-filters-2">
+      <div class="mt-field"><span class="material-icons">event</span><input type="date" id="lDesde" title="Desde"></div>
+      <span class="muted small">a</span>
+      <div class="mt-field"><span class="material-icons">event</span><input type="date" id="lHasta" title="Hasta"></div>
+      <div class="mt-field"><span class="material-icons">person</span><select id="lUs"><option value="">Usuario: todos</option></select></div>
+      <button class="mt-btn mt-btn-plain" id="lLimpiar"><span class="material-icons">filter_alt_off</span> Limpiar filtros</button>
+    </div>
+
+    <div class="mt-table-wrap">
+      <table class="mt-table">
+        <thead><tr>
+          <th class="left">Fecha y hora</th><th class="left">Documento</th><th class="left">Serial / MAC</th><th class="left">Material</th><th class="right">Cantidad</th>
+          <th class="left">Origen → destino</th><th class="left">Realizada por</th><th class="left">Motivo</th><th></th>
+        </tr></thead>
+        <tbody id="tLin"></tbody>
+      </table>
+    </div>
+    <div class="mt-paginator">
+      <span>Filas por página <select style="border:0;background:transparent;font-family:var(--font)"><option>25</option><option>50</option><option>100</option></select></span>
+      <span id="lPag">1 – 0 de 0</span>
+      <span class="material-icons">first_page</span><span class="material-icons">chevron_left</span><span class="material-icons">chevron_right</span><span class="material-icons">last_page</span>
+    </div>
+    </div>
+  </div>
+
+  <!-- ============ Modal de confirmación ============ -->
+  <div class="mt-modal-overlay" id="mConf">
+    <div class="mt-modal md">
+      <div class="mt-modal-head"><span class="material-icons">verified_user</span><h3>Confirmar transferencia administrativa</h3><button class="mt-icon-btn mt-modal-close" id="mCerrar" title="Cerrar"><span class="material-icons">close</span></button></div>
+      <div class="mt-modal-body">
+        <div class="tad-confirm-route">
+          <div class="tad-card" id="cOri"></div>
+          <div class="tad-confirm-arrow"><span class="material-icons">arrow_forward</span></div>
+          <div class="tad-card" id="cDst"></div>
+        </div>
+        <div id="cAlertas" class="tad-alerts" style="margin:0 0 14px"></div>
+        <div class="mt-section-title" style="margin-top:0"><span class="material-icons">inventory</span> Se van a transferir <span class="mt-chip chip-indigo" id="cResumen"></span></div>
+        <div class="tad-confirm-list">
+          <table class="tad-lines"><thead><tr><th>Material</th><th>Serial / MAC</th><th style="text-align:right">Cantidad</th></tr></thead><tbody id="cLineas"></tbody></table>
+        </div>
+        <div class="mt-form-field" style="margin-top:16px">
+          <label for="cMotivo">Motivo de la transferencia <span class="req">*</span></label>
+          <textarea class="mt-textarea" id="cMotivo" rows="3" maxlength="500" placeholder="Ej.: Grupo V cierra la bodega de Chiriquí; el stock pasa a Instalaciones del Istmo según acta del 15/10."></textarea>
+          <div style="display:flex; justify-content:space-between"><div class="tad-err" id="cErr">Escribí el motivo (mínimo 15 caracteres).</div><div class="tad-counter" id="cCont" style="margin-left:auto">0 / 500</div></div>
+        </div>
+        <div class="tad-who">
+          <span class="material-icons" style="color:var(--primary)">admin_panel_settings</span>
+          <span>Se registrará a nombre de <b style="color:var(--text)">Usuario actual</b> · rol <b style="color:var(--text)">Superusuario</b> · <span id="cFecha"></span>. El material entra al destino al instante como <b>Desplegable</b>.</span>
+        </div>
+      </div>
+      <div class="mt-modal-foot">
+        <button class="mt-btn" id="mCancelar">Volver a editar</button>
+        <button class="mt-btn mt-btn-primary" id="mConfirmar"><span class="material-icons">check_circle</span> Confirmar transferencia</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="tad-toast" id="toast"><span class="material-icons">check_circle</span><span id="toastTxt"></span><button id="toastVer" hidden>Ver en historial</button></div>
+</div>
+
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  var TIPOS = {
+    MAIN_WAREHOUSE: { n: 'Bodega CWP', largo: 'Bodega principal CWP (Main Warehouse)', chip: 'chip-indigo', ic: 'warehouse' },
+    CONTRATISTA_PPAL: { n: 'Contrata', largo: 'Bodega principal de contrata', chip: 'chip-blue', ic: 'business' },
+    SUBLOCACION_TECNICO: { n: 'Técnico', largo: 'Sublocación de técnico', chip: 'chip-teal', ic: 'engineering' },
+    TIENDA: { n: 'Tienda', largo: 'Tienda', chip: 'chip-amber', ic: 'storefront' },
+    PROYECTO: { n: 'Proyecto', largo: 'Proyecto de expansión', chip: 'chip-green', ic: 'account_tree' },
+    TERCERO_CP: { n: 'Tercero', largo: 'Tercero (contract plant)', chip: 'chip-grey', ic: 'handshake' }
+  };
+  var NIVEL = { SIN_RESTRICCION: ['Sin restricción', 'chip-green'], RESTRINGIDA: ['Restringida', 'chip-amber'], SOLO_RETORNO: ['Solo retorno', 'chip-purple'], BLOQUEADA: ['Bloqueada', 'chip-red'] };
+
+  var UB = [
+    { id: 1, cod: 'PA01', nom: 'Bodega CWP Panamá', tipo: 'MAIN_WAREHOUSE', nivel: 'SIN_RESTRICCION', contrata: null, padre: null, enc: [['Ana Gómez', 'ana.gomez@ejemplo.com', 'Encargada de bodega']] },
+    { id: 2, cod: 'PA02', nom: 'Bodega CWP Chiriquí', tipo: 'MAIN_WAREHOUSE', nivel: 'SIN_RESTRICCION', contrata: null, padre: null, enc: [['Ricardo Lee', 'ricardo.lee@ejemplo.com', 'Encargado de bodega']] },
+    { id: 3, cod: 'CON-44-PPAL', nom: 'Grupo V · Bodega principal', tipo: 'CONTRATISTA_PPAL', nivel: 'RESTRINGIDA', contrata: 'Grupo V', padre: null, enc: [['Luis Pérez', 'luis.perez@grupov.ejemplo.com', 'Supervisor de contrata'], ['Karla Núñez', 'karla.nunez@grupov.ejemplo.com', 'Supervisora de contrata']] },
+    { id: 4, cod: 'CON-41-PPAL', nom: 'Instalaciones del Istmo · Bodega principal', tipo: 'CONTRATISTA_PPAL', nivel: 'SIN_RESTRICCION', contrata: 'Instalaciones del Istmo', padre: null, enc: [['Diego Castillo', 'diego.castillo@istmo.ejemplo.com', 'Supervisor de contrata']] },
+    { id: 5, cod: 'CON-MEGA-PPAL', nom: 'Mega Redes · Bodega principal', tipo: 'CONTRATISTA_PPAL', nivel: 'BLOQUEADA', contrata: 'Mega Redes', padre: null, enc: [['Sofía Herrera', 'sofia.herrera@megaredes.ejemplo.com', 'Supervisora de contrata']] },
+    { id: 6, cod: 'TEC-T2291', nom: 'Carlos Ríos', tipo: 'SUBLOCACION_TECNICO', nivel: 'SOLO_RETORNO', contrata: 'Grupo V', padre: 'CON-44-PPAL', enc: [['Carlos Ríos', 'carlos.rios@grupov.ejemplo.com', 'Técnico']] },
+    { id: 7, cod: 'TEC-T2292', nom: 'María Torres', tipo: 'SUBLOCACION_TECNICO', nivel: 'SOLO_RETORNO', contrata: 'Grupo V', padre: 'CON-44-PPAL', enc: [['María Torres', 'maria.torres@grupov.ejemplo.com', 'Técnica']] },
+    { id: 8, cod: 'TEC-I1180', nom: 'Jorge Batista', tipo: 'SUBLOCACION_TECNICO', nivel: 'SOLO_RETORNO', contrata: 'Instalaciones del Istmo', padre: 'CON-41-PPAL', enc: [['Jorge Batista', 'jorge.batista@istmo.ejemplo.com', 'Técnico']] },
+    { id: 9, cod: '12PA', nom: 'Tienda Albrook Mall', tipo: 'TIENDA', nivel: 'SOLO_RETORNO', contrata: null, padre: null, enc: [['Paola Méndez', 'paola.mendez@ejemplo.com', 'Encargada de tienda']] },
+    { id: 10, cod: 'PRY-0007', nom: 'Expansión Costa del Este', tipo: 'PROYECTO', nivel: 'SIN_RESTRICCION', contrata: 'Grupo V', padre: null, enc: [['Iván Ortega', 'ivan.ortega@ejemplo.com', 'Líder de proyecto']] },
+    { id: 11, cod: 'TER-0003', nom: 'Laboratorio externo Redes CP', tipo: 'TERCERO_CP', nivel: 'SIN_RESTRICCION', contrata: null, padre: null, enc: [] }
+  ];
+  var MATS_SER = [['MAT-200118', 'ONT Huawei HG8145V5'], ['MAT-200131', 'Gateway ZTE F670L'], ['MAT-200207', 'Extender Wi-Fi 6'], ['MAT-200355', 'Decodificador 4K']];
+  var MATS_CAN = [['MAT-300014', 'Cable drop 1 hilo', 'TF'], ['MAT-300022', 'Conector SC/APC', 'C/U'], ['MAT-300040', 'Grapa para drop', 'C/U'], ['MAT-300051', 'Cinta aislante', 'ROL'], ['MAT-300063', 'Roseta óptica', 'C/U']];
+
+  function seed(id) { var s = id * 9301 + 49297; return function () { s = (s * 9301 + 49297) % 233280; return s / 233280; }; }
+  function stockDe(u) {
+    if (u.stock) return u.stock;
+    var r = seed(u.id), ser = [], can = {};
+    var n = u.tipo === 'SUBLOCACION_TECNICO' ? 5 : u.tipo === 'TERCERO_CP' ? 0 : 14;
+    for (var i = 0; i < n; i++) {
+      var m = MATS_SER[Math.floor(r() * MATS_SER.length)];
+      var sn = (m[1].indexOf('Gateway') >= 0 ? 'ZTEG' : m[1].indexOf('ONT') >= 0 ? '4857544' : 'SN') + Math.floor(r() * 9e6 + 1e6).toString(16).toUpperCase();
+      ser.push({ sn: sn, mat: m[0], nom: m[1] });
+    }
+    MATS_CAN.forEach(function (m) { if (r() > 0.25 && u.tipo !== 'TERCERO_CP') can[m[0]] = Math.round(r() * (m[2] === 'TF' ? 3000 : 250)); });
+    u.stock = { ser: ser, can: can };
+    return u.stock;
+  }
+
+  var st = { origen: null, destino: null, sel: {}, mov: {}, cant: {} };
+  function $(s, r) { return (r || document).querySelector(s); }
+  function $$(s, r) { return [].slice.call((r || document).querySelectorAll(s)); }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function norm(s) { return String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase(); }
+  function ini(n) { return n.split(' ').map(function (p) { return p[0]; }).slice(0, 2).join('').toUpperCase(); }
+  function resaltar(txt, q) {
+    txt = String(txt || '');
+    if (!q) return esc(txt);
+    var i = norm(txt).indexOf(q);
+    if (i < 0) return esc(txt);
+    return esc(txt.slice(0, i)) + '<mark>' + esc(txt.slice(i, i + q.length)) + '</mark>' + esc(txt.slice(i + q.length));
+  }
+  function chipTipo(t) { return '<span class="mt-chip ' + TIPOS[t].chip + '">' + TIPOS[t].n + '</span>'; }
+  function chipNivel(n) { return '<span class="mt-chip ' + NIVEL[n][1] + '">' + NIVEL[n][0] + '</span>'; }
+  function contrataDe(u) { return u.contrata; }
+
+  // ---------- Selectores de ubicación ----------
+  $$('.tad-loc').forEach(function (box) {
+    var lado = box.getAttribute('data-lado'), sel = $('[data-tipo]', box), inp = $('[data-buscar]', box), drop = $('[data-drop]', box);
+    Object.keys(TIPOS).forEach(function (k) { sel.insertAdjacentHTML('beforeend', '<option value="' + k + '">' + TIPOS[k].n + '</option>'); });
+    function pintar() {
+      var q = norm(inp.value), t = sel.value, otro = lado === 'origen' ? st.destino : st.origen;
+      var l = UB.filter(function (u) {
+        if (t && u.tipo !== t) return false;
+        if (otro && otro.id === u.id) return false;
+        var txt = norm([u.cod, u.nom, u.contrata, TIPOS[u.tipo].n].concat(u.enc.map(function (e) { return e[0] + ' ' + e[1]; })).join(' '));
+        return !q || txt.indexOf(q) >= 0;
+      });
+      var cab = '<div class="tad-drop-head"><span>' + l.length + (l.length === 1 ? ' ubicación' : ' ubicaciones') + (t ? ' · ' + TIPOS[t].largo : '') + '</span><span>Clic para elegir</span></div>';
+      drop.innerHTML = l.length ? cab + l.map(function (u) {
+        var sk = stockDe(u), nMat = Object.keys(sk.can).length;
+        var gente = u.enc.length ? u.enc.map(function (e) {
+          return '<div class="o-person"><span class="tad-avatar">' + ini(e[0]) + '</span><span><b>' + resaltar(e[0], q) + '</b> · ' + esc(e[2]) + '<br><a href="#" onclick="return false">' + resaltar(e[1], q) + '</a></span></div>';
+        }).join('') : '<div class="o-meta">Sin encargado asignado</div>';
+        var elegida = st[lado] && st[lado].id === u.id;
+        return '<div class="tad-opt' + (elegida ? ' is-sel' : '') + '" data-id="' + u.id + '">' +
+          '<div class="o-ic"><span class="material-icons">' + TIPOS[u.tipo].ic + '</span></div>' +
+          '<div class="o-body">' +
+            '<div class="o-main"><code>' + resaltar(u.cod, q) + '</code>' + resaltar(u.nom, q) + '</div>' +
+            '<div class="o-tags">' + chipTipo(u.tipo) + chipNivel(u.nivel) +
+              (u.contrata ? '<span class="mt-tag">' + resaltar(u.contrata, q) + '</span>' : '<span class="mt-tag">CWP · sin contrata</span>') +
+              (u.padre ? '<span class="o-meta">Padre: <span class="cell-mono">' + esc(u.padre) + '</span></span>' : '') + '</div>' +
+            '<div class="o-people">' + gente + '</div>' +
+          '</div>' +
+          '<div class="o-stock">' + (elegida ? '<span class="o-elegida"><span class="material-icons">check_circle</span>Elegida</span>' : '') + '<span class="mt-tag">' + sk.ser.length + ' equipos</span><span class="mt-tag sky">' + nMat + ' materiales</span></div>' +
+          '</div>';
+      }).join('') : '<div class="tad-drop-empty">No hay ubicaciones con ese filtro</div>';
+    }
+    inp.addEventListener('focus', function () { pintar(); drop.classList.add('open'); });
+    inp.addEventListener('input', function () { pintar(); drop.classList.add('open'); });
+    sel.addEventListener('change', function () { pintar(); drop.classList.add('open'); inp.focus(); });
+    drop.addEventListener('mousedown', function (e) {
+      var o = e.target.closest('.tad-opt'); if (!o) return;
+      e.preventDefault();
+      var u = UB.filter(function (x) { return x.id === +o.getAttribute('data-id'); })[0];
+      elegir(lado, u); inp.value = ''; drop.classList.remove('open'); inp.blur();
+    });
+    inp.addEventListener('blur', function () { setTimeout(function () { drop.classList.remove('open'); }, 120); });
+  });
+
+  function tarjeta(u, compacta) {
+    var s = stockDe(u), unid = Object.keys(s.can).length;
+    var enc = u.enc.length ? u.enc.map(function (e) {
+      return '<div class="tad-person"><span class="tad-avatar">' + ini(e[0]) + '</span><span><b style="font-weight:600;color:var(--text)">' + esc(e[0]) + '</b> <span class="muted">· ' + esc(e[2]) + '</span><br><a href="#" onclick="return false">' + esc(e[1]) + '</a></span></div>';
+    }).join('') : '<span class="muted">Sin encargado asignado</span>';
+    enc = '<div class="tad-people">' + enc + '</div>';
+    return '<div class="tad-card-head"><span class="material-icons">' + TIPOS[u.tipo].ic + '</span><div style="min-width:0;flex:1"><div class="tad-card-name">' + esc(u.nom) + '</div><div class="tad-card-code">' + esc(u.cod) + '</div>' +
+      '<div class="tad-card-tags">' + chipTipo(u.tipo) + chipNivel(u.nivel) + '</div></div></div>' +
+      (compacta ? '<div style="font-size:12px">' + enc + '</div>' :
+      '<dl class="tad-kv">' +
+        '<dt>Tipo</dt><dd>' + esc(TIPOS[u.tipo].largo) + '</dd>' +
+        '<dt>Contrata</dt><dd>' + (u.contrata ? esc(u.contrata) : '<span class="muted">CWP · sin contrata</span>') + '</dd>' +
+        (u.padre ? '<dt>Ubicación padre</dt><dd class="cell-mono">' + esc(u.padre) + '</dd>' : '') +
+        '<dt>Encargado' + (u.enc.length > 1 ? 's' : '') + '</dt><dd>' + enc + '</dd>' +
+        '<dt>Stock desplegable</dt><dd><div class="tad-stockline"><span class="mt-tag">' + s.ser.length + ' equipos</span><span class="mt-tag sky">' + unid + ' materiales</span></div></dd>' +
+      '</dl>');
+  }
+
+  function elegir(lado, u) {
+    st[lado] = u;
+    var box = $('.tad-loc[data-lado="' + lado + '"]'), card = $('[data-card]', box);
+    card.className = 'tad-card'; card.innerHTML = tarjeta(u);
+    if (lado === 'origen') { st.sel = {}; st.mov = {}; st.cant = {}; }
+    refrescar();
+  }
+
+  $('#swap').addEventListener('click', function () {
+    var o = st.origen, d = st.destino;
+    st.origen = d; st.destino = o; st.sel = {}; st.mov = {}; st.cant = {};
+    ['origen', 'destino'].forEach(function (l) {
+      var card = $('.tad-loc[data-lado="' + l + '"] [data-card]');
+      if (st[l]) { card.className = 'tad-card'; card.innerHTML = tarjeta(st[l]); }
+      else { card.className = 'tad-card empty'; card.innerHTML = l === 'origen' ? '<span class="material-icons">warehouse</span>Elegí la ubicación desde donde sale el material' : '<span class="material-icons">place</span>Elegí la ubicación que recibe el material'; }
+    });
+    refrescar();
+  });
+
+  function alertas() {
+    var a = [], o = st.origen, d = st.destino;
+    if (!o || !d) return a;
+    if (o.contrata && d.contrata && o.contrata !== d.contrata) a.push(['warn', 'swap_horiz', 'Cruce de contratas: el material pasa de <b>' + esc(o.contrata) + '</b> a <b>' + esc(d.contrata) + '</b>. Fuera de este módulo eso no está permitido (spec §14.17); acá queda registrado como excepción administrativa.']);
+    [o, d].forEach(function (u, i) {
+      if (u.nivel === 'BLOQUEADA') a.push(['err', 'lock', '<b>' + esc(u.cod) + '</b> está <b>Bloqueada</b> (p. ej. congelada por inventario físico). La transferencia se puede hacer, pero va a alterar el conteo de esa ubicación.']);
+      else if (i === 0 && u.nivel !== 'SIN_RESTRICCION') a.push(['warn', 'policy', 'El origen tiene nivel <b>' + NIVEL[u.nivel][0] + '</b>. Esta transferencia ignora esa restricción.']);
+    });
+    if (o.tipo === 'SUBLOCACION_TECNICO' || d.tipo === 'SUBLOCACION_TECNICO') a.push(['ok', 'engineering', 'Interviene un técnico: el material le llega directo como Desplegable, sin pasar por su confirmación de recepción.']);
+    return a;
+  }
+  function pintaAlertas(cont) {
+    cont.innerHTML = alertas().map(function (x) { return '<div class="mt-alert ' + x[0] + '"><span class="material-icons">' + x[1] + '</span><span>' + x[2] + '</span></div>'; }).join('');
+  }
+
+  // ---------- Serializados ----------
+  function pintaSer() {
+    var o = st.origen;
+    $('#lblOri').textContent = o ? o.cod : '—';
+    $('#lblDst').textContent = st.destino ? st.destino.cod : '—';
+    var src = o ? stockDe(o).ser : [], fs = norm($('#fSrc').value), fd = norm($('#fDst').value);
+    var izq = src.filter(function (x) { return !st.mov[x.sn]; }), der = src.filter(function (x) { return st.mov[x.sn]; });
+    function li(x) {
+      return '<li data-sn="' + x.sn + '" class="' + (st.sel[x.sn] ? 'sel' : '') + '"' + (/* filtro */'') + '><span class="p-code">' + x.sn + '</span><span class="p-name">' + esc(x.nom) + '</span><span class="p-meta">' + x.mat + '</span></li>';
+    }
+    var vi = izq.filter(function (x) { return !fs || norm(x.sn + x.nom + x.mat).indexOf(fs) >= 0; });
+    var vd = der.filter(function (x) { return !fd || norm(x.sn + x.nom + x.mat).indexOf(fd) >= 0; });
+    $('#lSrc').innerHTML = vi.length ? vi.map(li).join('') : '<li class="mt-picker-empty">' + (o ? (izq.length ? 'Sin coincidencias' : 'No quedan equipos por agregar') : 'Elegí un origen') + '</li>';
+    $('#lDst').innerHTML = vd.length ? vd.map(li).join('') : '<li class="mt-picker-empty">' + (der.length ? 'Sin coincidencias' : 'Pasá equipos desde la izquierda') + '</li>';
+    $('#cntSrc').textContent = izq.length; $('#cntDst').textContent = der.length;
+  }
+  ['#lSrc', '#lDst'].forEach(function (id) {
+    $(id).addEventListener('click', function (e) { var li = e.target.closest('li[data-sn]'); if (!li) return; var k = li.getAttribute('data-sn'); st.sel[k] = !st.sel[k]; pintaSer(); });
+    $(id).addEventListener('dblclick', function (e) { var li = e.target.closest('li[data-sn]'); if (!li) return; var k = li.getAttribute('data-sn'); st.mov[k] = !st.mov[k]; st.sel[k] = false; refrescar(); });
+  });
+  $$('[data-mv]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      if (!st.origen) return;
+      var m = b.getAttribute('data-mv'), src = stockDe(st.origen).ser;
+      var visIzq = $$('#lSrc li[data-sn]').map(function (l) { return l.getAttribute('data-sn'); });
+      src.forEach(function (x) {
+        if (m === 'all-right' && visIzq.indexOf(x.sn) >= 0) st.mov[x.sn] = true;
+        if (m === 'right' && st.sel[x.sn] && !st.mov[x.sn]) st.mov[x.sn] = true;
+        if (m === 'left' && st.sel[x.sn] && st.mov[x.sn]) st.mov[x.sn] = false;
+        if (m === 'all-left') st.mov[x.sn] = false;
+      });
+      st.sel = {}; refrescar();
+    });
+  });
+  $('#fSrc').addEventListener('input', pintaSer);
+  $('#fDst').addEventListener('input', pintaSer);
+  $('#fSrc').addEventListener('keydown', function (e) {
+    if (e.key !== 'Enter' || !st.origen) return;
+    var v = norm(this.value), hit = stockDe(st.origen).ser.filter(function (x) { return norm(x.sn) === v; })[0];
+    if (hit) { st.mov[hit.sn] = true; this.value = ''; refrescar(); toast('Equipo ' + hit.sn + ' agregado'); }
+  });
+
+  // ---------- No serializados ----------
+  function pintaCan() {
+    var o = st.origen, d = st.destino, f = norm($('#fCan').value);
+    if (!o) { $('#tCan').innerHTML = '<tr><td colspan="7"><div class="mt-empty" style="padding:22px">Elegí un origen para ver sus materiales</div></td></tr>'; return; }
+    var can = stockDe(o).can, dc = d ? stockDe(d).can : {};
+    var filas = MATS_CAN.filter(function (m) { return can[m[0]] != null && (!f || norm(m[0] + m[1]).indexOf(f) >= 0); });
+    $('#tCan').innerHTML = filas.length ? filas.map(function (m) {
+      var disp = can[m[0]], q = st.cant[m[0]] || 0, err = q > disp;
+      return '<tr class="' + (q > 0 ? 'tad-row-sel' : '') + '"><td class="left cell-mono">' + m[0] + '</td><td class="left">' + esc(m[1]) + '</td><td>' + m[2] + '</td>' +
+        '<td class="cell-mono">' + disp.toLocaleString('es-PA') + '</td><td class="cell-mono muted">' + (d ? (dc[m[0]] || 0).toLocaleString('es-PA') : '—') + '</td>' +
+        '<td><span class="tad-qty' + (err ? ' err' : '') + '"><button data-q="-" data-m="' + m[0] + '">−</button><input data-qi="' + m[0] + '" value="' + q + '" inputmode="decimal"><button data-q="+" data-m="' + m[0] + '">+</button></span>' +
+        (err ? '<div class="small" style="color:var(--warn)">Máximo ' + disp + '</div>' : '') + '</td>' +
+        '<td class="cell-mono">' + Math.max(0, disp - q).toLocaleString('es-PA') + '</td></tr>';
+    }).join('') : '<tr><td colspan="7"><div class="mt-empty" style="padding:22px">Sin materiales no serializados que coincidan</div></td></tr>';
+  }
+  $('#tCan').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-q]'); if (!b) return;
+    var k = b.getAttribute('data-m'), disp = stockDe(st.origen).can[k], q = st.cant[k] || 0;
+    q = b.getAttribute('data-q') === '+' ? Math.min(disp, q + 1) : Math.max(0, q - 1);
+    st.cant[k] = q; refrescar();
+  });
+  $('#tCan').addEventListener('change', function (e) {
+    var i = e.target.closest('[data-qi]'); if (!i) return;
+    var v = parseFloat(String(i.value).replace(',', '.')); st.cant[i.getAttribute('data-qi')] = isNaN(v) || v < 0 ? 0 : Math.round(v * 100) / 100; refrescar();
+  });
+  $('#fCan').addEventListener('input', pintaCan);
+
+  // ---------- Totales ----------
+  function lineas() {
+    var o = st.origen; if (!o) return { ser: [], can: [] };
+    var s = stockDe(o);
+    return {
+      ser: s.ser.filter(function (x) { return st.mov[x.sn]; }),
+      can: MATS_CAN.filter(function (m) { return (st.cant[m[0]] || 0) > 0; }).map(function (m) { return { mat: m[0], nom: m[1], uom: m[2], q: st.cant[m[0]], disp: s.can[m[0]] }; })
+    };
+  }
+  function refrescar() {
+    var ok = !!(st.origen && st.destino);
+    $('#secSer').classList.toggle('disabled', !ok); $('#secCan').classList.toggle('disabled', !ok);
+    pintaAlertas($('#alertas')); pintaSer(); pintaCan();
+    var l = lineas();
+    $('#sEq').textContent = l.ser.length; $('#sMat').textContent = l.can.length;
+    $('#sRuta').innerHTML = ok ? '<span class="cell-mono">' + esc(st.origen.cod) + '</span> → <span class="cell-mono">' + esc(st.destino.cod) + '</span>' : '';
+    var hay = l.ser.length + l.can.length > 0, malo = l.can.some(function (x) { return x.q > x.disp; });
+    $('#btnRevisar').disabled = !ok || !hay || malo;
+    $('#st1').className = 'tad-step ' + (ok ? 'done' : 'on');
+    $('#st2').className = 'tad-step ' + (ok ? (hay ? 'done' : 'on') : '');
+    $('#st3').className = 'tad-step ' + (ok && hay ? 'on' : '');
+  }
+  $('#btnLimpiar').addEventListener('click', function () { st.sel = {}; st.mov = {}; st.cant = {}; refrescar(); });
+
+  // ---------- Modal ----------
+  function ahora() { var d = new Date(); return d.toLocaleDateString('es-PA') + ' ' + d.toLocaleTimeString('es-PA', { hour: '2-digit', minute: '2-digit' }); }
+  $('#btnRevisar').addEventListener('click', function () {
+    var l = lineas();
+    $('#cOri').innerHTML = '<div class="tad-loc-title" style="margin-bottom:2px"><span class="material-icons">logout</span> Origen</div>' + tarjeta(st.origen, true);
+    $('#cDst').innerHTML = '<div class="tad-loc-title" style="margin-bottom:2px"><span class="material-icons">login</span> Destino</div>' + tarjeta(st.destino, true);
+    pintaAlertas($('#cAlertas'));
+    $('#cResumen').textContent = l.ser.length + ' equipos · ' + l.can.length + ' materiales';
+    $('#cLineas').innerHTML = l.ser.map(function (x) { return '<tr><td>' + esc(x.nom) + ' <span class="muted cell-mono">' + x.mat + '</span></td><td class="cell-mono">' + x.sn + '</td><td style="text-align:right">1 C/U</td></tr>'; }).join('') +
+      l.can.map(function (x) { return '<tr><td>' + esc(x.nom) + ' <span class="muted cell-mono">' + x.mat + '</span></td><td class="muted">—</td><td style="text-align:right" class="cell-mono">' + x.q + ' ' + x.uom + '</td></tr>'; }).join('');
+    $('#cFecha').textContent = ahora();
+    $('#cMotivo').value = ''; $('#cErr').style.display = 'none'; contar();
+    $('#mConf').classList.add('open'); setTimeout(function () { $('#cMotivo').focus(); }, 60);
+  });
+  function cerrar() { $('#mConf').classList.remove('open'); }
+  $('#mCerrar').addEventListener('click', cerrar); $('#mCancelar').addEventListener('click', cerrar);
+  function contar() { var n = $('#cMotivo').value.trim().length; $('#cCont').textContent = n + ' / 500'; $('#cCont').classList.toggle('err', n > 0 && n < 15); if (n >= 15) $('#cErr').style.display = 'none'; }
+  $('#cMotivo').addEventListener('input', contar);
+  var nDoc = 128;
+  $('#mConfirmar').addEventListener('click', function () {
+    var mot = $('#cMotivo').value.trim();
+    if (mot.length < 15) { $('#cErr').style.display = 'block'; $('#cMotivo').focus(); return; }
+    if (!$('#mConf').classList.contains('open')) return;
+    var l = lineas(), o = st.origen, d = st.destino, doc = 'TADM-' + String(++nDoc).padStart(6, '0');
+    var s = stockDe(o), sd = stockDe(d);
+    l.ser.forEach(function (x) { s.ser.splice(s.ser.indexOf(x), 1); sd.ser.push(x); });
+    l.can.forEach(function (x) { s.can[x.mat] -= x.q; sd.can[x.mat] = (sd.can[x.mat] || 0) + x.q; });
+    HIST.unshift({ doc: doc, f: new Date(), o: o, d: d, ser: l.ser.map(function (x) { return [x.nom, x.mat, x.sn]; }), can: l.can.map(function (x) { return [x.nom, x.mat, x.q, x.uom]; }), us: ['Usuario actual', 'usuario.actual@ejemplo.com'], rol: 'Superusuario', mot: mot });
+    cerrar(); st.sel = {}; st.mov = {}; st.cant = {};
+    $('.tad-loc[data-lado="origen"] [data-card]').innerHTML = tarjeta(o);
+    $('.tad-loc[data-lado="destino"] [data-card]').innerHTML = tarjeta(d);
+    refrescar(); pintaHist(); abierto = doc; pintaHist(); pintaLin();
+    toast('Transferencia ' + doc + ' registrada', doc);
+  });
+
+  function toast(t, doc) {
+    $('#toastTxt').textContent = t;
+    $('#toastVer').hidden = !doc; $('#toastVer').setAttribute('data-doc', doc || '');
+    $('#toast').classList.add('show'); clearTimeout(toast.t);
+    toast.t = setTimeout(function () { $('#toast').classList.remove('show'); }, doc ? 6000 : 2600);
+  }
+  $('#toastVer').addEventListener('click', function () {
+    abierto = this.getAttribute('data-doc'); irA('historial'); pintaHist();
+    $('#toast').classList.remove('show');
+    var tr = $('#tHist tr[data-doc="' + abierto + '"]'); if (tr) tr.scrollIntoView({ block: 'center' });
+  });
+
+  // ---------- Pestañas ----------
+  function irA(tab) {
+    $$('[data-tad-tab]').forEach(function (t) { t.classList.toggle('active', t.getAttribute('data-tad-tab') === tab); });
+    $$('[data-tad-panel]').forEach(function (p) { p.hidden = p.getAttribute('data-tad-panel') !== tab; });
+  }
+  $$('[data-tad-tab]').forEach(function (t) { t.addEventListener('click', function () { irA(t.getAttribute('data-tad-tab')); }); });
+
+  // ---------- Historial ----------
+  function ub(cod) { return UB.filter(function (u) { return u.cod === cod; })[0]; }
+  function hace(dias, h, m) { var d = new Date(); d.setDate(d.getDate() - dias); d.setHours(h, m, 0, 0); return d; }
+  var HIST = [
+    { doc: 'TADM-000128', f: hace(0, 9, 42), o: ub('CON-44-PPAL'), d: ub('CON-41-PPAL'), ser: [['ONT Huawei HG8145V5', 'MAT-200118', '4857544A1F3C2'], ['ONT Huawei HG8145V5', 'MAT-200118', '4857544A1F3D9'], ['Gateway ZTE F670L', 'MAT-200131', 'ZTEGC81A90B1']], can: [['Cable drop 1 hilo', 'MAT-300014', 300, 'TF']], us: ['Ana Gómez', 'ana.gomez@ejemplo.com'], rol: 'Superusuario', mot: 'Grupo V cede stock a Instalaciones del Istmo por cierre de zona Oeste, acta 2026-10-15.' },
+    { doc: 'TADM-000127', f: hace(1, 16, 5), o: ub('TEC-T2291'), d: ub('TEC-I1180'), ser: [['Extender Wi-Fi 6', 'MAT-200207', 'SN7A21C0']], can: [], us: ['Ana Gómez', 'ana.gomez@ejemplo.com'], rol: 'Superusuario', mot: 'Técnico pasó de contrata; se mueve el equipo que tenía en mano para no perder trazabilidad.' },
+    { doc: 'TADM-000126', f: hace(2, 11, 20), o: ub('CON-MEGA-PPAL'), d: ub('PA01'), ser: [['Decodificador 4K', 'MAT-200355', 'SN91D3E2'], ['Decodificador 4K', 'MAT-200355', 'SN91D3F7']], can: [['Conector SC/APC', 'MAT-300022', 40, 'C/U'], ['Roseta óptica', 'MAT-300063', 12, 'C/U']], us: ['Ricardo Lee', 'ricardo.lee@ejemplo.com'], rol: 'Inventory Manager', mot: 'Retiro de stock de bodega bloqueada por fin de contrato con Mega Redes.' },
+    { doc: 'TADM-000125', f: hace(5, 8, 55), o: ub('PA01'), d: ub('PRY-0007'), ser: [], can: [['Cable drop 1 hilo', 'MAT-300014', 1500, 'TF'], ['Grapa para drop', 'MAT-300040', 200, 'C/U']], us: ['Ana Gómez', 'ana.gomez@ejemplo.com'], rol: 'Superusuario', mot: 'Adelanto de material al proyecto Costa del Este por urgencia de obra.' },
+    { doc: 'TADM-000124', f: hace(9, 14, 30), o: ub('12PA'), d: ub('CON-44-PPAL'), ser: [['Gateway ZTE F670L', 'MAT-200131', 'ZTEGC81B0012']], can: [], us: ['Ana Gómez', 'ana.gomez@ejemplo.com'], rol: 'Superusuario', mot: 'Equipo nuevo recibido por error en tienda; se envía directo a la contrata que lo instala.' },
+    { doc: 'TADM-000123', f: hace(21, 10, 12), o: ub('PA02'), d: ub('PA01'), ser: [['ONT Huawei HG8145V5', 'MAT-200118', '4857544A20001'], ['ONT Huawei HG8145V5', 'MAT-200118', '4857544A20002'], ['ONT Huawei HG8145V5', 'MAT-200118', '4857544A20003'], ['ONT Huawei HG8145V5', 'MAT-200118', '4857544A20004']], can: [['Cinta aislante', 'MAT-300051', 30, 'ROL']], us: ['Ricardo Lee', 'ricardo.lee@ejemplo.com'], rol: 'Inventory Manager', mot: 'Rebalanceo entre bodegas CWP por inventario bajo en Panamá.' }
+  ];
+  var abierto = null;
+
+  function llenarFiltros() {
+    Object.keys(TIPOS).forEach(function (k) {
+      ['#hTO', '#hTD'].forEach(function (s) { $(s).insertAdjacentHTML('beforeend', '<option value="' + k + '">' + TIPOS[k].n + '</option>'); });
+    });
+    UB.forEach(function (u) { $('#hUb').insertAdjacentHTML('beforeend', '<option value="' + u.cod + '">' + u.cod + ' · ' + esc(u.nom) + '</option>'); });
+    var us = {}, rol = {};
+    HIST.forEach(function (h) { us[h.us[0]] = h.us[1]; rol[h.rol] = 1; });
+    us['Usuario actual'] = 'usuario.actual@ejemplo.com'; rol.Superusuario = 1;
+    Object.keys(us).forEach(function (n) { $('#hUs').insertAdjacentHTML('beforeend', '<option value="' + esc(n) + '">' + esc(n) + ' · ' + esc(us[n]) + '</option>'); });
+    Object.keys(rol).forEach(function (n) { $('#hRol').insertAdjacentHTML('beforeend', '<option>' + esc(n) + '</option>'); });
+  }
+
+  function fmt(d) { return d.toLocaleDateString('es-PA', { day: '2-digit', month: '2-digit', year: 'numeric' }) + '<br><span class="muted small">' + d.toLocaleTimeString('es-PA', { hour: '2-digit', minute: '2-digit' }) + '</span>'; }
+  function celUb(u) { return '<div class="tad-loccell"><code>' + esc(u.cod) + '</code> ' + chipTipo(u.tipo) + '<br><b>' + esc(u.nom) + '</b><br><span class="muted small">' + (u.contrata ? esc(u.contrata) : 'CWP') + (u.enc[0] ? ' · ' + esc(u.enc[0][0]) : '') + '</span></div>'; }
+  function dentro(h) {
+    var q = norm($('#hQ').value), to = $('#hTO').value, td = $('#hTD').value, ubv = $('#hUb').value, us = $('#hUs').value, rol = $('#hRol').value, con = $('#hCon').value;
+    var de = $('#hDesde').value, ha = $('#hHasta').value;
+    if (to && h.o.tipo !== to) return false;
+    if (td && h.d.tipo !== td) return false;
+    if (ubv && h.o.cod !== ubv && h.d.cod !== ubv) return false;
+    if (us && h.us[0] !== us) return false;
+    if (rol && h.rol !== rol) return false;
+    if (con === 'cruce' && !(h.o.contrata && h.d.contrata && h.o.contrata !== h.d.contrata)) return false;
+    var iso = h.f.toISOString().slice(0, 10);
+    if (de && iso < de) return false;
+    if (ha && iso > ha) return false;
+    if (q) {
+      var t = norm([h.doc, h.o.cod, h.o.nom, h.d.cod, h.d.nom, h.mot, h.us[0]].concat(h.ser.map(function (s) { return s.join(' '); }), h.can.map(function (c) { return c.join(' '); })).join(' '));
+      if (t.indexOf(q) < 0) return false;
+    }
+    return true;
+  }
+  function pintaHist() {
+    var l = HIST.filter(dentro);
+    $('#tHist').innerHTML = l.length ? l.map(function (h) {
+      var cruce = h.o.contrata && h.d.contrata && h.o.contrata !== h.d.contrata;
+      var cont = [];
+      if (h.ser.length) cont.push('<span class="mt-tag">' + h.ser.length + ' equipo' + (h.ser.length > 1 ? 's' : '') + '</span>');
+      if (h.can.length) cont.push('<span class="mt-tag sky">' + h.can.length + ' material' + (h.can.length > 1 ? 'es' : '') + '</span>');
+      var fila = '<tr data-doc="' + h.doc + '" style="cursor:pointer">' +
+        '<td class="left cell-mono"><b style="color:var(--primary-dark)">' + h.doc + '</b>' + (cruce ? '<br><span class="mt-chip chip-amber" style="margin-top:4px">Cruce de contratas</span>' : '') + '</td>' +
+        '<td class="left cell-mono">' + fmt(h.f) + '</td>' +
+        '<td class="left">' + celUb(h.o) + '</td><td class="left" style="border-left:2px solid var(--primary-light)">' + celUb(h.d) + '</td>' +
+        '<td class="left">' + cont.join(' ') + '</td>' +
+        '<td class="left"><div class="tad-person"><span class="tad-avatar">' + ini(h.us[0]) + '</span><span>' + esc(h.us[0]) + '<br><span class="muted small">' + esc(h.rol) + '</span></span></div></td>' +
+        '<td class="left"><div class="tad-motivo" title="' + esc(h.mot) + '">' + esc(h.mot) + '</div></td>' +
+        '<td><button class="mt-icon-btn" title="Ver detalle"><span class="material-icons">' + (abierto === h.doc ? 'expand_less' : 'expand_more') + '</span></button></td></tr>';
+      if (abierto === h.doc) {
+        fila += '<tr class="tad-detail"><td colspan="8"><div class="tad-detail-in"><div><h5>Detalle de la transferencia</h5><table class="tad-lines"><thead><tr><th>Material</th><th>Serial / MAC</th><th style="text-align:right">Cantidad</th><th>Estado en destino</th></tr></thead><tbody>' +
+          h.ser.map(function (s) { return '<tr><td>' + esc(s[0]) + ' <span class="muted cell-mono">' + s[1] + '</span></td><td class="cell-mono">' + s[2] + '</td><td style="text-align:right">1 C/U</td><td><span class="mt-chip chip-green">Desplegable</span></td></tr>'; }).join('') +
+          h.can.map(function (c) { return '<tr><td>' + esc(c[0]) + ' <span class="muted cell-mono">' + c[1] + '</span></td><td class="muted">—</td><td style="text-align:right" class="cell-mono">' + c[2] + ' ' + c[3] + '</td><td><span class="mt-chip chip-green">Desplegable</span></td></tr>'; }).join('') +
+          '</tbody></table></div><div><h5>Motivo</h5><div class="tad-quote">' + esc(h.mot) + '</div><h5>Registro</h5><div class="tad-meta">' +
+          '<span>Documento</span><b class="cell-mono">' + h.doc + '</b>' +
+          '<span>Fecha y hora</span><b>' + h.f.toLocaleString('es-PA') + '</b>' +
+          '<span>Usuario</span><b>' + esc(h.us[0]) + ' · <span style="color:var(--accent);font-weight:400">' + esc(h.us[1]) + '</span></b>' +
+          '<span>Rol</span><b>' + esc(h.rol) + '</b>' +
+          '<span>Origen</span><b>' + esc(h.o.cod) + ' · ' + esc(h.o.nom) + ' (' + NIVEL[h.o.nivel][0] + ')</b>' +
+          '<span>Destino</span><b>' + esc(h.d.cod) + ' · ' + esc(h.d.nom) + '</b>' +
+          '<span>Restricciones</span><b>' + (cruce ? 'Cruce de contratas · ' : '') + (h.o.nivel !== 'SIN_RESTRICCION' || h.d.nivel === 'BLOQUEADA' ? 'Nivel omitido' : 'Ninguna') + '</b>' +
+          '</div></div></div></td></tr>';
+      }
+      return fila;
+    }).join('') : '<tr><td colspan="8"><div class="mt-empty"><span class="material-icons">manage_search</span><div>No hay transferencias con esos filtros</div></div></td></tr>';
+    $('#tabCount').textContent = HIST.length;
+    $('#hPag').textContent = (l.length ? 1 : 0) + ' – ' + l.length + ' de ' + l.length;
+    var hoy = new Date().toISOString().slice(0, 10), mes = hoy.slice(0, 7);
+    var dm = HIST.filter(function (h) { return h.f.toISOString().slice(0, 7) === mes; });
+    $('#kHoy').textContent = HIST.filter(function (h) { return h.f.toISOString().slice(0, 10) === hoy; }).length;
+    $('#kMes').textContent = dm.length;
+    $('#kEq').textContent = dm.reduce(function (a, h) { return a + h.ser.length; }, 0);
+    $('#kCon').textContent = dm.filter(function (h) { return h.o.contrata && h.d.contrata && h.o.contrata !== h.d.contrata; }).length;
+  }
+  $('#tHist').addEventListener('click', function (e) {
+    var tr = e.target.closest('tr[data-doc]'); if (!tr) return;
+    var d = tr.getAttribute('data-doc'); abierto = abierto === d ? null : d; pintaHist();
+  });
+  ['#hQ', '#hTO', '#hTD', '#hUb', '#hUs', '#hRol', '#hCon', '#hDesde', '#hHasta'].forEach(function (s) { $(s).addEventListener('input', pintaHist); $(s).addEventListener('change', pintaHist); });
+  $('#hLimpiar').addEventListener('click', function () { ['#hQ', '#hTO', '#hTD', '#hUb', '#hUs', '#hRol', '#hCon', '#hDesde', '#hHasta'].forEach(function (s) { $(s).value = ''; }); pintaHist(); });
+
+  // ---------- Equipos transferidos (una fila por línea) ----------
+  function macDe(sn) {
+    var h = 0; for (var i = 0; i < sn.length; i++) h = (h * 31 + sn.charCodeAt(i)) >>> 0;
+    var b = ['A4', '5B']; for (var j = 0; j < 4; j++) { b.push(('0' + ((h >> (j * 7)) & 255).toString(16).toUpperCase()).slice(-2)); }
+    return b.join(':');
+  }
+  function lineasHist() {
+    var r = [];
+    HIST.forEach(function (h) {
+      h.ser.forEach(function (x) { r.push({ h: h, tipo: 'S', nom: x[0], mat: x[1], sn: x[2], mac: macDe(x[2]), cant: '1 C/U' }); });
+      h.can.forEach(function (x) { r.push({ h: h, tipo: 'C', nom: x[0], mat: x[1], cant: x[2].toLocaleString('es-PA') + ' ' + x[3] }); });
+    });
+    return r;
+  }
+  function locMini(u) { return '<div class="tad-locmini"><code>' + esc(u.cod) + '</code> ' + chipTipo(u.tipo) + '<b title="' + esc(u.nom) + '">' + esc(u.nom) + '</b></div>'; }
+  function dentroLin(l) {
+    var q = norm($('#lQ').value), tp = $('#lTipo').value, m = $('#lMatSel').value, ubv = $('#lUb').value, us = $('#lUs').value;
+    var de = $('#lDesde').value, ha = $('#lHasta').value, iso = l.h.f.toISOString().slice(0, 10);
+    if (tp && l.tipo !== tp) return false;
+    if (m && l.mat !== m) return false;
+    if (ubv && l.h.o.cod !== ubv && l.h.d.cod !== ubv) return false;
+    if (us && l.h.us[0] !== us) return false;
+    if (de && iso < de) return false;
+    if (ha && iso > ha) return false;
+    if (q && norm([l.sn, l.mac, l.mat, l.nom, l.h.doc].join(' ')).indexOf(q) < 0) return false;
+    return true;
+  }
+  function pintaLin() {
+    var todas = lineasHist(), l = todas.filter(dentroLin), docs = {};
+    l.forEach(function (x) { docs[x.h.doc] = 1; });
+    $('#tLin').innerHTML = l.length ? l.map(function (x) {
+      var h = x.h, cruce = h.o.contrata && h.d.contrata && h.o.contrata !== h.d.contrata;
+      return '<tr>' +
+        '<td class="left cell-mono">' + fmt(h.f) + '</td>' +
+        '<td class="left" style="white-space:nowrap"><a class="tad-doc-link" data-ver="' + h.doc + '">' + h.doc + '</a>' + (cruce ? '<br><span class="mt-chip chip-amber" style="margin-top:4px">Cruce de contratas</span>' : '') + '</td>' +
+        '<td class="left">' + (x.tipo === 'S' ? '<div class="tad-sn">' + esc(x.sn) + '</div><div class="tad-mac">MAC ' + x.mac + '</div>' : '<span class="mt-chip chip-sky">No serializado</span>') + '</td>' +
+        '<td class="left tad-matcell"><div style="font-weight:600;color:var(--text)">' + esc(x.nom) + '</div><div class="muted small cell-mono">' + x.mat + '</div></td>' +
+        '<td class="right cell-mono">' + x.cant + '</td>' +
+        '<td class="left"><div class="tad-ruta">' + locMini(h.o) + '<span class="material-icons">south</span>' + locMini(h.d) + '</div></td>' +
+        '<td class="left"><div class="tad-person"><span class="tad-avatar">' + ini(h.us[0]) + '</span><span>' + esc(h.us[0]) + '<br><span class="muted small">' + esc(h.rol) + '</span></span></div></td>' +
+        '<td class="left"><div class="tad-motivo" title="' + esc(h.mot) + '">' + esc(h.mot) + '</div></td>' +
+        '<td><button class="mt-icon-btn" data-ver="' + h.doc + '" title="Ver la transferencia completa"><span class="material-icons">open_in_new</span></button></td></tr>';
+    }).join('') : '<tr><td colspan="9"><div class="mt-empty"><span class="material-icons">manage_search</span><div>No hay equipos con esos filtros</div></div></td></tr>';
+    $('#tabCountLin').textContent = todas.length;
+    $('#lFilas').textContent = l.length;
+    $('#lEq').textContent = l.filter(function (x) { return x.tipo === 'S'; }).length;
+    $('#lMat').textContent = l.filter(function (x) { return x.tipo === 'C'; }).length;
+    $('#lDoc').textContent = Object.keys(docs).length;
+    $('#lPag').textContent = (l.length ? 1 : 0) + ' – ' + l.length + ' de ' + l.length;
+  }
+  $('#tLin').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-ver]'); if (!b) return;
+    abierto = b.getAttribute('data-ver'); irA('historial'); pintaHist();
+    var tr = $('#tHist tr[data-doc="' + abierto + '"]'); if (tr) tr.scrollIntoView({ block: 'center' });
+  });
+  ['#lQ', '#lTipo', '#lMatSel', '#lUb', '#lUs', '#lDesde', '#lHasta'].forEach(function (s) { $(s).addEventListener('input', pintaLin); $(s).addEventListener('change', pintaLin); });
+  $('#lLimpiar').addEventListener('click', function () { ['#lQ', '#lTipo', '#lMatSel', '#lUb', '#lUs', '#lDesde', '#lHasta'].forEach(function (s) { $(s).value = ''; }); pintaLin(); });
+  function llenarFiltrosLin() {
+    MATS_SER.concat(MATS_CAN).forEach(function (m) { $('#lMatSel').insertAdjacentHTML('beforeend', '<option value="' + m[0] + '">' + m[0] + ' · ' + esc(m[1]) + '</option>'); });
+    UB.forEach(function (u) { $('#lUb').insertAdjacentHTML('beforeend', '<option value="' + u.cod + '">' + u.cod + ' · ' + esc(u.nom) + '</option>'); });
+    $$('#hUs option').forEach(function (o) { if (o.value) $('#lUs').insertAdjacentHTML('beforeend', '<option value="' + esc(o.value) + '">' + esc(o.textContent) + '</option>'); });
+  }
+
+  llenarFiltros(); llenarFiltrosLin(); refrescar(); pintaHist(); pintaLin();
+})();
+</script>
+</body>
+</html>
